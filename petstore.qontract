@@ -1,0 +1,99 @@
+Feature: Contract for the petstore service
+
+
+  Background:
+    Given json Pet
+      | name   | (string) |
+      | type   | (string) |
+      | status | (string) |
+      | id     | (number) |
+    And json Pets (Pet*)
+    And json Order
+      | type   | (string) |
+      | count  | (number) |
+      | status | (string) |
+      | id     | (number) |
+    And json Orders (Order*)
+
+  Scenario: Fetch pet details
+    Given fact id (number)
+    When GET /pets/(id:number)
+    Then status 200
+    And response-body (Pet)
+
+  Scenario: Update pet details
+    Given fact id (number)
+    When POST /pets
+    And request-body (Pet)
+    Then status 200
+
+  Scenario: Delete an existing pet from the database
+    Given fact id (number)
+    When DELETE /pets/(id:number)
+    Then status 200
+
+  Scenario: Create a new pet
+    Given fact no_pets
+    And pattern Pet
+      | name   | (string) |
+      | type   | (string) |
+      | status | (string) |
+    When PUT /pets
+    And request-body (Pet)
+    Then status 200
+    And response-body (number)
+
+  Scenario Outline: Search for pets
+    Given fact type
+    And fact name
+    And fact status
+    When GET /pets?name=(string)&type=(string)&status=(string)
+    Then status 200
+    And response-body (Pets)
+
+    Examples:
+      | type | name     | status |
+      | dog  |          |        |
+      |      | (string) |        |
+      |      |          | sold   |
+
+  Scenario: Place an order
+    Given fact type (string)
+    And fact count (number)
+    And fact api order
+    When POST /orders
+    And request-body (Order)
+    Then status 200
+
+  Scenario: Get details of an order
+    Given fact id (number)
+    And fact api order
+    When GET /orders/order/(id:number)
+    Then status 200
+    And response-body (Order)
+
+  Scenario: Delete an order
+    Given fact id (number)
+    And fact api order
+    When DELETE /orders/order/(id:number)
+    Then status 200
+
+  Scenario: Update details of an order
+    Given fact id (number)
+    And fact api order
+    When POST /orders/order/(id:number)
+    And request-body (string)
+    Then status 200
+
+  Scenario Outline: Search for orders
+    Given fact type
+    And fact status
+    And fact api order
+    When GET /orders?type=(string)&status=(string)
+    Then status 200
+    And response-body (Orders)
+
+    Examples:
+      | type | status  |
+      | dog  |         |
+      |      | pending |

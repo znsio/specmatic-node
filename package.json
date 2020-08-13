@@ -1,0 +1,35 @@
+{
+  "name": "qontract",
+  "version": "1.0.0",
+  "description": "npm wrapper for qontract",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qontract/npm-qontract.git"
+  },
+  "keywords": [
+    "qontract",
+    "contract",
+    "testing"
+  ],
+  "author": "Sahil Sharma (sahilaug@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qontract/npm-qontract/issues"
+  },
+  "homepage": "https://github.com/qontract/npm-qontract#readme",
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  },
+  "bin": {
+    "start-stub": "src/bin/startStubServer.js"
+  },
+  "dependencies": {
+    "download": "^8.0.0",
+    "exec-sh": "^0.3.4"
+  }
+}
