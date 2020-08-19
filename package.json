@@ -26,7 +26,8 @@
     "rimraf": "^3.0.2"
   },
   "bin": {
-    "start-stub": "src/bin/startStubServer.js"
+    "start-qontract-stub": "src/bin/startStubServer.js",
+    "run-qontract-tests": "src/bin/runQontractTests.js"
   },
   "dependencies": {
     "download": "^8.0.0",
