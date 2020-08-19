@@ -1,11 +1,11 @@
 const init = async () => {
     const download = require('download');
 
-    console .log('Starting qontract jar download....')
+    console .log('Starting qontract jar download..')
     await (async () => {
-        await download('https://github.com/qontract/qontract/releases/download/0.13.1/qontract.jar');
+        await download('https://github.com/qontract/qontract/releases/download/0.13.1/qontract.jar', 'qontract.jar');
     })();
-    console .log('Finished qontract jar download !')
+    console .log('Finished qontract jar download!!')
 }
 
 init();

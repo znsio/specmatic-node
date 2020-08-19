@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const runQontractTests = () => {
   const execSh = require('exec-sh');
   const path = require('path');
