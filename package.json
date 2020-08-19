@@ -1,6 +1,6 @@
 {
   "name": "qontract",
-  "version": "1.2.3",
+  "version": "0.0.1",
   "description": "npm wrapper for qontract",
   "main": "src/index.js",
   "scripts": {
@@ -26,8 +26,8 @@
     "rimraf": "^3.0.2"
   },
   "bin": {
-    "start-qontract-stub": "src/bin/startStubServer.js",
-    "run-qontract-tests": "src/bin/runQontractTests.js"
+    "qontract-stub": "src/bin/startStubServer.js",
+    "qontract-test": "src/bin/runQontractTests.js"
   },
   "dependencies": {
     "download": "^8.0.0",
