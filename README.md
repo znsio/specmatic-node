@@ -1,3 +1,3 @@
-# npm-qontract
-NPM Wrapper for Qontract
+### NPM Wrapper for Qontract
+
 WIP
