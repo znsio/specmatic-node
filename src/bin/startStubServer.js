@@ -4,8 +4,6 @@ const startStubServer = () => {
   const execSh = require('exec-sh');
   const path = require('path');
   const jarPath = path.resolve('./node_modules/qontract/qontract.jar');
-  console.log(__dirname)
-  // const jarPath = path.resolve('qontract.jar');
   const contractsPath = path.resolve('*.qontract');
   
   console.log('starting qontract stub server')
