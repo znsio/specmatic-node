@@ -4,6 +4,7 @@ const runQontractTests = () => {
   const jarPath = path.resolve('qontract.jar');
   const contractsPath = path.resolve('*.qontract');
   
+  console.log('running qontract tests')
   execSh(
     `java -jar ${jarPath} test ${contractsPath}`,
     {  },

@@ -4,6 +4,7 @@ const startStubServer = () => {
   const jarPath = path.resolve('qontract.jar');
   const contractsPath = path.resolve('*.qontract');
   
+  console.log('starting qontract stub server')
   execSh(
     `java -jar ${jarPath} stub ${contractsPath}`,
     {  },
