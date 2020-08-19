@@ -3,8 +3,8 @@
 const runQontractTests = () => {
   const execSh = require('exec-sh');
   const path = require('path');
-  const jarPath = path.resolve('qontract.jar');
-  const contractsPath = path.resolve('*.qontract');
+  const jarPath = path.resolve('./node_modules/qontract/qontract.jar');
+  const contractsPath = path.resolve('./node_modules/qontract/*.qontract');
   
   console.log('running qontract tests')
   execSh(
