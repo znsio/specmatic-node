@@ -13,7 +13,7 @@ This mode can also stub out real requests and responses, which will be validated
 
 Sample npm script to start qontract stub server.
 
-`"qontract-stub": "./node_modules/.bin/start-qontract-stub *.qontract"`
+`"qontract-stub": "./node_modules/.bin/qontract-stub --contractPath=*.qontract --host='localhost' --port='8000'"`
 
 ## Qontract tests (For Providers)
 
@@ -24,8 +24,24 @@ This is meant to be used by API providers.
 
 Sample npm script to run qontract tests.
 
-`"qontract-tests": "./node_modules/.bin/run-qontract-tests *.qontract"`
+`"qontract-tests": "./node_modules/.bin/qontract-test --contractPath=*.qontract"`
 
+
+## API
+
+### cli commands
+
+`qontract-stub` run the qontract server in stub mode, used by consumers.
+
+`qontract-test` run the qontract server in test mode, used by providers.
+
+### cli arguments
+
+`contractPath` path of the contract files. Can be aa wild card string.
+
+`host` hostname to be stubbed out. Used in stub mode only.
+
+`port` port to run the stub server. Used in stub mode only.
 
 Check [Documentation](https://qontract.run/documentation.html) for more information
 

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "download": "^8.0.0",
-    "exec-sh": "^0.3.4"
+    "exec-sh": "^0.3.4",
+    "yargs": "^15.4.1"
   }
 }

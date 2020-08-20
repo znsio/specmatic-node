@@ -5,12 +5,14 @@ const startStubServer = () => {
   const path = require('path');
   const { qontractPath } = require('../config');
   const jarPath = path.resolve(qontractPath);
-  const [,,args] = process.argv;
-  const contractsPath = path.resolve(args);
+
+  const {argv} = require('yargs');
+  const { contractPath, host, port} = argv;
+  const contracts = path.resolve(contractPath);
 
   console.log('starting qontract stub server')
   execSh(
-    `java -jar ${jarPath} stub ${contractsPath}`,
+    `java -jar ${jarPath} stub ${contracts} --host=${host} --port=${port}`,
     {  },
     err => {
       if (err) {
