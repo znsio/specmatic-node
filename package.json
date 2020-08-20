@@ -1,7 +1,7 @@
 {
   "name": "qontract",
   "version": "0.3.0",
-  "description": "npm wrapper for qontract",
+  "description": "Node wrapper for qontract",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qontract/npm-qontract.git"
+    "url": "git+https://github.com/qontract/qontract-node.git"
   },
   "keywords": [
     "qontract",
