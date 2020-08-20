@@ -1,9 +1,10 @@
 const init = async () => {
     const download = require('download');
+    const { qontractJarRemotePath } = require('./config');
 
     console .log('Starting qontract jar download..')
     await (async () => {
-        await download('https://github.com/qontract/qontract/releases/download/0.13.1/qontract.jar', '.');
+        await download(qontractJarRemotePath, '.');
     })();
     console .log('Finished qontract jar download!!')
 }

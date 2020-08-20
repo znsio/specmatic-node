@@ -1,11 +1,7 @@
-### NPM Wrapper for Qontract
-
 [Qontract](https://qontract.run/) is a contract driven development tool that allows us to turn our contracts into executable specification.
 
 ## Installation
-`npm install qontract` 
-
-will install the qontract locally in node_modules.
+`npm install qontract`  will install the qontract locally to the node project.
 
 ## Qontract in stub mode (For consumers)
 
