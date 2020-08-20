@@ -19,9 +19,9 @@
   "author": "Sahil Sharma (sahilaug@gmail.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/qontract/npm-qontract/issues"
+    "url": "https://github.com/qontract/qontract-node/issues"
   },
-  "homepage": "https://github.com/qontract/npm-qontract#readme",
+  "homepage": "https://github.com/qontract/qontract-node#readme",
   "devDependencies": {
     "rimraf": "^3.0.2"
   },
