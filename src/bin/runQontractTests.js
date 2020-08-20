@@ -5,12 +5,13 @@ const runQontractTests = () => {
   const path = require('path');
   const { qontractPath } = require('../config');
   const jarPath = path.resolve(qontractPath);
-  const [,,args] = process.argv;
-  const contractsPath = path.resolve(args);
+
+  const {argv} = require('yargs')
+  const contractPath = path.resolve(argv.contractPath);
   
   console.log('running qontract tests')
   execSh(
-    `java -jar ${jarPath} test ${contractsPath}`,
+    `java -jar ${jarPath} test ${contractPath}`,
     {  },
     err => {
       if (err) {
