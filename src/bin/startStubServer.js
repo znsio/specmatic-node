@@ -3,7 +3,8 @@
 const startStubServer = () => {
   const execSh = require('exec-sh');
   const path = require('path');
-  const jarPath = path.resolve('./node_modules/qontract/qontract.jar');
+  const { qontractPath } = require('../config');
+  const jarPath = path.resolve(qontractPath);
   const [,,args] = process.argv;
   const contractsPath = path.resolve(args);
 
