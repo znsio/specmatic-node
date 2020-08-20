@@ -7,7 +7,7 @@ const runQontractTests = () => {
   const qontractJarPath = path.resolve(qontractJarPathLocal);
 
   const {argv} = require('yargs');
-  const contractPath = path.resolve(argv['contract-dir']);
+  const contractPath = path.resolve(argv.contractDir);
   
   console.log('running qontract tests')
   execSh(
