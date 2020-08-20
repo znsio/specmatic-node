@@ -20,7 +20,7 @@ This is meant to be used by API providers.
 
 Sample npm script to run qontract tests.
 
-`"qontract-tests": "./node_modules/.bin/qontract-test --contract-dir=*.qontract"`
+`"qontract-tests": "./node_modules/.bin/qontract-test --contract-dir=*.qontract --host='localhost' --port='8000'"`
 
 ## API
 
@@ -36,9 +36,9 @@ Sample npm script to run qontract tests.
 
 `stub-dir` path of the mock json files.
 
-`host` hostname to be stubbed out. Used in stub mode only.
+`host` hostname
 
-`port` port to run the stub server. Used in stub mode only.
+`port` port number
 
 Check [Documentation](https://qontract.run/documentation.html) for more information.
 

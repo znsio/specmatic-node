@@ -7,11 +7,13 @@ const runQontractTests = () => {
   const qontractJarPath = path.resolve(qontractJarPathLocal);
 
   const {argv} = require('yargs');
-  const contractPath = path.resolve(argv.contractDir);
+  const { contractDir, host, port} = argv;
+
+  const contractPath = path.resolve(contractDir);
   
   console.log('running qontract tests')
   execSh(
-    `java -jar ${qontractJarPath} test ${contractPath}`,
+    `java -jar ${qontractJarPath} test ${contractPath} --host=${host} --port=${port}`,
     {  },
     err => {
       if (err) {
