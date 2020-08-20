@@ -1,6 +1,6 @@
 {
   "name": "qontract",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "npm wrapper for qontract",
   "main": "src/index.js",
   "scripts": {
