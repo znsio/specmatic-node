@@ -7,13 +7,14 @@ const startStubServer = () => {
   const qontractJarPath = path.resolve(qontractJarPathLocal);
 
   const {argv} = require('yargs');
-  const { contractDir, stubDir, host, port} = argv;
-  const contracts = path.resolve(contractDir);
+  const { qontractDir, stubDir, host, port} = argv;
+  
+  const qontracts = path.resolve(qontractDir);
   const stubs = path.resolve(stubDir);
 
   console.log('starting qontract stub server')
   execSh(
-    `java -jar ${qontractJarPath} stub ${contracts} --data ${stubs} --host=${host} --port=${port}`,
+    `java -jar ${qontractJarPath} stub ${qontracts} --data ${stubs} --host=${host} --port=${port}`,
     {  },
     err => {
       if (err) {
