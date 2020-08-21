@@ -8,7 +8,7 @@ const startStubServer = () => {
 
   const {argv} = require('yargs');
   const { qontractDir, stubDir, host, port} = argv;
-  
+
   const qontracts = path.resolve(qontractDir);
   const stubs = path.resolve(stubDir);
 
