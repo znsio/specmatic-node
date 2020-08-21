@@ -2,11 +2,11 @@
   "name": "qontract",
   "version": "0.6.0",
   "description": "Node wrapper for qontract",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "rimraf qontract.jar && node lib/index.js",
-    "build": "rimraf lib && ./node_modules/.bin/babel src -d lib"
+    "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' -d dist",
+    "postinstall": "npm run build && rimraf qontract.jar && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,13 +27,16 @@
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.4",
     "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
     "rimraf": "^3.0.2"
   },
   "bin": {
-    "qontract-stub": "lib/bin/startStubServer.js",
-    "qontract-test": "lib/bin/runQontractTests.js"
+    "qontract-stub": "dist/bin/startStubServer.js",
+    "qontract-test": "dist/bin/runQontractTests.js"
   },
   "dependencies": {
+    "@types/download": "^6.2.4",
+    "@types/yargs": "^15.0.5",
     "download": "^8.0.0",
     "exec-sh": "^0.3.4",
     "yargs": "^15.4.1"

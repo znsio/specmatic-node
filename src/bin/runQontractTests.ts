@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const runQontractTests = () => {
-  const execSh = require('exec-sh');
-  const path = require('path');
-  const { qontractJarPathLocal } = require('../config');
-  const qontractJarPath = path.resolve(qontractJarPathLocal);
+const execSh = require('exec-sh');
+const path = require('path');
+const {argv} = require('yargs');
+const { qontractJarPathLocal } = require('../config');
 
-  const {argv} = require('yargs');
+const runQontractTests = () => {
+  const qontractJarPath = path.resolve(qontractJarPathLocal);
   const { qontractDir, host, port} = argv;
 
   const qontracts = path.resolve(qontractDir);
@@ -15,7 +15,7 @@ const runQontractTests = () => {
   execSh(
     `java -jar ${qontractJarPath} test ${qontracts} --host=${host} --port=${port}`,
     {  },
-    err => {
+    (err: any) => {
       if (err) {
         console.log('Exit code: ', err.code);
       }

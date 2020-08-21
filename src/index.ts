@@ -1,7 +1,7 @@
-const init = async () => {
-    const download = require('download');
-    const { qontractJarPathRemote } = require('./config');
+import download from 'download';
+import { qontractJarPathRemote } from './config';
 
+const init = async () => {
     console.log('Starting qontract jar download..')
     await (async () => {
         await download(qontractJarPathRemote, '.');
