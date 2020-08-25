@@ -10,9 +10,11 @@ const startStubServer = () => {
   const qontracts = path.resolve(qontractDir + '');
   const stubs = path.resolve(stubDir + '');
 
+  console.log(`java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`)
+
   console.log('starting qontract stub server')
   execSh(
-    `java -jar ${qontractJarPath} stub ${qontracts} --data ${stubs} --host=${host} --port=${port}`,
+    `java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`,
     {  },
     (err: any) => {
       if (err) {
