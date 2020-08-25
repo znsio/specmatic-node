@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' -d dist",
-    "postinstall": "npm run build && rimraf qontract.jar && node dist/index.js"
+    "postinstall": "rimraf qontract.jar && node dist/index.js"
   },
   "repository": {
     "type": "git",
