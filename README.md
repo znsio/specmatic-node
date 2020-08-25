@@ -5,9 +5,9 @@
 
 Sample npm scripts to run qontract:
 
-`"qontract-stub": "./node_modules/.bin/qontract-stub --contract-dir=*.qontract --stub-dir='path-to-stub-dir' --host='localhost' --port='8000'"`
+`"qontract-stub": "qontract-stub --contract-dir=*.qontract --stub-dir='path-to-stub-dir' --host='localhost' --port='8000'"`
 
-`"qontract-test": "./node_modules/.bin/qontract-test --qontract-dir=*.qontract --host='localhost' --port='8000'"`
+`"qontract-test": "qontract-test --qontract-dir=*.qontract --host='localhost' --port='8000'"`
 
 ## Qontract in stub mode (For consumers)
 

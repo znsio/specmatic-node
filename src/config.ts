@@ -1,6 +1,2 @@
-const config = {
-    qontractJarPathLocal: './node_modules/qontract/qontract.jar',
-    qontractJarPathRemote: 'https://github.com/qontract/qontract/releases/download/0.13.1/qontract.jar'
-};
-
-module.exports = config;
+export const qontractJarPathLocal= './node_modules/qontract/qontract.jar';
+export const qontractJarPathRemote= 'https://github.com/qontract/qontract/releases/download/0.15.0/qontract.jar';
