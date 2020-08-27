@@ -1,6 +1,6 @@
 import download from 'download';
 import { qontractJarPathRemote } from './config';
-export { loadDynamicStub } from './lib';
+export { loadDynamicStub, startStubServer, startTestServer } from './lib';
 
 const init = async () => {
     console.log('Starting qontract jar download..')

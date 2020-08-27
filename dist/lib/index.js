@@ -3,32 +3,58 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadDynamicStub = void 0;
+exports.loadDynamicStub = exports.startTestServer = exports.startStubServer = void 0;
 
 var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
 var _path = _interopRequireDefault(require("path"));
 
+var _execSh = _interopRequireDefault(require("exec-sh"));
+
+var _config = require("../config");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+var startStubServer = (qontractDir, stubDir, host, port) => {
+  var qontractJarPath = _path.default.resolve(_config.qontractJarPathLocal);
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+  var qontracts = _path.default.resolve(qontractDir + '');
 
-var loadDynamicStub = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(function* (stubPath) {
-    var stubResponse = require(_path.default.resolve(stubPath));
+  var stubs = _path.default.resolve(stubDir + '');
 
-    console.log(JSON.stringify(stubResponse));
-    (0, _nodeFetch.default)('http://localhost:8000/_qontract/expectations', {
-      method: 'POST',
-      body: JSON.stringify(stubResponse)
-    }).then(res => res.json()).then(json => console.log(json));
+  console.log("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
+  console.log('starting qontract stub server');
+  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port), {}, err => {
+    if (err) {
+      console.log('Exit code: ', err.code);
+    }
   });
+};
 
-  return function loadDynamicStub(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
+exports.startStubServer = startStubServer;
+
+var startTestServer = (qontractDir, host, port) => {
+  var qontractJarPath = _path.default.resolve(_config.qontractJarPathLocal);
+
+  var qontracts = _path.default.resolve(qontractDir);
+
+  console.log('running qontract tests');
+  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " test ").concat(qontracts, " --host=").concat(host, " --port=").concat(port), {}, err => {
+    if (err) {
+      console.log('Exit code: ', err.code);
+    }
+  });
+};
+
+exports.startTestServer = startTestServer;
+
+var loadDynamicStub = stubPath => {
+  var stubResponse = require(_path.default.resolve(stubPath));
+
+  (0, _nodeFetch.default)('http://localhost:8000/_qontract/expectations', {
+    method: 'POST',
+    body: JSON.stringify(stubResponse)
+  }).then(res => res.json()).then(json => console.log(json));
+};
 
 exports.loadDynamicStub = loadDynamicStub;
