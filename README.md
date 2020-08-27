@@ -38,5 +38,25 @@ This is meant to be used by API providers.
 
 `port` port number
 
+## Test helper library
+
+`import { startStubServer, startTestServer, loadDynamicStub } from 'qontract';`
+
+Qontract JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically.
+
+
+`startStubServer(qontractDir: string, stubDir: string, host: string, port: string)`
+
+method to start the stub server
+
+`startTestServer(qontractDir: string, host: string, port: string)`
+
+method to start test server
+
+`loadDynamicStub(stubPath: string)`
+
+method to load stub dynamically from inside an automated test;
+
+
 Check [Documentation](https://qontract.run/documentation.html) for more information.
 
