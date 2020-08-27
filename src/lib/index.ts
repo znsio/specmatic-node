@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
+import path from 'path';
 
-export const loadDynamicStub = () => {
+export const loadDynamicStub = (stubPath: string) => {
+    const stubResponse = require(path.resolve(stubPath))
     fetch('http://localhost:8000/_qontract/expectations', 
         {
              method: 'POST', 
-             body: '{"http-request": {"method": "GET", "path": "/pets/1"}, "http-response": {"status": 200,"body": {"name": "new","type": "new","status": "new","id": "new"}}}' 
+             body: JSON.stringify(stubResponse)
         })
         .then(res => res.json())
         .then(json => console.log(json));
