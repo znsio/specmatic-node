@@ -3,11 +3,11 @@
 ## Installation
 `npm install qontract`  will install the qontract locally to the node project.
 
-Sample npm scripts to run qontract:
+Sample npm scripts to run qontract (Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments.): 
 
-`"qontract-stub": "qontract-stub --contract-dir=*.qontract --stub-dir='path-to-stub-dir' --host='localhost' --port='8000'"`
+`"qontract-stub": "qontract stub *.qontract --data src/mocks --host=localhost --port=8000"`
 
-`"qontract-test": "qontract-test --qontract-dir=*.qontract --host='localhost' --port='8000'"`
+`"qontract-test": "qontract test *.qontract --host=localhost --port=8000"`
 
 ## Qontract in stub mode (For consumers)
 
@@ -22,7 +22,7 @@ This is meant to be used by API providers.
 
 ## API
 
-Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments
+Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments.
 
 ## Test helper library
 
