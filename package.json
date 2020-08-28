@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/qontract/qontract-node#readme",
   "bin": {
-    "qontract-stub": "dist/bin/startStubServer.js",
-    "qontract-test": "dist/bin/runQontractTests.js"
+    "qontract": "dist/bin/index.js"
   },
   "dependencies": {
     "@types/download": "^6.2.4",
