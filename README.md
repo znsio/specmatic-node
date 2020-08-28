@@ -22,21 +22,7 @@ This is meant to be used by API providers.
 
 ## API
 
-### cli commands
-
-`qontract-stub` run the qontract server in stub mode, used by consumers.
-
-`qontract-test` run the qontract server in test mode, used by providers.
-
-### cli arguments
-
-`qontract-dir` path of the contract files. Can be a wild card string.
-
-`stub-dir` path of the mock json files.
-
-`host` hostname
-
-`port` port number
+Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments
 
 ## Test helper library
 
@@ -47,16 +33,13 @@ Qontract JS library exposes methods which can be used in your JS project to setu
 
 `startStubServer(qontractDir: string, stubDir: string, host: string, port: string)`
 
-method to start the stub server
+method to start the stub server.
 
 `startTestServer(qontractDir: string, host: string, port: string)`
 
-method to start test server
+method to start test server.
 
 `loadDynamicStub(stubPath: string)`
 
-method to load stub dynamically from inside an automated test;
-
-
-Check [Documentation](https://qontract.run/documentation.html) for more information.
+method to load stub dynamically from inside an automated test.
 
