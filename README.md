@@ -1,9 +1,9 @@
 [Qontract](https://qontract.run/) is a contract driven development tool that allows us to turn our contracts into executable specification.
 
-## Installation
+## Quick Start
 `npm install qontract`  will install the qontract locally to the node project.
 
-Sample npm scripts to run qontract (Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments.): 
+Sample npm scripts to run qontract, with `*.qontract` as the path of qontract files and `src/mocks` as the path for the stub data directory (Check [Documentation](https://qontract.run/documentation.html) for more information on cli commands and arguments.)
 
 `"qontract-stub": "qontract stub *.qontract --data src/mocks --host=localhost --port=8000"`
 

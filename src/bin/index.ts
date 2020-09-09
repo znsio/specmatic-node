@@ -12,8 +12,6 @@ const startStubServer = () => {
     return acc + ' ' + arg; 
   });
 
-  console.log(`java -jar ${qontractJarPath} ${args}`)
-
   console.log('starting qontract stub server')
   execSh(
     `java -jar ${qontractJarPath} ${args}`,
