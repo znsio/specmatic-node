@@ -1,11 +1,11 @@
 {
   "name": "qontract",
   "version": "0.14.0",
-  "description": "Node wrapper for qontract",
+  "description": "Node wrapper for Qontract",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' -d dist",
+    "test": "jest",
+    "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
     "postinstall": "rimraf qontract.jar && node dist/index.js"
   },
   "repository": {
@@ -39,5 +39,9 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-typescript": "^7.10.4",
     "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.4.2"
   }
 }
