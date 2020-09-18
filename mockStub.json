@@ -1,0 +1,13 @@
+{
+  "mock-http-request": {
+    "method": "GET",
+    "path": "/v1/resource/1"
+  },
+  "mock-http-response": {
+    "status": 200,
+    "body": {
+      "id": 1,
+      "name": "resource name"
+    }
+  }
+}
