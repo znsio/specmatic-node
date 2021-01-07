@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", {
 exports.qontractJarPathRemote = exports.qontractJarPathLocal = void 0;
 var qontractJarPathLocal = './node_modules/qontract/qontract.jar';
 exports.qontractJarPathLocal = qontractJarPathLocal;
-var qontractJarPathRemote = 'https://github.com/qontract/qontract/releases/download/0.19.1/qontract.jar';
+var qontractJarPathRemote = 'https://github.com/znsio/qontract/releases/download/0.21.1/qontract.jar';
 exports.qontractJarPathRemote = qontractJarPathRemote;
