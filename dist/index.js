@@ -46,6 +46,4 @@ var init = /*#__PURE__*/function () {
   return function init() {
     return _ref.apply(this, arguments);
   };
-}();
-
-init();
+}(); // init();

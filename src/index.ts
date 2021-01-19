@@ -10,4 +10,4 @@ const init = async () => {
     console.log('Finished qontract jar download!!')
 }
 
-init();
+// init();
