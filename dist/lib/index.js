@@ -27,7 +27,7 @@ var startStubServer = (qontractDir, stubDir, host, port) => {
   (0, _execSh.default)("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port), {}, err => {
     if (err) {
       console.log('Exit code: ', err.code);
-      throw new Error(err);
+      process.exit(err.code);
     }
   });
 };
@@ -43,7 +43,7 @@ var startTestServer = (qontractDir, host, port) => {
   (0, _execSh.default)("java -jar ".concat(qontractJarPath, " test ").concat(qontracts, " --host=").concat(host, " --port=").concat(port), {}, err => {
     if (err) {
       console.log('Exit code: ', err.code);
-      throw new Error(err);
+      process.exit(err.code);
     }
   });
 };
