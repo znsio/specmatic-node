@@ -1,6 +1,6 @@
 {
   "name": "qontract",
-  "version": "0.21.2-3",
+  "version": "0.21.2-4",
   "description": "Node wrapper for Qontract",
   "main": "dist/index.js",
   "scripts": {
