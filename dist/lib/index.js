@@ -24,12 +24,7 @@ var startStubServer = (qontractDir, stubDir, host, port) => {
 
   console.log("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
   console.log('starting qontract stub server');
-  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port), {}, err => {
-    if (err) {
-      console.log('Exit code: ', err.code);
-      process.exit(1);
-    }
-  });
+  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
 };
 
 exports.startStubServer = startStubServer;
@@ -40,12 +35,7 @@ var startTestServer = (qontractDir, host, port) => {
   var qontracts = _path.default.resolve(qontractDir);
 
   console.log('running qontract tests');
-  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " test ").concat(qontracts, " --host=").concat(host, " --port=").concat(port), {}, err => {
-    if (err) {
-      console.log('Exit code: ', err.code);
-      process.exit(1);
-    }
-  });
+  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " test ").concat(qontracts, " --host=").concat(host, " --port=").concat(port));
 };
 
 exports.startTestServer = startTestServer;

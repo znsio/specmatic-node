@@ -12,14 +12,7 @@ export const startStubServer = (qontractDir: string, stubDir: string, host: stri
 
   console.log('starting qontract stub server')
   execSh(
-    `java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`,
-    {},
-    (err: any) => {
-      if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(1);
-      }
-    }
+    `java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`
   );
 }
 
@@ -29,14 +22,7 @@ export const startTestServer = (qontractDir: string, host: string, port: string)
 
   console.log('running qontract tests')
   execSh(
-    `java -jar ${qontractJarPath} test ${qontracts} --host=${host} --port=${port}`,
-    {},
-    (err: any) => {
-      if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(1);
-      }
-    }
+    `java -jar ${qontractJarPath} test ${qontracts} --host=${host} --port=${port}`
   );
 }
 
