@@ -17,7 +17,7 @@ export const startStubServer = (qontractDir: string, stubDir: string, host: stri
     (err: any) => {
       if (err) {
         console.log('Exit code: ', err.code);
-        process.exit(err.code);
+        process.exit(1);
       }
     }
   );
@@ -34,7 +34,7 @@ export const startTestServer = (qontractDir: string, host: string, port: string)
     (err: any) => {
       if (err) {
         console.log('Exit code: ', err.code);
-        process.exit(err.code);
+        process.exit(1);
       }
     }
   );
