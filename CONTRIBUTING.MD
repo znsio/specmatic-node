@@ -5,14 +5,14 @@ Thanks for being willing to contribute!
 ## Project setup
 
 1.  Fork and clone the repo
-2.  Run `npm install` to install dependencies. This also downloads the qontract.jar file of the version specified in src/config.ts.
+2.  Run `npm install` to install dependencies. This also downloads the specmatic.jar file of the version specified in src/config.ts.
 3.  Create a branch for your PR with `git checkout -b your-branch-name`
 
 > Tip: Keep your `master` branch pointing at the original repository and make
 > pull requests from branches on your fork. To do this, run:
 >
 > ```
-> git remote add upstream https://github.com/qontract/qontract-node.git
+> git remote add upstream https://github.com/znsio/specmatic-node.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/master master
 > ```
@@ -34,7 +34,7 @@ Build the dist files using
 `npm run build`
 
 ## After the PR is merged
-This is currently a manual step. See [this link](https://github.com/qontract/qontract-node/issues/6) to understand why.
+This is currently a manual step. See [this link](https://github.com/znsio/specmatic-node/issues/6) to understand why.
 Check the current version of the npm module
 
 `npm version`

@@ -13,17 +13,17 @@ var _config = require("../config");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var startQontractServer = args => {
-  var qontractJarPath = _path.default.resolve(_config.qontractJarPathLocal);
+var startSpecmaticServer = args => {
+  var specmaticJarPath = _path.default.resolve(_config.specmaticJarPathLocal);
 
   var cliArgs = (args || process.argv).slice(2).join(' ');
-  console.log('starting qontract server', cliArgs);
-  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " ").concat(cliArgs), {}, err => {
+  console.log('starting specmatic server', cliArgs);
+  (0, _execSh.default)("java -jar ".concat(specmaticJarPath, " ").concat(cliArgs), {}, err => {
     if (err) {
       console.log('Exit code: ', err.code);
     }
   });
 };
 
-var _default = startQontractServer;
+var _default = startSpecmaticServer;
 exports.default = _default;
