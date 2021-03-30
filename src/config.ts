@@ -1,2 +1,2 @@
-export const qontractJarPathLocal = './node_modules/qontract/qontract.jar';
-export const qontractJarPathRemote = 'https://github.com/znsio/qontract/releases/download/0.21.2/qontract.jar';
+export const specmaticJarPathLocal = './node_modules/specmatic/specmatic.jar';
+export const specmaticJarPathRemote = 'https://github.com/znsio/specmatic/releases/download/0.24.2/specmatic.jar';

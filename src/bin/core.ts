@@ -1,14 +1,14 @@
 import execSh from 'exec-sh';
 import path from 'path';
-import { qontractJarPathLocal } from '../config';
+import { specmaticJarPathLocal } from '../config';
 
-const startQontractServer = (args?: string[]) => {
-  const qontractJarPath = path.resolve(qontractJarPathLocal);
+const startSpecmaticServer = (args?: string[]) => {
+  const specmaticJarPath = path.resolve(specmaticJarPathLocal);
   const cliArgs = (args || process.argv).slice(2).join(' '); 
 
-  console.log('starting qontract server', cliArgs)
+  console.log('starting specmatic server', cliArgs)
   execSh(
-    `java -jar ${qontractJarPath} ${cliArgs}`,
+    `java -jar ${specmaticJarPath} ${cliArgs}`,
     {  },
     (err: any) => {
       if (err) {
@@ -18,4 +18,4 @@ const startQontractServer = (args?: string[]) => {
   );  
 };
 
-export default startQontractServer;
+export default startSpecmaticServer;

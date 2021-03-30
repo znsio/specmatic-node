@@ -15,27 +15,27 @@ var _config = require("../config");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var startStubServer = (qontractDir, stubDir, host, port) => {
-  var qontractJarPath = _path.default.resolve(_config.qontractJarPathLocal);
+var startStubServer = (specmaticDir, stubDir, host, port) => {
+  var specmaticJarPath = _path.default.resolve(_config.specmaticJarPathLocal);
 
-  var qontracts = _path.default.resolve(qontractDir + '');
+  var specmatics = _path.default.resolve(specmaticDir + '');
 
   var stubs = _path.default.resolve(stubDir + '');
 
-  console.log("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
-  console.log('starting qontract stub server');
-  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " stub ").concat(qontracts, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
+  console.log("java -jar ".concat(specmaticJarPath, " stub ").concat(specmatics, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
+  console.log('starting specmatic stub server');
+  (0, _execSh.default)("java -jar ".concat(specmaticJarPath, " stub ").concat(specmatics, " --strict --data=").concat(stubs, " --host=").concat(host, " --port=").concat(port));
 };
 
 exports.startStubServer = startStubServer;
 
-var startTestServer = (qontractDir, host, port) => {
-  var qontractJarPath = _path.default.resolve(_config.qontractJarPathLocal);
+var startTestServer = (specmaticDir, host, port) => {
+  var specmaticJarPath = _path.default.resolve(_config.specmaticJarPathLocal);
 
-  var qontracts = _path.default.resolve(qontractDir);
+  var specmatics = _path.default.resolve(specmaticDir);
 
-  console.log('running qontract tests');
-  (0, _execSh.default)("java -jar ".concat(qontractJarPath, " test ").concat(qontracts, " --host=").concat(host, " --port=").concat(port));
+  console.log('running specmatic tests');
+  (0, _execSh.default)("java -jar ".concat(specmaticJarPath, " test ").concat(specmatics, " --host=").concat(host, " --port=").concat(port));
 };
 
 exports.startTestServer = startTestServer;
@@ -43,7 +43,7 @@ exports.startTestServer = startTestServer;
 var loadDynamicStub = stubPath => {
   var stubResponse = require(_path.default.resolve(stubPath));
 
-  (0, _nodeFetch.default)('http://localhost:8000/_qontract/expectations', {
+  (0, _nodeFetch.default)('http://localhost:8000/_specmatic/expectations', {
     method: 'POST',
     body: JSON.stringify(stubResponse)
   }).then(res => res.json()).then(json => console.log(json));
