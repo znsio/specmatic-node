@@ -2,7 +2,7 @@ import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
 import { startStubServer, startTestServer, loadDynamicStub } from '../';
-import { qontractJarPathLocal } from '../../config';
+import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 
 jest.mock('exec-sh');
@@ -23,7 +23,7 @@ describe('Testing helper methods', () => {
     
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0])
-      .toBe(`java -jar ${path.resolve(qontractJarPathLocal)} stub ${path.resolve(contractsPath)} --strict --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+      .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub ${path.resolve(contractsPath)} --strict --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
   });
 
   test('startTestServer', () => {
@@ -31,7 +31,7 @@ describe('Testing helper methods', () => {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0])
-      .toBe(`java -jar ${path.resolve(qontractJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`);
+      .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`);
   });
 
   test('loadDynamicStub', () => {
@@ -39,7 +39,7 @@ describe('Testing helper methods', () => {
     loadDynamicStub(path.resolve('./mockStub.json'));
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost:8000/_qontract/expectations');
+    expect(fetch.mock.calls[0][0]).toBe('http://localhost:8000/_specmatic/expectations');
     expect(fetch.mock.calls[0][1]).toMatchObject({
       method: 'POST',
       body: JSON.stringify(mockStub)
