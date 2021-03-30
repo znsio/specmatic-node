@@ -1,34 +1,34 @@
 import fetch from 'node-fetch';
 import path from 'path';
 import execSh from 'exec-sh';
-import { qontractJarPathLocal } from '../config';
+import { specmaticJarPathLocal } from '../config';
 
-export const startStubServer = (qontractDir: string, stubDir: string, host: string, port: string) => {
-  const qontractJarPath = path.resolve(qontractJarPathLocal);
-  const qontracts = path.resolve(qontractDir + '');
+export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
+  const specmaticJarPath = path.resolve(specmaticJarPathLocal);
+  const specmatics = path.resolve(specmaticDir + '');
   const stubs = path.resolve(stubDir + '');
 
-  console.log(`java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`)
+  console.log(`java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`)
 
-  console.log('starting qontract stub server')
+  console.log('starting specmatic stub server')
   execSh(
-    `java -jar ${qontractJarPath} stub ${qontracts} --strict --data=${stubs} --host=${host} --port=${port}`
+    `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`
   );
 }
 
-export const startTestServer = (qontractDir: string, host: string, port: string) => {
-  const qontractJarPath = path.resolve(qontractJarPathLocal);
-  const qontracts = path.resolve(qontractDir);
+export const startTestServer = (specmaticDir: string, host: string, port: string) => {
+  const specmaticJarPath = path.resolve(specmaticJarPathLocal);
+  const specmatics = path.resolve(specmaticDir);
 
-  console.log('running qontract tests')
+  console.log('running specmatic tests')
   execSh(
-    `java -jar ${qontractJarPath} test ${qontracts} --host=${host} --port=${port}`
+    `java -jar ${specmaticJarPath} test ${specmatics} --host=${host} --port=${port}`
   );
 }
 
 export const loadDynamicStub = (stubPath: string) => {
   const stubResponse = require(path.resolve(stubPath))
-  fetch('http://localhost:8000/_qontract/expectations',
+  fetch('http://localhost:8000/_specmatic/expectations',
     {
       method: 'POST',
       body: JSON.stringify(stubResponse)
