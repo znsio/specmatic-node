@@ -1,7 +1,7 @@
 {
-  "name": "qontract",
+  "name": "specmatic",
   "version": "0.21.2-5",
-  "description": "Node wrapper for Qontract",
+  "description": "Node wrapper for Specmatic",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
@@ -9,27 +9,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qontract/qontract-node.git"
+    "url": "git+https://github.com/znsio/specmatic-node.git"
   },
   "keywords": [
     "qontract",
     "contract",
-    "testing"
+    "testing",
+    "specmatic"
   ],
   "author": "Sahil Sharma (sahilaug@gmail.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/qontract/qontract-node/issues"
+    "url": "https://github.com/znsio/specmatic-node/issues"
   },
-  "homepage": "https://github.com/qontract/qontract-node#readme",
+  "homepage": "https://github.com/znsio/specmatic-node#readme",
   "bin": {
+    "specmatic": "dist/bin/index.js",
     "qontract": "dist/bin/index.js"
   },
   "dependencies": {
-    "@types/download": "^6.2.4",
     "@types/node-fetch": "^2.5.7",
     "@types/yargs": "^15.0.5",
-    "download": "^8.0.0",
     "exec-sh": "^0.3.4",
     "node-fetch": "^2.6.0",
     "yargs": "^15.4.1",
