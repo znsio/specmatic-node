@@ -1,9 +1,9 @@
-[Specmatic](https://specmatic.run/) is a contract driven development tool that allows us to turn our contracts into executable specification.
+[Specmatic](https://specmatic.in/) is a contract driven development tool that allows us to turn our contracts into executable specification.
 
 ## Quick Start
 `npm install specmatic`  will install the specmatic locally to the node project.
 
-Sample npm scripts to run specmatic, with `*.specmatic` as the path of specmatic files and `src/mocks` as the path for the stub data directory (Check [Documentation](https://specmatic.run/documentation.html) for more information on cli commands and arguments.)
+Sample npm scripts to run specmatic, with `*.specmatic` as the path of specmatic files and `src/mocks` as the path for the stub data directory (Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.)
 
 `"specmatic-stub": "specmatic stub *.specmatic --data src/mocks --host=localhost --port=8000"`
 
@@ -22,7 +22,7 @@ This is meant to be used by API providers.
 
 ## API
 
-Check [Documentation](https://specmatic.run/documentation.html) for more information on cli commands and arguments.
+Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.
 
 ## Test helper library
 
