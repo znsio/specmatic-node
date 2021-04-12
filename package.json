@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
-    "build-and-publish-patch": "npm run build && npm version patch"
+    "build-and-publish-patch": "npm run build && npm version patch && npm publish"
   },
   "repository": {
     "type": "git",
