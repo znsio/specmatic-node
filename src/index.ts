@@ -1,1 +1,1 @@
-export { loadDynamicStub, startStubServer, startTestServer } from './lib';
+export { loadDynamicStub, startStubServer, startTestServer, installSpecmatics } from './lib';
