@@ -1,1 +1,9 @@
-export { loadDynamicStub, startStubServer, startTestServer, installContracts } from './lib';
+export {
+    loadDynamicStub,
+    setExpectations,
+    startStubServer,
+    startTestServer,
+    runContractTests,
+    installContracts,
+    installSpecs
+} from './lib';
