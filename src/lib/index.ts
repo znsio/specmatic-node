@@ -10,7 +10,7 @@ export const startStubServer = (specmaticDir: string, stubDir: string, host: str
 
   console.log(`java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`)
 
-  console.log('starting specmatic stub server')
+  console.log('Starting specmatic stub server')
   execSh(
     `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`
   );
@@ -20,24 +20,30 @@ export const startTestServer = (specmaticDir: string, host: string, port: string
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
   const specmatics = path.resolve(specmaticDir);
 
-  console.log('running specmatic tests')
+  console.log('Running specmatic tests')
   execSh(
     `java -jar ${specmaticJarPath} test ${specmatics} --host=${host} --port=${port}`
   );
 }
 
+export const runContractTests = startTestServer;
+
 export const installContracts = () => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 
-  console.log('installing contracts in local')
+  console.log('Installing contracts')
   execSh(
     `java -jar ${specmaticJarPath} install`
   );
 }
 
-export const loadDynamicStub = (stubPath: string) => {
-  const stubResponse = require(path.resolve(stubPath))
-  fetch('http://localhost:8000/_specmatic/expectations',
+export const installSpecs = installContracts;
+
+export const loadDynamicStub = (stubPath: string, stubServerBaseUrl?: string) => {
+  const stubResponse = require(path.resolve(stubPath));
+
+  console.log("setting expectations");
+  fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`,
     {
       method: 'POST',
       body: JSON.stringify(stubResponse)
@@ -45,3 +51,5 @@ export const loadDynamicStub = (stubPath: string) => {
     .then(res => res.json())
     .then(json => console.log(json));
 };
+
+export const setExpectations = loadDynamicStub;
