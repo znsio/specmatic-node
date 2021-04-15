@@ -26,6 +26,15 @@ export const startTestServer = (specmaticDir: string, host: string, port: string
   );
 }
 
+export const installSpecmatics = () => {
+  const specmaticJarPath = path.resolve(specmaticJarPathLocal);
+
+  console.log('installing specmatics in local')
+  execSh(
+    `java -jar ${specmaticJarPath} install`
+  );
+}
+
 export const loadDynamicStub = (stubPath: string) => {
   const stubResponse = require(path.resolve(stubPath))
   fetch('http://localhost:8000/_specmatic/expectations',
