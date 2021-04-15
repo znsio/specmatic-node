@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { startStubServer, startTestServer, loadDynamicStub } from '../';
+import { startStubServer, startTestServer, loadDynamicStub, installSpecmatics } from '../';
 import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 
@@ -32,6 +32,14 @@ describe('Testing helper methods', () => {
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0])
       .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`);
+  });
+
+  test('installSpecmatics', () => {
+    installSpecmatics();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0])
+      .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} install`);
   });
 
   test('loadDynamicStub', () => {
