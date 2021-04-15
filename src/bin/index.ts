@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import startSpecmaticServer from './core';
+import callSpecmaticCli from './core';
 
-startSpecmaticServer();
+callSpecmaticCli();

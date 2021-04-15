@@ -26,23 +26,21 @@ Check [Documentation](https://specmatic.in/documentation.html) for more informat
 
 ## Test helper library
 
-`import { startStubServer, startTestServer, loadDynamicStub, installContracts } from 'specmatic';`
+`import { startStubServer, runContractTests, loadDynamicStub, installContracts } from 'specmatic';`
 
-Specmatic JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically.
-
+Specmatic JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically. These can be used to programmatically run specmatic commands from any javascript testing framework, during setup or test phases.
 
 `startStubServer(specmaticDir: string, stubDir: string, host: string, port: string)`
-
 method to start the stub server.
 
-`startTestServer(specmaticDir: string, host: string, port: string)`
-
+`runContractTests(specmaticDir: string, host: string, port: string)` <br />
+Alias: `startTestServer` <br />
 method to start test server.
 
-`loadDynamicStub(stubPath: string)`
-
+`loadDynamicStub(stubPath: string)` <br />
+Alias: `setExpectations` <br />
 method to load stub dynamically from inside an automated test.
 
-`installContracts()`
-
+`installContracts()` <br />
+Alias: `installSpecs` <br />
 method to install specs in local machine.
