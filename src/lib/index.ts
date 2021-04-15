@@ -26,7 +26,7 @@ export const startTestServer = (specmaticDir: string, host: string, port: string
   );
 }
 
-export const installSpecmatics = () => {
+export const installContracts = () => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 
   console.log('installing specmatics in local')
