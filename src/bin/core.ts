@@ -2,7 +2,7 @@ import execSh from 'exec-sh';
 import path from 'path';
 import { specmaticJarPathLocal } from '../config';
 
-const startSpecmaticServer = (args?: string[]) => {
+const callSpecmaticCli = (args?: string[]) => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
   const cliArgs = (args || process.argv).slice(2).join(' '); 
 
@@ -18,4 +18,4 @@ const startSpecmaticServer = (args?: string[]) => {
   );  
 };
 
-export default startSpecmaticServer;
+export default callSpecmaticCli;
