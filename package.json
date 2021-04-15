@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "build": "rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
+    "build": "npm test && rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
     "build-and-publish-patch": "npm run build && npm version patch && npm publish",
     "build-and-publish-minor": "npm run build && npm version minor && npm publish",
     "build-and-publish-major": "npm run build && npm version major && npm publish"
