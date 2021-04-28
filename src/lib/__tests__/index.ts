@@ -108,3 +108,8 @@ test('setExpectations with a different baseUrl for the stub server', () => {
     body: JSON.stringify(mockStub)
   });
 });
+
+test('setSpecmaticEnvVariables updates the environment variable value in the specmatic.json file', () => {
+
+
+});
