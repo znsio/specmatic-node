@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
+import { setSpecmaticEnvVariables, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
 import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 

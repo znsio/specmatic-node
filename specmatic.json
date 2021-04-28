@@ -1,0 +1,17 @@
+{
+  "sources": [
+    {
+      "provider": "",
+      "test": [],
+      "stub": []
+    }
+  ],
+  "environments": {
+    "local": {
+      "baseurls": {},
+      "variable": {
+        "key": "value"
+      }
+    }
+  }
+}
