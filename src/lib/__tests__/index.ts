@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { setSpecmaticEnvVariables, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
+import { setSpecmaticEnvVariable, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
 import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 
@@ -109,7 +109,12 @@ test('setExpectations with a different baseUrl for the stub server', () => {
   });
 });
 
-test('setSpecmaticEnvVariables updates the environment variable value in the specmatic.json file', () => {
+test('setSpecmaticEnvVariable updates the environment variable value in the specmatic.json file', () => {
+
+  const name = "key"
+  const updatevalue = "updated-value"
+
+  expect(setSpecmaticEnvVariable(name, updatevalue))
 
 
 });

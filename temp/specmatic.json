@@ -9,8 +9,8 @@
   "environments": {
     "local": {
       "baseurls": {},
-      "variable": {
-        "key": "value"
+      "variables": {
+        "key": "updated-value"
       }
     }
   }
