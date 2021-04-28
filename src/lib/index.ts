@@ -2,6 +2,18 @@ import fetch from 'node-fetch';
 import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal } from '../config';
+import fs from 'fs';
+
+
+const fileName: string = "specmatic.json"
+
+export const setSpecmaticEnvVariables = (name: string, value: string) => {
+
+  const file = require(fileName)
+  file.environment.local.variables[name] = value
+  fs.writeFileSync(fileName, JSON.stringify(file, null, 2))
+
+}
 
 export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
