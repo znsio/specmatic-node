@@ -5,5 +5,6 @@ export {
     startTestServer,
     runContractTests,
     installContracts,
-    installSpecs
+    installSpecs,
+    setEnvVariable
 } from './lib';

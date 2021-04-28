@@ -5,15 +5,20 @@ import { specmaticJarPathLocal } from '../config';
 import fs from 'fs';
 
 
-const fileName: string = "specmatic.json"
+const fileName: string = "temp/specmatic.json"
 
-export const setSpecmaticEnvVariables = (name: string, value: string) => {
+export const setSpecmaticEnvVariable = (name: string, value: string) => {
 
-  const file = require(fileName)
-  file.environment.local.variables[name] = value
+  const file = require("../../" + fileName)
+  file.environments.local.variables[name] = value
+  // console.log(fileName)
+  // console.log("../../" + fileName)
+  // console.log(fs)
   fs.writeFileSync(fileName, JSON.stringify(file, null, 2))
 
 }
+
+export const setEnvVariable = setSpecmaticEnvVariable;
 
 export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
