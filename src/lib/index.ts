@@ -11,9 +11,6 @@ export const setSpecmaticEnvVariable = (name: string, value: string) => {
 
   const file = require("../../" + fileName)
   file.environments.local.variables[name] = value
-  // console.log(fileName)
-  // console.log("../../" + fileName)
-  // console.log(fs)
   fs.writeFileSync(fileName, JSON.stringify(file, null, 2))
 
 }
