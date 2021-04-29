@@ -110,11 +110,8 @@ test('setExpectations with a different baseUrl for the stub server', () => {
 });
 
 test('setSpecmaticEnvVariable updates the environment variable value in the specmatic.json file', () => {
-
   const name = "key"
   const updatevalue = "updated-value"
-
-  expect(setSpecmaticEnvVariable(name, updatevalue))
-
-
+  const fileName = "specmatic.json"
+  expect(setSpecmaticEnvVariable(name, updatevalue, fileName))
 });

@@ -5,14 +5,11 @@ import { specmaticJarPathLocal } from '../config';
 import fs from 'fs';
 
 
-const fileName: string = "temp/specmatic.json"
 
-export const setSpecmaticEnvVariable = (name: string, value: string) => {
-
+export const setSpecmaticEnvVariable = (name: string, value: string, fileName: string) => {
   const file = require("../../" + fileName)
   file.environments.local.variables[name] = value
-  fs.writeFileSync(fileName, JSON.stringify(file, null, 2))
-
+  fs.writeFileSync("specmatic.json", JSON.stringify(file, null, 2))
 }
 
 export const setEnvVariable = setSpecmaticEnvVariable;
