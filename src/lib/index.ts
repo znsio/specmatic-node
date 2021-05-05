@@ -21,7 +21,7 @@ export const setSpecmaticEnvironement = (variableObj: string) => {
       console.log(TypeError.toString())
     }
   } catch (e) {
-    console.log("The file specmatic.json is not present in the root of the project")
+    console.log("The file specmatic.json is not present in the root directory of the project")
   }
 
   return flag
