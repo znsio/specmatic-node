@@ -10,7 +10,9 @@
     "local": {
       "baseurls": {},
       "variables": {
-        "key": "updated-value"
+        "key1": "initial-value1",
+        "key2": "initial-value2",
+        "key3": "initial-value3"
       }
     }
   }
