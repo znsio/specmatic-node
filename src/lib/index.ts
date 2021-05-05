@@ -27,7 +27,6 @@ export const setSpecmaticEnvironement = (variableObj: string) => {
   return flag
 }
 
-
 export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
   const specmaticJarPath = path.resolve(specmaticJarPathLocal);
   const specmatics = path.resolve(specmaticDir + '');
