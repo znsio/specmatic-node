@@ -8,11 +8,7 @@ import { check } from 'yargs';
 
 
 export const setSpecmaticEnvironement = (variableObj: string) => {
-
-
-  console.log("--------->", path.resolve(specmatic))
-  console.log("--------->", path.dirname(specmatic))
-
+  console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
   let values = JSON.parse(variableObj)
   let flag = false
