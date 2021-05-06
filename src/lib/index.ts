@@ -5,18 +5,16 @@ import { specmaticJarPathLocal, specmatic } from '../config';
 import fs from 'fs';
 import { check } from 'yargs';
 
-
-
-export const setSpecmaticEnvironement = (variableObj: string) => {
+type Environment = Record<string, string>
+export const setSpecmaticEnvironement = (environmentName: string, environment: Environment) => {
   console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
-  let values = JSON.parse(variableObj)
   let flag = false
   try {
     file = require(path.resolve(specmatic))
     try {
-      for (var x in values) {
-        file.environments.local.variables[x] = values[x]
+      for (var x in environment) {
+        file.environments.local[environmentName][x] = environment[x]
         fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
         flag = true
       }
@@ -24,7 +22,6 @@ export const setSpecmaticEnvironement = (variableObj: string) => {
       console.log(TypeError.toString())
     }
   } catch (e) {
-    console.log(e)
     console.log("The file specmatic.json is not present in the root directory of the project")
   }
 
