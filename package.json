@@ -1,5 +1,5 @@
 {
-  "name": "specmatic",
+  "name": "specmatic-Environment",
   "version": "0.25.3",
   "description": "Node wrapper for Specmatic",
   "main": "dist/index.js",
