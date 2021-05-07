@@ -36,7 +36,6 @@ function checkSpecmatic(environmentName: string, environment: Environment) {
       flag = false
     }
   }
-
   return flag
 }
 
