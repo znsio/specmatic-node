@@ -14,10 +14,10 @@ export const setSpecmaticEnvironement = (environmentName: string, environment: E
     file = require(path.resolve(specmatic))
     try {
       for (var x in environment) {
-        file.environments.local[environmentName][x] = environment[x]
-        fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
+        file.environments[environmentName].variables.[x] = environment[x]
         flag = true
       }
+      fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
     } catch (TypeError) {
       console.log(TypeError.toString())
     }
