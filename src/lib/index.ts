@@ -6,22 +6,19 @@ import fs from 'fs';
 import { check } from 'yargs';
 
 type Environment = Record<string, string>
+
 export const setSpecmaticEnvironement = (environmentName: string, environment: Environment) => {
   console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
+
   try {
     file = require(path.resolve(specmatic))
-    try {
-      for (var x in environment) {
-        file.environments[environmentName].variables[x] = environment[x]
-      }
-      fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
-    } catch (TypeError) {
-      console.log(TypeError.toString())
-    }
+    for (var x in environment) { file.environments[environmentName].variables[x] = environment[x] }
+    fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
     return checkSpecmatic(environmentName, environment)
-  } catch (ModuleNotFoundError) {
-    console.log("The file specmatic.json is not present in the root directory of the project")
+  } catch (e) {
+    if (e instanceof TypeError) { console.log(e.toString()) }
+    else { console.log(e.toString(), "\n\nThe file specmatic.json is not present in the root directory of the project") }
   }
 }
 
