@@ -1,4 +1,7 @@
-[Specmatic](https://specmatic.in/) is a contract driven development tool that allows us to turn our contracts into executable specification.
+[Specmatic](https://specmatic.in/) is a contract driven development tool that allows us to turn our contracts into executable specification. <br />
+This node module is a thin wrapper over specmatic.jar originally written in kotlin. All the functionality resides over in the [Specmatic project](https://github.com/znsio/specmatic). This module will help the consumers of specmatic in two ways:
+* Easy installation and upgrade of the jar file in node projects through npm
+* JS helper library which provides to do various setup steps like start, stop the specmatic stub server, installing specs etc. These helpers methods can be used inside a setup file inside a javascript project programmatically instead of using cli scripts. 
 
 ## Quick Start
 `npm install specmatic`  will install the specmatic locally to the node project.
@@ -51,3 +54,6 @@ method to load stub dynamically from inside an automated test.
 `installContracts()` <br />
 Alias: `installSpecs` <br />
 method to install specs in local machine.
+
+`printSpecmaticJarVersion()` <br />
+method to print the version of specmatic.jar
