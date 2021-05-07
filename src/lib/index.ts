@@ -9,10 +9,8 @@ type Environment = Record<string, string>
 export const setSpecmaticEnvironement = (environmentName: string, environment: Environment) => {
   console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
-  let flag = false
   try {
     file = require(path.resolve(specmatic))
-    console.log("********", file, "**", typeof (file))
     try {
       for (var x in environment) {
         file.environments[environmentName].variables[x] = environment[x]
@@ -21,10 +19,10 @@ export const setSpecmaticEnvironement = (environmentName: string, environment: E
     } catch (TypeError) {
       console.log(TypeError.toString())
     }
-  } catch (e) {
+    return checkSpecmatic(environmentName, environment)
+  } catch (ModuleNotFoundError) {
     console.log("The file specmatic.json is not present in the root directory of the project")
   }
-  return checkSpecmatic(environmentName, environment)
 }
 
 function checkSpecmatic(environmentName: string, environment: Environment) {
