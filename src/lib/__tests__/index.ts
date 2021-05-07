@@ -113,14 +113,7 @@ test('setSpecmaticEnvVariable updates the environment variable value in the spec
   const variableObj1: Record<string, string> = { "key1": "updated-value1", "key2": "updated-value2", "key3": "updated-value3", "key4": "updated-value4" }
   const variableObj2: Record<string, string> = { "key1": "initial-value1", "key2": "initial-value2", "key3": "initial-value3", "key4": "initial-value4" }
 
-  expect(setSpecmaticEnvironement("variables", variableObj1)).toBe(true)
-  expect(setSpecmaticEnvironement("variables", variableObj2)).toBe(true)
+  expect(setSpecmaticEnvironement("local", variableObj1)).toBe(true)
+  expect(setSpecmaticEnvironement("local", variableObj2)).toBe(true)
 });
 
-test('setSpecmaticEnvVariable updates the environment variable value in the specmatic.json file', () => {
-  const baseURlObj1: Record<string, string> = { "../../ABC.spec": "updated-value1", "../../XYZ.spec": "updated-value2" }
-  const baseURlObj2: Record<string, string> = { "../../ABC.spec": "initial-value1", "../../XYZ.spec": "initial-value2" }
-
-  expect(setSpecmaticEnvironement("baseurls", baseURlObj1)).toBe(true)
-  expect(setSpecmaticEnvironement("baseurls", baseURlObj2)).toBe(true)
-});
