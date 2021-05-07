@@ -15,14 +15,14 @@ export const setSpecmaticEnvironement = (environmentName: string, environment: E
     file = require(path.resolve(specmatic))
     for (var x in environment) { file.environments[environmentName].variables[x] = environment[x] }
     fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
-    return checkSpecmatic(environmentName, environment)
+    return checkSpecmaticEnvironment(environmentName, environment)
   } catch (e) {
     if (e instanceof TypeError) { console.log(e.toString()) }
     else { console.log(e.toString(), "\n\nThe file specmatic.json is not present in the root directory of the project") }
   }
 }
 
-function checkSpecmatic(environmentName: string, environment: Environment) {
+function checkSpecmaticEnvironment(environmentName: string, environment: Environment) {
   let flag = true
 
   let file = require(path.resolve(specmatic))
