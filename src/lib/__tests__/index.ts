@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
+import { startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs, printSpecmaticJarVersion } from '../';
 import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 
@@ -57,6 +57,14 @@ test('installSpecs installs contracts to local', () => {
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
     .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} install`);
+});
+
+test('printSpecmaticJarVersion', () => {
+  printSpecmaticJarVersion();
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} --version`);
 });
 
 test('loadDynamicStub with default baseUrl', () => {
