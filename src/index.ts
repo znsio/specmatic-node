@@ -6,5 +6,5 @@ export {
     runContractTests,
     installContracts,
     installSpecs,
-    setSpecmaticEnvironement
+    setSpecmaticEnvironment
 } from './lib';

@@ -7,7 +7,7 @@ import { check } from 'yargs';
 
 type Environment = Record<string, string>
 
-export const setSpecmaticEnvironement = (environmentName: string, environmentVariable: Environment) => {
+export const setSpecmaticEnvironment = (environmentName: string, environmentVariable: Environment) => {
   console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
 
