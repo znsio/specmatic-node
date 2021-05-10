@@ -117,3 +117,8 @@ test('setSpecmaticEnvironment updates the environment variable value in the spec
   expect(setSpecmaticEnvironment("local", variableObj2)).toBe(true)
 });
 
+test('setSpecmaticEnvironment updates the environment variable value in the specmatic.json file', () => {
+  const variableObj1: Record<string, string> = { "key1": "updated-value1", "key2": "updated-value2", "key3": "updated-value3", "key4": "updated-value4" }
+  expect(setSpecmaticEnvironment("production", variableObj1)).toBe(false)
+});
+
