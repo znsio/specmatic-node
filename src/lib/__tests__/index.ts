@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { setSpecmaticEnvironment, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
+import { setSpecmaticEnvironment, checkSpecmaticEnvironment, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
 import { specmaticJarPathLocal } from '../../config';
 import mockStub from '../../../mockStub.json';
 
@@ -112,13 +112,15 @@ test('setExpectations with a different baseUrl for the stub server', () => {
 test('setSpecmaticEnvironment updates the environment variable value in the specmatic.json file', () => {
   const variableObj1: Record<string, string> = { "key1": "updated-value1", "key2": "updated-value2", "key3": "updated-value3", "key4": "updated-value4" }
   const variableObj2: Record<string, string> = { "key1": "initial-value1", "key2": "initial-value2", "key3": "initial-value3", "key4": "initial-value4" }
-
-  expect(setSpecmaticEnvironment("local", variableObj1)).toBe(true)
-  expect(setSpecmaticEnvironment("local", variableObj2)).toBe(true)
+  setSpecmaticEnvironment("local", variableObj1)
+  expect(checkSpecmaticEnvironment("local", variableObj1)).toBe(true)
+  setSpecmaticEnvironment("local", variableObj2)
+  expect(checkSpecmaticEnvironment("local", variableObj2)).toBe(true)
 });
 
 test('setSpecmaticEnvironment updates the environment variable value in the specmatic.json file', () => {
   const variableObj1: Record<string, string> = { "key1": "updated-value1", "key2": "updated-value2", "key3": "updated-value3", "key4": "updated-value4" }
-  expect(setSpecmaticEnvironment("production", variableObj1)).toBe(false)
+  setSpecmaticEnvironment("production", variableObj1)
+  expect(checkSpecmaticEnvironment("production", variableObj1)).toBe(false)
 });
 
