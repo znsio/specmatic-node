@@ -10,14 +10,11 @@ type Environment = Record<string, string>
 export const setSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
   console.log("Reading the file from -> ", path.resolve(specmatic))
   let file = null
-
   try {
     file = require(path.resolve(specmatic))
     for (let environmentVariable in environment) file.environments[environmentName].variables[environmentVariable] = environment[environmentVariable]
     fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
-  } catch (e) {
-    console.log(e)
-  }
+  } catch (e) { console.log(e) }
 }
 
 export const checkSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
