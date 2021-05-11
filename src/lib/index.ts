@@ -20,11 +20,11 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
   }
 }
 
-export const checkSpecmaticEnvironment = (environmentName: string, environmentVariable: Environment) => {
+export const checkSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
   let flag = false
   try {
     let file = require(path.resolve(specmatic))
-    if (JSON.stringify(file.environments[environmentName].variables) == JSON.stringify(environmentVariable)) flag = true
+    if (JSON.stringify(file.environments[environmentName].variables) == JSON.stringify(environment)) flag = true
   } catch (e) { console.log(e) }
   return flag
 }
