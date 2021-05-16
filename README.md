@@ -57,7 +57,7 @@ Alias: `installSpecs` <br />
 method to install specs in local machine.
 
 `setSpecmaticEnvironment(environmentName: string, environmentVariable: Environment)` <br />
-method to write new variables or assign values to variables of the environment passed to the function inside the file 'specmatic.json'.
+method to dynamically write new variables or assign values to variables of the environment passed as argument to the function, inside the file 'specmatic.json'.
 
 `printSpecmaticJarVersion()` <br />
 method to print the version of specmatic.jar
