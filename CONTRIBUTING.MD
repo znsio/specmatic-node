@@ -33,15 +33,6 @@ Build the dist files using
 
 `npm run build`
 
-## After the PR is merged
-This is currently a manual step. See [this link](https://github.com/znsio/specmatic-node/issues/6) to understand why.
-Check the current version of the npm module
-
-`npm version`
-
-Bump up the version of the npm module according to [semver](https://semver.org/) and run 
-
-`npm version new.version.number`
 
 ### Update Typings
 
