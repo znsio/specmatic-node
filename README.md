@@ -34,7 +34,8 @@ import {
     startStubServer,
     runContractTests, 
     loadDynamicStub, 
-    installContracts 
+    installContracts,
+    setSpecmaticEnvironment
 } from 'specmatic';
 ```
 
@@ -54,6 +55,9 @@ method to load stub dynamically from inside an automated test.
 `installContracts()` <br />
 Alias: `installSpecs` <br />
 method to install specs in local machine.
+
+`setSpecmaticEnvironment = (environmentName: string, environment: Environment) ` <br />
+method to dynamically write new variables or assign values to variables of the environment passed as argument to the function, inside the file 'specmatic.json'.This function expects the file 'specmatic.json' to be in the root directory of your project.
 
 `printSpecmaticJarVersion()` <br />
 method to print the version of specmatic.jar
