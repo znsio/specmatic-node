@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "provider": "",
+      "test": [],
+      "stub": []
+    }
+  ],
+  "environments": {
+    "local": {
+      "baseurls": {
+        "../../ABC.spec": "initial-value1",
+        "../../XYZ.spec": "initial-value2"
+      },
+      "variables": {
+        "key2": "initial-value2",
+        "key1": "initial-value1",
+        "key3": "initial-value3",
+        "key4": "initial-value4"
+      }
+    }
+  }
+}
