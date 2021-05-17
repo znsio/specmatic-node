@@ -19,7 +19,7 @@ const checkSpecmaticEnvironment = (environmentName: string, environment: Environ
   let flag = false
   try {
     let file = require(path.resolve(specmatic))
-    if (JSON.stringify(file.environments[environmentName].variables) == JSON.stringify(environment)) flag = true
+    for (let environmentVariable in environment) flag = file.environments[environmentName].variables[environmentVariable] == environment[environmentVariable]
   } catch (e) { console.log(e) }
   return flag
 }
