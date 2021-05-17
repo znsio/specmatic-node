@@ -1,8 +1,23 @@
 import fetch from 'node-fetch';
 import path from 'path';
 import execSh from 'exec-sh';
-import { specmaticJarPathLocal } from '../config';
+import { specmaticJarPathLocal, specmatic } from '../config';
+import fs from 'fs';
+
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
+export type Environment = Record<string, string>
+
+export const setSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
+  let file = null
+  try {
+    file = require(path.resolve(specmatic))
+    for (let environmentVariable in environment) file.environments[environmentName].variables[environmentVariable] = environment[environmentVariable]
+    fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
+  } catch (e) {
+    if (e.toString().includes("Cannot find module")) console.log(e.toString(), "\nThe file 'specmatic.json' is not present in the root directory of the project.")
+    else console.log(e)
+  }
+}
 
 export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
   const specmatics = path.resolve(specmaticDir + '');
