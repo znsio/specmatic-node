@@ -6,7 +6,7 @@ import fs from 'fs';
 import { check } from 'yargs';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
-type Environment = Record<string, string>
+export type Environment = Record<string, string>
 
 export const setSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
   let file = null
@@ -18,15 +18,6 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
     if (e.toString().includes("Cannot find module")) console.log(e.toString(), "\nThe file 'specmatic.json' is not present in the root directory of the project.")
     else console.log(e)
   }
-}
-
-export const checkSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
-  let flag = false
-  try {
-    let file = require(path.resolve(specmatic))
-    if (JSON.stringify(file.environments[environmentName].variables) == JSON.stringify(environment)) flag = true
-  } catch (e) { console.log(e) }
-  return flag
 }
 
 export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
