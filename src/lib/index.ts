@@ -3,7 +3,6 @@ import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal, specmatic } from '../config';
 import fs from 'fs';
-import { check } from 'yargs';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 export type Environment = Record<string, string>
