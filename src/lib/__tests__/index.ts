@@ -1,9 +1,10 @@
 import execSh from 'exec-sh';
 import fetch from 'node-fetch';
 import path from 'path';
-import { setSpecmaticEnvironment, checkSpecmaticEnvironment, startStubServer, startTestServer, runContractTests, loadDynamicStub, setExpectations, installContracts, installSpecs } from '../';
-import { specmaticJarPathLocal } from '../../config';
+import { setSpecmaticEnvironment, startStubServer, Environment, startTestServer, runContractTests, loadDynamicStub, printSpecmaticJarVersion, setExpectations, installContracts, installSpecs } from '../';
+import { specmaticJarPathLocal, specmatic } from '../../config';
 import mockStub from '../../../mockStub.json';
+
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
@@ -12,6 +13,16 @@ const contractsPath = './contracts';
 const stubDataPath = './data';
 const host = 'localhost';
 const port = '8000';
+
+
+const checkSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
+  let flag = false
+  try {
+    let file = require(path.resolve(specmatic))
+    if (JSON.stringify(file.environments[environmentName].variables) == JSON.stringify(environment)) flag = true
+  } catch (e) { console.log(e) }
+  return flag
+}
 
 beforeEach(() => {
   execSh.mockReset();
