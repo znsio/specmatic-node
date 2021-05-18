@@ -59,6 +59,14 @@ test('installSpecs installs contracts to local', () => {
     .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} install`);
 });
 
+test('printSpecmaticJarVersion', () => {
+  printSpecmaticJarVersion();
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} --version`);
+});
+
 test('loadDynamicStub with default baseUrl', () => {
   fetch.mockReturnValue(Promise.resolve("{}"));
   loadDynamicStub(path.resolve('./mockStub.json'));
