@@ -44,6 +44,35 @@ definitions before, you can read more about it in its
 Though this library itself is not written in Typescript we use
 [dtslint](https://github.com/microsoft/dtslint) to lint our typings.
 
+
+## Publishing a new version to npm
+
+### Prerequisites
+* Access to push to master. 
+* Node version > 14 is needed.
+
+### Step 1: Make the changes
+If there is a new version available in [specmatic downloads](https://specmatic.in/download/), download it in the project root, replacing the older version. Commit the new version.
+
+### Step 2: Update node module's version
+`npm version` displays the existing version of the npm module.
+
+Use the suitable command to auto increment the npm version:
+
+`npm version major`
+
+`npm version minor`
+
+`npm version patch`
+
+OR
+
+Update the version to a specific semver by using command `npm version x.y.z`
+
+### Step 3: Publish to npm
+Push to master will automatically build, run the tests and publish the new version to npm. You can check the status of the publish in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
+
+
 ## Help needed
 
 Please checkout the [the open issues][issues]
