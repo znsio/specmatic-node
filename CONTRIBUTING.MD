@@ -70,7 +70,7 @@ OR
 Update the version to a specific semver by using command `npm version x.y.z`
 
 ### Step 3: Publish to npm
-Push to master will automatically build, run the tests and publish the new version to npm. You can check the status of the publish in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
+If the version updated in step 2 is different from the one available in npm global repository, push to remote master on github will automatically build, run the tests and publish the new version to npm. You can check the status of the publish in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
 
 
 ## Help needed
