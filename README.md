@@ -1,27 +1,25 @@
-[Specmatic](https://specmatic.in/) is a contract driven development tool that allows us to turn our contracts into executable specification. <br />
-This node module is a thin wrapper over specmatic.jar originally written in kotlin. All the functionality resides over in the [Specmatic project](https://github.com/znsio/specmatic). This module will help the consumers of specmatic in two ways:
+[Specmatic](https://specmatic.in/) is a contract driven development tool that leverages API Specifications, such as [OpenAPI](https://www.openapis.org/), as executable specification. <br />
+
+[![Specmatic - Contract Driven Development](http://img.youtube.com/vi/3HPgpvd8MGg/0.jpg)](http://www.youtube.com/watch?v=3HPgpvd8MGg "Specmatic - Contract Driven Development - Micro-services done right without the pain of integration")
+
+## Thin Wrapper
+
+Specmatic is a **standalone executable** that is **agnostic to programming languages and technology stacks**. This node module is a thin wrapper over the [standalone executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a convenience to help with below aspects.
 * Easy installation and upgrade of the jar file in node projects through npm
-* JS helper library which provides to do various setup steps like start, stop the specmatic stub server, installing specs etc. These helpers methods can be used inside a setup file inside a javascript project programmatically instead of using cli scripts. 
+* JS helper library which provides to do various setup steps like start, stop the specmatic stub server, installing specs etc. These helpers methods can be used inside a setup file inside a javascript project programmatically instead of using cli scripts.
 
 ## Quick Start
 `npm install specmatic`  will install the specmatic locally to the node project.
 
-Sample npm scripts to run specmatic, with `*.specmatic` as the path of specmatic files and `src/mocks` as the path for the stub data directory (Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.)
+Sample npm scripts to run specmatic, (Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.)
 
-`"specmatic-stub": "specmatic stub *.specmatic --data src/mocks --host=localhost --port=8000"`
+## Contract as Stub / Smart Mock (For API clients / consumers)
 
-`"specmatic-test": "specmatic test *.specmatic --host=localhost --port=8000"`
+In stub mode, Specmatic emulates the Provider / API / Service based on the API Specification so that the consumer / client application can make independent progress. [Learn more](https://specmatic.in/#contract-as-stub).
 
-## Specmatic in stub mode (For consumers)
+## Contract as Test (For API Providers / Service)
 
-In stub mode, Specmatic provides random responses to requests that match the contract. It’s a way of exploring what the contract looks like.
-This is meant to be used by anyone who wants to take a fake version of the API for a spin.
-This mode can also stub out real requests and responses, which will be validated against the contract before being accepted.
-
-## Specmatic tests (For Providers)
-
-In test mode, Specmatics accepts a contract file, and the hostname and port of the service whose API is being tested. It then sends an HTTP request based on the request format described in the contract for every scenario, generating random values where no examples are given. When the service responds, it validates the response based on the format in the contract.
-This is meant to be used by API providers.
+Tests for Free – Specmatic parses your API Specification files and based on this generates requests which are fired at your application. It then verifies if your application’s response is as per your API Specification. All this with a “No Code” approach.. [Learn More](https://specmatic.in/#contract-as-test)
 
 ## API
 
