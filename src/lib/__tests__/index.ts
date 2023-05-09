@@ -20,7 +20,7 @@ const checkSpecmaticEnvironment = (environmentName: string, environment: Environ
   try {
     let file = require(path.resolve(specmatic))
     for (let environmentVariable in environment) flag = file.environments[environmentName].variables[environmentVariable] == environment[environmentVariable]
-  } catch (e) { console.log(e) }
+  } catch (e) { }
   return flag
 }
 
@@ -142,4 +142,3 @@ test('setSpecmaticEnvironment does not updates the environment variable value , 
   setSpecmaticEnvironment("production", variableObj1)
   expect(checkSpecmaticEnvironment("production", variableObj1)).toBe(false)
 });
-

@@ -15,7 +15,6 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
     fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2))
   } catch (e) {
     if (e.toString().includes("Cannot find module")) console.log(e.toString(), "\nThe file 'specmatic.json' is not present in the root directory of the project.")
-    else console.log(e)
   }
 }
 
@@ -75,7 +74,6 @@ export const loadDynamicStub = (stubPath: string, stubServerBaseUrl?: string) =>
       method: 'POST',
       body: JSON.stringify(stubResponse)
     })
-    .then(res => res.json())
     .then(json => console.log(json));
 };
 
