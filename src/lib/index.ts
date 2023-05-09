@@ -3,6 +3,8 @@ import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal, specmatic } from '../config';
 import fs from 'fs';
+import process from 'process';
+import { ChildProcess } from 'child_process';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 export type Environment = Record<string, string>
@@ -18,14 +20,14 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
   }
 }
 
-export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
+export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) : ChildProcess => {
   const specmatics = path.resolve(specmaticDir + '');
   const stubs = path.resolve(stubDir + '');
 
   console.log(`java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`)
 
   console.log('Starting specmatic stub server')
-  execSh(
+  const javaProcess = execSh(
     `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`
     , {}, (err: any) => {
       if (err) {
@@ -33,6 +35,13 @@ export const startStubServer = (specmaticDir: string, stubDir: string, host: str
         process.exit(err.code);
       }
     });
+    return javaProcess;
+}
+
+export const stopStubServer = (javaProcess: ChildProcess) => {
+  console.log(`Stopping specmatic server`);
+  javaProcess.removeAllListeners('close');
+  javaProcess.kill();
 }
 
 export const startTestServer = (specmaticDir: string, host: string, port: string) => {
