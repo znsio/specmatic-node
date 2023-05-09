@@ -30,6 +30,7 @@ Check [Documentation](https://specmatic.in/documentation.html) for more informat
 ```
 import { 
     startStubServer,
+    stopStubServer,
     runContractTests, 
     loadDynamicStub, 
     installContracts,
@@ -39,7 +40,7 @@ import {
 
 Specmatic JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically. These can be used to programmatically run specmatic commands from any javascript testing framework, during setup or test phases.
 
-`startStubServer(specmaticDir: string, stubDir: string, host: string, port: string)` <br />
+`startStubServer(host?: string, port?: string, stubDir?: string)` <br />
 method to start the stub server.
 
 `runContractTests(specmaticDir: string, host: string, port: string)` <br />
