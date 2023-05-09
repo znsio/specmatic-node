@@ -30,11 +30,27 @@ beforeEach(() => {
 });
 
 test('startStubServer method starts the specmatic stub server', () => {
-  startStubServer(contractsPath, stubDataPath, host, port);
+  startStubServer(host, port, stubDataPath);
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
-    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub ${path.resolve(contractsPath)} --strict --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --strict --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+});
+
+test('startStubServer method stubDir is optional', () => {
+  startStubServer(host, port);
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --strict --host=${host} --port=${port}`);
+});
+
+test('startStubServer method host and port are optional', () => {
+  startStubServer();
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --strict`);
 });
 
 test('startTestServer runs the contract tests', () => {
