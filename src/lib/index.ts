@@ -18,15 +18,18 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
   }
 }
 
-export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) => {
-  const specmatics = path.resolve(specmaticDir + '');
+export const startStubServer = (host?: string, port?: string, stubDir?: string) => {
   const stubs = path.resolve(stubDir + '');
 
-  console.log(`java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`)
+  var cmd = `java -jar ${specmaticJarPath} stub --strict`;
+  if (stubDir) cmd += ` --data=${stubs}`
+  if (host) cmd += ` --host=${host}`
+  if (port) cmd += ` --port=${port}`
+  console.log(cmd)
 
   console.log('Starting specmatic stub server')
   execSh(
-    `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`
+    cmd
     , {}, (err: any) => {
       if (err) {
         console.log('Exit code: ', err.code);
