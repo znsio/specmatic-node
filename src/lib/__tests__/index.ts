@@ -49,13 +49,16 @@ test('stopStubServer method stops any running stub server', () => {
   expect(javaProcessMock.kill).toHaveBeenCalledTimes(1);
 });
 
-test('startTestServer runs the contract tests', () => {
-  startTestServer(contractsPath, host, port);
-
-  expect(execSh).toHaveBeenCalledTimes(1);
-  expect(execSh.mock.calls[0][0])
-    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`);
-});
+test('startTestServer runs the contract tests', function (done) {
+    startTestServer(contractsPath, host, port).then(result => {
+      expect(result).toBeTruthy();
+      done();
+    });
+    execSh.mock.calls[0][2](); //Execute the callback
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0])
+      .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`);
+  });
 
 test('runContractTests runs the contract tests', () => {
   runContractTests(contractsPath, host, port);
