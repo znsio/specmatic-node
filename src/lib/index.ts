@@ -24,11 +24,12 @@ export const startStubServer = (specmaticDir: string, stubDir: string, host: str
   const specmatics = path.resolve(specmaticDir + '');
   const stubs = path.resolve(stubDir + '');
 
-  console.log(`java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`)
+  const cmd = `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`;
+  console.log(cmd)
 
   console.log('Starting specmatic stub server')
   const javaProcess = execSh(
-    `java -jar ${specmaticJarPath} stub ${specmatics} --strict --data=${stubs} --host=${host} --port=${port}`
+    cmd
     , {}, (err: any) => {
       if (err) {
         console.log('Exit code: ', err.code);
