@@ -39,7 +39,7 @@ test('startStubServer method starts the specmatic stub server', () => {
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
-  .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub ${path.resolve(contractsPath)} --strict --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+  .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub ${path.resolve(contractsPath)} --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
   expect(javaProcess).toBe(javaProcessMock);
 });
 
