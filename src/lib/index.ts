@@ -3,7 +3,6 @@ import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal, specmatic } from '../config';
 import fs from 'fs';
-import process from 'process';
 import { ChildProcess } from 'child_process';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
@@ -20,11 +19,13 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
   }
 }
 
-export const startStubServer = (specmaticDir: string, stubDir: string, host: string, port: string) : ChildProcess => {
-  const specmatics = path.resolve(specmaticDir + '');
+export const startStubServer = (host?: string, port?: string, stubDir?: string) => {
   const stubs = path.resolve(stubDir + '');
 
-  const cmd = `java -jar ${specmaticJarPath} stub ${specmatics} --data=${stubs} --host=${host} --port=${port}`;
+  var cmd = `java -jar ${specmaticJarPath} stub`;
+  if (stubDir) cmd += ` --data=${stubs}`
+  if (host) cmd += ` --host=${host}`
+  if (port) cmd += ` --port=${port}`
   console.log(cmd)
 
   console.log('Starting specmatic stub server')
