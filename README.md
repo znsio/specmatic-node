@@ -30,6 +30,7 @@ Check [Documentation](https://specmatic.in/documentation.html) for more informat
 ```
 import { 
     startStubServer,
+    stopStubServer,
     runContractTests, 
     loadDynamicStub, 
     installContracts,
