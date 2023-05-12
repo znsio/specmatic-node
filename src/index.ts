@@ -2,6 +2,7 @@ export {
     loadDynamicStub,
     setExpectations,
     startStubServer,
+    stopStubServer,
     startTestServer,
     runContractTests,
     installContracts,

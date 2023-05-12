@@ -3,6 +3,7 @@ import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal, specmatic } from '../config';
 import fs from 'fs';
+import { ChildProcess } from 'child_process';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 export type Environment = Record<string, string>
@@ -21,35 +22,44 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
 export const startStubServer = (host?: string, port?: string, stubDir?: string) => {
   const stubs = path.resolve(stubDir + '');
 
-  var cmd = `java -jar ${specmaticJarPath} stub --strict`;
+  var cmd = `java -jar ${specmaticJarPath} stub`;
   if (stubDir) cmd += ` --data=${stubs}`
   if (host) cmd += ` --host=${host}`
   if (port) cmd += ` --port=${port}`
   console.log(cmd)
 
   console.log('Starting specmatic stub server')
-  execSh(
+  const javaProcess = execSh(
     cmd
     , {}, (err: any) => {
       if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(err.code);
+        console.error('Specmatic stub server exited with error', err);
       }
     });
+    return javaProcess;
 }
 
-export const startTestServer = (specmaticDir: string, host: string, port: string) => {
+export const stopStubServer = (javaProcess: ChildProcess) => {
+  console.log(`Stopping specmatic server`);
+  javaProcess.removeAllListeners('close');
+  javaProcess.kill();
+}
+
+export const startTestServer = (specmaticDir: string, host: string, port: string) : Promise<boolean> => {
   const specmatics = path.resolve(specmaticDir);
 
-  console.log('Running specmatic tests')
-  execSh(
-    `java -jar ${specmaticJarPath} test ${specmatics} --host=${host} --port=${port}`
-    , {}, (err: any) => {
-      if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(err.code);
-      }
-    });
+  console.log('Running specmatic tests');
+
+  return new Promise((resolve, _reject) => {
+    execSh(
+      `java -jar ${specmaticJarPath} test ${specmatics} --host=${host} --port=${port}`
+      , {}, (err: any) => {
+        if (err) {
+          console.error('Specmatic test run failed with error', err);
+        }
+        resolve(err == null);
+      });
+  });
 }
 
 export const runContractTests = startTestServer;
@@ -60,8 +70,7 @@ export const installContracts = () => {
     `java -jar ${specmaticJarPath} install`
     , {}, (err: any) => {
       if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(err.code);
+        console.error('Installing contracts failed with error', err);
       }
     });
 }
@@ -71,7 +80,7 @@ export const installSpecs = installContracts;
 export const loadDynamicStub = (stubPath: string, stubServerBaseUrl?: string) => {
   const stubResponse = require(path.resolve(stubPath));
 
-  console.log("setting expectations");
+  console.log("Setting expectations");
   fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`,
     {
       method: 'POST',
@@ -87,8 +96,7 @@ export const printSpecmaticJarVersion = () => {
     `java -jar ${specmaticJarPath} --version`
     , {}, (err: any) => {
       if (err) {
-        console.log('Exit code: ', err.code);
-        process.exit(err.code);
+        console.error('Could not print specmatic version', err);
       }
     });
 }
