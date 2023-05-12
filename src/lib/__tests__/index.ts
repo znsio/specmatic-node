@@ -35,11 +35,33 @@ beforeEach(() => {
 test('startStubServer method starts the specmatic stub server', () => {
   execSh.mockReturnValue(javaProcessMock);
 
-  const javaProcess = startStubServer(contractsPath, stubDataPath, host, port);
+  const javaProcess = startStubServer(host, port, stubDataPath);
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
-  .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub ${path.resolve(contractsPath)} --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+  .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
+  expect(javaProcess).toBe(javaProcessMock);
+});
+
+test('startStubServer method stubDir is optional', () => {
+  execSh.mockReturnValue(javaProcessMock);
+
+  const javaProcess = startStubServer(host, port);
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --host=${host} --port=${port}`);
+  expect(javaProcess).toBe(javaProcessMock);
+});
+
+test('startStubServer method host and port are optional', () => {
+  execSh.mockReturnValue(javaProcessMock);
+
+  const javaProcess = startStubServer();
+
+  expect(execSh).toHaveBeenCalledTimes(1);
+  expect(execSh.mock.calls[0][0])
+    .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub`);
   expect(javaProcess).toBe(javaProcessMock);
 });
 
