@@ -40,10 +40,10 @@ import {
 
 Specmatic JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically. These can be used to programmatically run specmatic commands from any javascript testing framework, during setup or test phases.
 
-`startStubServer(host?: string, port?: string, stubDir?: string)` <br />
+`startStubServer(host?: string, port?: string, stubDir?: string) : Promise<ChildProcess>` <br />
 method to start the stub server.
 
-`runContractTests(specmaticDir: string, host: string, port: string)` <br />
+`runContractTests(specmaticDir: string, host: string, port: string) : Promise<boolean>` <br />
 Alias: `startTestServer` <br />
 method to start test server.
 
