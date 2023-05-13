@@ -3,11 +3,11 @@ import fetch from 'node-fetch';
 import path from 'path';
 import { ChildProcess } from 'child_process';
 import { mock as jestMock } from 'jest-mock-extended';
+import { Readable } from "stream";
 
 import { setSpecmaticEnvironment, startStubServer, stopStubServer, Environment, startTestServer, runContractTests, loadDynamicStub, printSpecmaticJarVersion, setExpectations, installContracts, installSpecs } from '../';
 import { specmaticJarPathLocal, specmatic } from '../../config';
 import mockStub from '../../../mockStub.json';
-
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
@@ -17,6 +17,9 @@ const stubDataPath = './data';
 const host = 'localhost';
 const port = '8000';
 const javaProcessMock = jestMock<ChildProcess>();
+const readableMock = jestMock<Readable>();
+javaProcessMock.stdout = readableMock;
+javaProcessMock.stderr = readableMock;
 
 const checkSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
   let flag = false
@@ -32,42 +35,53 @@ beforeEach(() => {
   fetch.mockReset();
 });
 
-test('startStubServer method starts the specmatic stub server', () => {
+test('startStubServer method starts the specmatic stub server', async () => {
   execSh.mockReturnValue(javaProcessMock);
 
-  const javaProcess = startStubServer(host, port, stubDataPath);
+  startStubServer(host, port, stubDataPath).then(javaProcess => {
+    expect(javaProcess).toBe(javaProcessMock);
+  })
+
+  readableMock.on.mock.calls[0][1]("Stub server is running");
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
   .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`);
-  expect(javaProcess).toBe(javaProcessMock);
 });
 
-test('startStubServer method stubDir is optional', () => {
+test('startStubServer method stubDir is optional', async () => {
   execSh.mockReturnValue(javaProcessMock);
 
-  const javaProcess = startStubServer(host, port);
+  startStubServer(host, port).then(javaProcess => {
+    expect(javaProcess).toBe(javaProcessMock);
+  })
+
+  readableMock.on.mock.calls[0][1]("Stub server is running");
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
     .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --host=${host} --port=${port}`);
-  expect(javaProcess).toBe(javaProcessMock);
 });
 
-test('startStubServer method host and port are optional', () => {
+test('startStubServer method host and port are optional', async () => {
   execSh.mockReturnValue(javaProcessMock);
 
-  const javaProcess = startStubServer();
+  startStubServer().then(javaProcess => {
+    expect(javaProcess).toBe(javaProcessMock);
+  })
+
+  readableMock.on.mock.calls[0][1]("Stub server is running");
 
   expect(execSh).toHaveBeenCalledTimes(1);
   expect(execSh.mock.calls[0][0])
     .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub`);
-  expect(javaProcess).toBe(javaProcessMock);
 });
 
 test('stopStubServer method stops any running stub server', () => {
   stopStubServer(javaProcessMock);
 
+  expect(readableMock.removeAllListeners).toHaveBeenCalledTimes(2);
+  expect(javaProcessMock.removeAllListeners).toHaveBeenCalledTimes(1);
   expect(javaProcessMock.kill).toHaveBeenCalledTimes(1);
 });
 
