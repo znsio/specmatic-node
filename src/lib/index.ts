@@ -21,7 +21,7 @@ export const setSpecmaticEnvironment = (environmentName: string, environment: En
     }
 };
 
-export const startStubServer = (host?: string, port?: string, stubDir?: string) => {
+export const startStubServer = (host?: string, port?: string, stubDir?: string) : Promise<ChildProcess> => {
     const stubs = path.resolve(stubDir + '');
 
     var cmd = `java -jar ${specmaticJarPath} stub`;
