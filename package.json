@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "build": "npm test && rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
+    "build": "npm test && rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist"
   },
   "repository": {
     "type": "git",
