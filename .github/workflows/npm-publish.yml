@@ -19,6 +19,7 @@ jobs:
       - run: npm install
       - run: npm test
       - run: npm run build
+      - run: npm run tag-release
       - uses: JS-DevTools/npm-publish@v1
         with:
           check-version: true
