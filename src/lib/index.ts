@@ -2,26 +2,11 @@ import fetch from 'node-fetch';
 import path from 'path';
 import execSh from 'exec-sh';
 import { specmaticJarPathLocal, specmatic } from '../config';
-import fs from 'fs';
 import { ChildProcess } from 'child_process';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
-export type Environment = Record<string, string>;
 
-export const setSpecmaticEnvironment = (environmentName: string, environment: Environment) => {
-    let file = null;
-    try {
-        file = require(path.resolve(specmatic));
-        for (let environmentVariable in environment)
-            file.environments[environmentName].variables[environmentVariable] = environment[environmentVariable];
-        fs.writeFileSync(path.resolve(specmatic), JSON.stringify(file, null, 2));
-    } catch (e) {
-        if (e.toString().includes('Cannot find module'))
-            console.log(e.toString(), "\nThe file 'specmatic.json' is not present in the root directory of the project.");
-    }
-};
-
-export const startStubServer = (host?: string, port?: string, stubDir?: string) : Promise<ChildProcess> => {
+const startStub = (host?: string, port?: string, stubDir?: string) : Promise<ChildProcess> => {
     const stubs = path.resolve(stubDir + '');
 
     var cmd = `java -jar ${specmaticJarPath} stub`;
@@ -49,7 +34,7 @@ export const startStubServer = (host?: string, port?: string, stubDir?: string) 
     });
 };
 
-export const stopStubServer = (javaProcess: ChildProcess) => {
+const stopStub = (javaProcess: ChildProcess) => {
     console.log(`Stopping specmatic server`);
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
@@ -57,13 +42,19 @@ export const stopStubServer = (javaProcess: ChildProcess) => {
     javaProcess.kill();
 };
 
-export const startTestServer = (specmaticDir: string, host: string, port: string): Promise<boolean> => {
-    const specmatics = path.resolve(specmaticDir);
+const test = (specs?: string, host?: string, port?: string): Promise<boolean> => {
+    const specsPath = path.resolve(specs + '');
+
+    var cmd = `java -jar ${specmaticJarPath} test`;
+    if (specs) cmd += ` ${specsPath}`;
+    if (host) cmd += ` --host=${host}`;
+    if (port) cmd += ` --port=${port}`;
+    console.log(cmd);
 
     console.log('Running specmatic tests');
 
     return new Promise((resolve, _reject) => {
-        execSh(`java -jar ${specmaticJarPath} test ${specmatics} --host=${host} --port=${port}`, {}, (err: any) => {
+        execSh(cmd, {}, (err: any) => {
             if (err) {
                 console.error('Specmatic test run failed with error', err);
             }
@@ -72,20 +63,7 @@ export const startTestServer = (specmaticDir: string, host: string, port: string
     });
 };
 
-export const runContractTests = startTestServer;
-
-export const installContracts = () => {
-    console.log('Installing contracts');
-    execSh(`java -jar ${specmaticJarPath} install`, {}, (err: any) => {
-        if (err) {
-            console.error('Installing contracts failed with error', err);
-        }
-    });
-};
-
-export const installSpecs = installContracts;
-
-export const loadDynamicStub = (stubPath: string, stubServerBaseUrl?: string) => {
+const setExpectations = (stubPath: string, stubServerBaseUrl?: string) => {
     const stubResponse = require(path.resolve(stubPath));
 
     console.log('Setting expectations');
@@ -95,12 +73,12 @@ export const loadDynamicStub = (stubPath: string, stubServerBaseUrl?: string) =>
     }).then(json => console.log(json));
 };
 
-export const setExpectations = loadDynamicStub;
-
-export const printSpecmaticJarVersion = () => {
+const printJarVersion = () => {
     execSh(`java -jar ${specmaticJarPath} --version`, {}, (err: any) => {
         if (err) {
             console.error('Could not print specmatic version', err);
         }
     });
 };
+
+export { startStub, stopStub, test, setExpectations, printJarVersion };
