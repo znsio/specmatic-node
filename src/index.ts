@@ -1,11 +1,7 @@
 export {
-    loadDynamicStub,
+    startStub,
+    stopStub,
+    test,
     setExpectations,
-    startStubServer,
-    stopStubServer,
-    startTestServer,
-    runContractTests,
-    installContracts,
-    installSpecs,
-    setSpecmaticEnvironment
+    printJarVersion
 } from './lib';

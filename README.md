@@ -1,10 +1,6 @@
-[Specmatic](https://specmatic.in/) is a contract driven development tool that leverages API Specifications, such as [OpenAPI](https://www.openapis.org/), as executable specification. <br />
+# Specmatic Framework Node Module
 
-[![Specmatic - Contract Driven Development](http://img.youtube.com/vi/3HPgpvd8MGg/0.jpg)](http://www.youtube.com/watch?v=3HPgpvd8MGg "Specmatic - Contract Driven Development - Micro-services done right without the pain of integration")
-
-## Thin Wrapper
-
-Specmatic is a **standalone executable** that is **agnostic to programming languages and technology stacks**. This node module is a thin wrapper over the [standalone executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a convenience to help with below aspects.
+This node module is a thin wrapper over the [standalone executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a convenience to help with below aspects.
 * Easy installation and upgrade of the jar file in node projects through npm
 * JS helper library which provides to do various setup steps like start, stop the specmatic stub server, installing specs etc. These helpers methods can be used inside a setup file inside a javascript project programmatically instead of using cli scripts.
 
@@ -25,38 +21,31 @@ Tests for Free – Specmatic parses your API Specification files and based on th
 
 Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.
 
-## Test helper library
+## Programmatic Access
+
+Specmatic JS library exposes some of the commands as methods that can be run programmatically from any javascript testing framework, during setup or test phases.
 
 ```
 import { 
-    startStubServer,
-    stopStubServer,
-    runContractTests, 
-    loadDynamicStub, 
-    installContracts,
-    setSpecmaticEnvironment
+    startStub,
+    stopStub,
+    test, 
+    setExpecations,
+    printJarVersion
 } from 'specmatic';
 ```
 
-Specmatic JS library exposes methods which can be used in your JS project to setup the tests, as well as do advanced things like load stubs dynamically. These can be used to programmatically run specmatic commands from any javascript testing framework, during setup or test phases.
-
-`startStubServer(host?: string, port?: string, stubDir?: string) : Promise<ChildProcess>` <br />
+`startStub(host?: string, port?: string, stubDir?: string) : Promise<ChildProcess>` <br />
 method to start the stub server.
 
-`runContractTests(specmaticDir: string, host: string, port: string) : Promise<boolean>` <br />
-Alias: `startTestServer` <br />
-method to start test server.
+`stopStub(process: ChildProcess)` <br />
+method to stop the stub server.
 
-`loadDynamicStub(stubPath: string)` <br />
-Alias: `setExpectations` <br />
-method to load stub dynamically from inside an automated test.
+`test(specs?: string, host?: string, port?: string): Promise<boolean>` <br />
+method to run tests.
 
-`installContracts()` <br />
-Alias: `installSpecs` <br />
-method to install specs in local machine.
-
-`setSpecmaticEnvironment = (environmentName: string, environment: Environment) ` <br />
-method to dynamically write new variables or assign values to variables of the environment passed as argument to the function, inside the file 'specmatic.json'.This function expects the file 'specmatic.json' to be in the root directory of your project.
+`setExpectations(stubPath: string, stubServerBaseUrl?: string)` <br />
+method to dynamically set stub expectiona. Stub should be running before invoking this method.
 
 `printSpecmaticJarVersion()` <br />
 method to print the version of specmatic.jar
