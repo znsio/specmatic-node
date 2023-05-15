@@ -24,6 +24,9 @@ Tests for Free – Specmatic parses your API Specification files and based on th
 
 Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.
 
+## Sample Repo
+https://github.com/znsio/specmatic-order-backend-nodejs
+
 ## Programmatic Access
 
 Specmatic JS library exposes some of the commands as methods that can be run programmatically from any javascript testing framework, during setup or test phases.
