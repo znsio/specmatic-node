@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "build": "npm test && rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist",
-    "tag-release": "PACKAGE_VERSION=$(node -p -e \"require('./package.json').version\") && (git show-ref --tags ${PACKAGE_VERSION} --quiet || git tag -a ${PACKAGE_VERSION} -m \"Version ${PACKAGE_VERSION}\")"
   },
   "repository": {
     "type": "git",
