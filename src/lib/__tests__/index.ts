@@ -8,7 +8,7 @@ import { Readable } from 'stream';
 import * as specmatic from '../';
 import { startStub, stopStub, printJarVersion, setExpectations } from '../';
 import { specmaticJarPathLocal } from '../../config';
-import mockStub from '../../../mockStub.json';
+import mockStub from '../../../sample-mock-stub.json';
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
@@ -118,7 +118,7 @@ test('printJarVersion', () => {
 
 test('setExpectations with default baseUrl', done => {
     fetch.mockReturnValue(Promise.resolve('{}'));
-    setExpectations(path.resolve('./mockStub.json')).then(result => {
+    setExpectations(path.resolve('./sample-mock-stub.json')).then(result => {
         expect(result).toBeTruthy();
         done();
     });
@@ -134,7 +134,7 @@ test('setExpectations with default baseUrl', done => {
 test('setExpectations with a different baseUrl for the stub server', done => {
     fetch.mockReturnValue(Promise.resolve('{}'));
     const stubServerBaseUrl = 'http://localhost:8000/';
-    setExpectations(path.resolve('./mockStub.json'), stubServerBaseUrl).then(result => {
+    setExpectations(path.resolve('./sample-mock-stub.json'), stubServerBaseUrl).then(result => {
         expect(result).toBeTruthy();
         done();
     });
