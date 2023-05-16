@@ -47,10 +47,10 @@ method to start the stub server.
 `stopStub(process: ChildProcess)` <br />
 method to stop the stub server.
 
-`test(specs?: string, host?: string, port?: string): Promise<boolean>` <br />
+`test(host?: string, port?: string, specs?: string): Promise<boolean>` <br />
 method to run tests.
 
-`setExpectations(stubPath: string, stubServerBaseUrl?: string)` <br />
+`setExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
 method to dynamically set stub expectiona. Stub should be running before invoking this method.
 
 `printSpecmaticJarVersion()` <br />
