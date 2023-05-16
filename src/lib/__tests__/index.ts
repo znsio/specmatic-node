@@ -96,9 +96,12 @@ test('printJarVersion', () => {
     .toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} --version`);
 });
 
-test('setExpectations with default baseUrl', () => {
+test('setExpectations with default baseUrl', (done) => {
   fetch.mockReturnValue(Promise.resolve("{}"));
-  setExpectations(path.resolve('./mockStub.json'));
+  setExpectations(path.resolve('./mockStub.json')).then(result => {
+    expect(result).toBeTruthy();
+    done();
+  });
 
   expect(fetch).toHaveBeenCalledTimes(1);
   expect(fetch.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
@@ -108,10 +111,13 @@ test('setExpectations with default baseUrl', () => {
   });
 });
 
-test('setExpectations with a different baseUrl for the stub server', () => {
+test('setExpectations with a different baseUrl for the stub server', (done) => {
   fetch.mockReturnValue(Promise.resolve("{}"));
   const stubServerBaseUrl = 'http://localhost:8000/'
-  setExpectations(path.resolve('./mockStub.json'), stubServerBaseUrl);
+  setExpectations(path.resolve('./mockStub.json'), stubServerBaseUrl).then(result => {
+    expect(result).toBeTruthy();
+    done();
+  });
 
   expect(fetch).toHaveBeenCalledTimes(1);
   expect(fetch.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
