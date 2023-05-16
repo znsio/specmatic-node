@@ -13,10 +13,11 @@ import mockStub from '../../../mockStub.json';
 jest.mock('exec-sh');
 jest.mock('node-fetch');
 
-const contractsPath = './contracts';
-const stubDataPath = './data';
-const host = 'localhost';
-const port = '8000';
+const CONTRACT_YAML_FILE_PATH = './contracts';
+const STUB_DIR_PATH = './data';
+const HOST = 'localhost';
+const PORT = '8000';
+
 const javaProcessMock = jestMock<ChildProcess>();
 const readableMock = jestMock<Readable>();
 javaProcessMock.stdout = readableMock;
@@ -30,7 +31,7 @@ beforeEach(() => {
 test('startStub method starts the specmatic stub server', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
-    startStub(host, port, stubDataPath).then(javaProcess => {
+    startStub(HOST, PORT, STUB_DIR_PATH).then(javaProcess => {
         expect(javaProcess).toBe(javaProcessMock);
     });
 
@@ -38,21 +39,21 @@ test('startStub method starts the specmatic stub server', async () => {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(specmaticJarPathLocal)} stub --data=${path.resolve(stubDataPath)} --host=${host} --port=${port}`
+        `java -jar ${path.resolve(specmaticJarPathLocal)} stub --data=${path.resolve(STUB_DIR_PATH)} --host=${HOST} --port=${PORT}`
     );
 });
 
 test('startStub method stubDir is optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
-    startStub(host, port).then(javaProcess => {
+    startStub(HOST, PORT).then(javaProcess => {
         expect(javaProcess).toBe(javaProcessMock);
     });
 
     readableMock.on.mock.calls[0][1]('Stub server is running');
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --host=${host} --port=${port}`);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} stub --host=${HOST} --port=${PORT}`);
 });
 
 test('startStub method host and port are optional', async () => {
@@ -77,39 +78,35 @@ test('stopStub method stops any running stub server', () => {
 });
 
 test('test runs the contract tests', function (done) {
-    specmatic.test(host, port, contractsPath).then(result => {
+    specmatic.test(HOST, PORT, CONTRACT_YAML_FILE_PATH).then(result => {
         expect(result).toBeTruthy();
         done();
     });
     execSh.mock.calls[0][2](); //Execute the callback
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(contractsPath)} --host=${host} --port=${port}`
+        `java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(CONTRACT_YAML_FILE_PATH)} --host=${HOST} --port=${PORT}`
     );
 });
 
 test('test runs the contract tests with host and port optional', function (done) {
-  specmatic.test().then(result => {
-      expect(result).toBeTruthy();
-      done();
-  });
-  execSh.mock.calls[0][2](); //Execute the callback
-  expect(execSh).toHaveBeenCalledTimes(1);
-  expect(execSh.mock.calls[0][0]).toBe(
-      `java -jar ${path.resolve(specmaticJarPathLocal)} test`
-  );
+    specmatic.test().then(result => {
+        expect(result).toBeTruthy();
+        done();
+    });
+    execSh.mock.calls[0][2](); //Execute the callback
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test`);
 });
 
 test('test runs the contract tests with contracts path optional', function (done) {
-  specmatic.test(host, port).then(result => {
-      expect(result).toBeTruthy();
-      done();
-  });
-  execSh.mock.calls[0][2](); //Execute the callback
-  expect(execSh).toHaveBeenCalledTimes(1);
-  expect(execSh.mock.calls[0][0]).toBe(
-      `java -jar ${path.resolve(specmaticJarPathLocal)} test --host=${host} --port=${port}`
-  );
+    specmatic.test(HOST, PORT).then(result => {
+        expect(result).toBeTruthy();
+        done();
+    });
+    execSh.mock.calls[0][2](); //Execute the callback
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test --host=${HOST} --port=${PORT}`);
 });
 
 test('printJarVersion', () => {
