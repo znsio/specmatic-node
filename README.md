@@ -1,7 +1,7 @@
 # Specmatic Framework Node Module
 
 ![tests](https://github.com/znsio/specmatic-node/actions/workflows/test.yml/badge.svg)
-![publish](https://github.com/znsio/specmatic-node/actions/workflows/npm-publish.yml/badge.svg)
+[![publish](https://github.com/znsio/specmatic-node/actions/workflows/npm-publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
 
 This node module is a thin wrapper over the [standalone executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a convenience to help with below aspects.
 * Easy installation and upgrade of the jar file in node projects through npm
