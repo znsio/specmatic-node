@@ -63,14 +63,20 @@ const test = (specs?: string, host?: string, port?: string): Promise<boolean> =>
     });
 };
 
-const setExpectations = (stubPath: string, stubServerBaseUrl?: string) => {
+const setExpectations = (stubPath: string, stubServerBaseUrl?: string):Promise<boolean> => {
     const stubResponse = require(path.resolve(stubPath));
 
     console.log('Setting expectations');
-    fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`, {
-        method: 'POST',
-        body: JSON.stringify(stubResponse),
-    }).then(json => console.log(json));
+
+    return new Promise((resolve, _reject) => {
+        fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`, {
+            method: 'POST',
+            body: JSON.stringify(stubResponse),
+        }).then(json => {
+            console.log(json);
+            resolve(true);
+        });
+    });
 };
 
 const printJarVersion = () => {
