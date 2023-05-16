@@ -6,7 +6,7 @@ import { ChildProcess } from 'child_process';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 
-const startStub = (host?: string, port?: string, stubDir?: string) : Promise<ChildProcess> => {
+const startStub = (host?: string, port?: string, stubDir?: string): Promise<ChildProcess> => {
     const stubs = path.resolve(stubDir + '');
 
     var cmd = `java -jar ${specmaticJarPath} stub`;
@@ -25,7 +25,7 @@ const startStub = (host?: string, port?: string, stubDir?: string) : Promise<Chi
         javaProcess.stdout.on('data', function (data: String) {
             console.log('STDOUT: ' + data);
             if (data.indexOf('Stub server is running') > -1) {
-              resolve(javaProcess);
+                resolve(javaProcess);
             }
         });
         javaProcess.stderr.on('data', function (data: String) {
@@ -42,7 +42,7 @@ const stopStub = (javaProcess: ChildProcess) => {
     javaProcess.kill();
 };
 
-const test = (specs?: string, host?: string, port?: string): Promise<boolean> => {
+const test = (host?: string, port?: string, specs?: string): Promise<boolean> => {
     const specsPath = path.resolve(specs + '');
 
     var cmd = `java -jar ${specmaticJarPath} test`;
@@ -63,7 +63,7 @@ const test = (specs?: string, host?: string, port?: string): Promise<boolean> =>
     });
 };
 
-const setExpectations = (stubPath: string, stubServerBaseUrl?: string):Promise<boolean> => {
+const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<boolean> => {
     const stubResponse = require(path.resolve(stubPath));
 
     console.log('Setting expectations');
