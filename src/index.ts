@@ -1,7 +1,1 @@
-export {
-    startStub,
-    stopStub,
-    test,
-    setExpectations,
-    printJarVersion
-} from './lib';
+export { startStub, stopStub, test, setExpectations, printJarVersion } from './lib';
