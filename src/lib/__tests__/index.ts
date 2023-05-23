@@ -4,15 +4,16 @@ import path from 'path';
 import { ChildProcess } from 'child_process';
 import { mock as jestMock } from 'jest-mock-extended';
 import { Readable } from 'stream';
+import { copyFileSync, mkdirSync, existsSync } from 'fs';
 
-import * as specmatic from '../';
-import { startStub, stopStub, printJarVersion, setExpectations } from '../';
+import * as specmatic from '../../';
 import { specmaticJarPathLocal } from '../../config';
-import mockStub from '../../../sample-mock-stub.json';
+import mockStub from '../../../test-resources/sample-mock-stub.json';
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
 
+const STUB_PATH = 'test-resources/sample-mock-stub.json';
 const CONTRACT_YAML_FILE_PATH = './contracts';
 const STUB_DIR_PATH = './data';
 const HOST = 'localhost';
@@ -31,7 +32,7 @@ beforeEach(() => {
 test('startStub method starts the specmatic stub server', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
-    startStub(HOST, PORT, STUB_DIR_PATH).then(javaProcess => {
+    specmatic.startStub(HOST, PORT, STUB_DIR_PATH).then(javaProcess => {
         expect(javaProcess).toBe(javaProcessMock);
     });
 
@@ -46,7 +47,7 @@ test('startStub method starts the specmatic stub server', async () => {
 test('startStub method stubDir is optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
-    startStub(HOST, PORT).then(javaProcess => {
+    specmatic.startStub(HOST, PORT).then(javaProcess => {
         expect(javaProcess).toBe(javaProcessMock);
     });
 
@@ -59,7 +60,7 @@ test('startStub method stubDir is optional', async () => {
 test('startStub method host and port are optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
-    startStub().then(javaProcess => {
+    specmatic.startStub().then(javaProcess => {
         expect(javaProcess).toBe(javaProcessMock);
     });
 
@@ -70,7 +71,7 @@ test('startStub method host and port are optional', async () => {
 });
 
 test('stopStub method stops any running stub server', () => {
-    stopStub(javaProcessMock);
+    specmatic.stopStub(javaProcessMock);
 
     expect(readableMock.removeAllListeners).toHaveBeenCalledTimes(2);
     expect(javaProcessMock.removeAllListeners).toHaveBeenCalledTimes(1);
@@ -82,10 +83,13 @@ test('test runs the contract tests', function (done) {
         expect(result).toBeTruthy();
         done();
     });
+    copyReportFile();
     execSh.mock.calls[0][2](); //Execute the callback
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(CONTRACT_YAML_FILE_PATH)} --host=${HOST} --port=${PORT}`
+        `java -jar ${path.resolve(specmaticJarPathLocal)} test ${path.resolve(
+            CONTRACT_YAML_FILE_PATH
+        )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
     );
 });
 
@@ -94,9 +98,10 @@ test('test runs the contract tests with host and port optional', function (done)
         expect(result).toBeTruthy();
         done();
     });
+    copyReportFile();
     execSh.mock.calls[0][2](); //Execute the callback
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test`);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test --junitReportDir=dist/test-report`);
 });
 
 test('test runs the contract tests with contracts path optional', function (done) {
@@ -104,13 +109,55 @@ test('test runs the contract tests with contracts path optional', function (done
         expect(result).toBeTruthy();
         done();
     });
+    copyReportFile();
     execSh.mock.calls[0][2](); //Execute the callback
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test --host=${HOST} --port=${PORT}`);
+    expect(execSh.mock.calls[0][0]).toBe(
+        `java -jar ${path.resolve(specmaticJarPathLocal)} test --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
+    );
+});
+
+test('test runs the contract tests and get summary', function (done) {
+    specmatic.test().then(result => {
+        expect(result).not.toBeUndefined();
+        expect(result!.count).toBe(5);
+        expect(result!.success).toBe(3);
+        expect(result!.failure).toBe(2);
+        done();
+    });
+    copyReportFile();
+    execSh.mock.calls[0][2](); //Execute the callback
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test --junitReportDir=dist/test-report`);
+});
+
+test('test runs the contract tests and get summary when there is just one test', function (done) {
+    specmatic.test().then(result => {
+        expect(result).not.toBeUndefined();
+        expect(result!.count).toBe(1);
+        expect(result!.success).toBe(1);
+        expect(result!.failure).toBe(0);
+        done();
+    });
+    copyReportFileWithName('sample-junit-result-single.xml');
+    execSh.mock.calls[0][2](); //Execute the callback
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} test --junitReportDir=dist/test-report`);
+});
+
+test('test invocation makes sure previous junit report if any is deleted', function (done) {
+    copyReportFileWithName('sample-junit-result-single.xml');
+    specmatic.test(HOST, PORT).then(result => {
+        expect(result).toBeTruthy();
+        done();
+    });
+    expect(existsSync(path.resolve('dist/test-report'))).toBeFalsy();
+    copyReportFileWithName('sample-junit-result-single.xml');
+    execSh.mock.calls[0][2](); //Execute the callback
 });
 
 test('printJarVersion', () => {
-    printJarVersion();
+    specmatic.printJarVersion();
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} --version`);
@@ -118,7 +165,7 @@ test('printJarVersion', () => {
 
 test('setExpectations with default baseUrl', done => {
     fetch.mockReturnValue(Promise.resolve('{}'));
-    setExpectations(path.resolve('./sample-mock-stub.json')).then(result => {
+    specmatic.setExpectations(path.resolve(STUB_PATH)).then(result => {
         expect(result).toBeTruthy();
         done();
     });
@@ -134,7 +181,7 @@ test('setExpectations with default baseUrl', done => {
 test('setExpectations with a different baseUrl for the stub server', done => {
     fetch.mockReturnValue(Promise.resolve('{}'));
     const stubServerBaseUrl = 'http://localhost:8000/';
-    setExpectations(path.resolve('./sample-mock-stub.json'), stubServerBaseUrl).then(result => {
+    specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl).then(result => {
         expect(result).toBeTruthy();
         done();
     });
@@ -146,3 +193,17 @@ test('setExpectations with a different baseUrl for the stub server', done => {
         body: JSON.stringify(mockStub),
     });
 });
+
+function copyReportFile() {
+    copyReportFileWithName('sample-junit-result-multiple.xml');
+}
+
+function copyReportFileWithName(fileName: string) {
+    const destDir = path.resolve('dist/test-report');
+    if (!existsSync(destDir)) {
+        mkdirSync(destDir);
+    }
+    const srcPath = path.resolve('test-resources', fileName);
+    const destPath = path.resolve(destDir, 'TEST-junit-jupiter.xml');
+    copyFileSync(srcPath, destPath);
+}
