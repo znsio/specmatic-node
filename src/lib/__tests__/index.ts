@@ -201,7 +201,7 @@ function copyReportFile() {
 function copyReportFileWithName(fileName: string) {
     const destDir = path.resolve('dist/test-report');
     if (!existsSync(destDir)) {
-        mkdirSync(destDir);
+        mkdirSync(destDir, { recursive: true });
     }
     const srcPath = path.resolve('test-resources', fileName);
     const destPath = path.resolve(destDir, 'TEST-junit-jupiter.xml');
