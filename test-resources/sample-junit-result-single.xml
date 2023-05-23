@@ -1,0 +1,92 @@
+<testsuite errors="0" failures="0" hostname="Popeye.local" name="Contract Tests" skipped="0"
+    tests="1" time="0.42" timestamp="2023-05-19T23:32:29">
+    <properties>
+        <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
+        <property name="commit" value="false" />
+        <property name="contractPaths"
+            value=".specmatic/repos/specmatic-order-contracts/in/specmatic/examples/store/product-search-bff-api.yaml" />
+        <property name="environment" value="" />
+        <property name="file.encoding" value="UTF-8" />
+        <property name="file.separator" value="/" />
+        <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+        <property name="gopherProxySet" value="false" />
+        <property name="host" value="localhost" />
+        <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+        <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+        <property name="java.awt.headless" value="true" />
+        <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+        <property name="java.class.path"
+            value="/Users/vikram/Documents/Code/specmatic/specmatic-order-bff-nodejs/node_modules/specmatic/specmatic.jar" />
+        <property name="java.class.version" value="55.0" />
+        <property name="java.home"
+            value="/opt/homebrew/Cellar/openjdk@11/11.0.15/libexec/openjdk.jdk/Contents/Home" />
+        <property name="java.io.tmpdir" value="/var/folders/hs/7tg_9vqj6cn09cp7l8jc7t6h0000gn/T/" />
+        <property name="java.library.path"
+            value="/Users/vikram/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+        <property name="java.runtime.name" value="OpenJDK Runtime Environment" />
+        <property name="java.runtime.version" value="11.0.15+0" />
+        <property name="java.specification.name" value="Java Platform API Specification" />
+        <property name="java.specification.vendor" value="Oracle Corporation" />
+        <property name="java.specification.version" value="11" />
+        <property name="java.vendor" value="Homebrew" />
+        <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues" />
+        <property name="java.vendor.url.bug"
+            value="https://github.com/Homebrew/homebrew-core/issues" />
+        <property name="java.vendor.version" value="Homebrew" />
+        <property name="java.version" value="11.0.15" />
+        <property name="java.version.date" value="2022-04-19" />
+        <property name="java.vm.compressedOopsMode" value="Zero based" />
+        <property name="java.vm.info" value="mixed mode" />
+        <property name="java.vm.name" value="OpenJDK 64-Bit Server VM" />
+        <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+        <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+        <property name="java.vm.specification.version" value="11" />
+        <property name="java.vm.vendor" value="Homebrew" />
+        <property name="java.vm.version" value="11.0.15+0" />
+        <property name="jdk.debug" value="release" />
+        <property name="kafkaBootstrapServers" value="" />
+        <property name="kafkaHost" value="localhost" />
+        <property name="kafkaPort" value="9093" />
+        <property name="line.separator" value=" " />
+        <property name="os.arch" value="aarch64" />
+        <property name="os.name" value="Mac OS X" />
+        <property name="os.version" value="13.3.1" />
+        <property name="path.separator" value=":" />
+        <property name="port" value="8080" />
+        <property name="protocol" value="http" />
+        <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+        <property name="spring.beaninfo.ignore" value="true" />
+        <property name="suggestions" value="" />
+        <property name="suggestionsPath" value="" />
+        <property name="sun.arch.data.model" value="64" />
+        <property name="sun.boot.library.path"
+            value="/opt/homebrew/Cellar/openjdk@11/11.0.15/libexec/openjdk.jdk/Contents/Home/lib" />
+        <property name="sun.cpu.endian" value="little" />
+        <property name="sun.cpu.isalist" value="" />
+        <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+        <property name="sun.java.command"
+            value="/Users/vikram/Documents/Code/specmatic/specmatic-order-bff-nodejs/node_modules/specmatic/specmatic.jar test --junitReportDir=dist/test-report --host=localhost --port=8080" />
+        <property name="sun.java.launcher" value="SUN_STANDARD" />
+        <property name="sun.jnu.encoding" value="UTF-8" />
+        <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+        <property name="sun.os.patch.level" value="unknown" />
+        <property name="timeout" value="60" />
+        <property name="user.country" value="IN" />
+        <property name="user.dir"
+            value="/Users/vikram/Documents/Code/specmatic/specmatic-order-bff-nodejs" />
+        <property name="user.home" value="/Users/vikram" />
+        <property name="user.language" value="en" />
+        <property name="user.name" value="vikram" />
+        <property name="user.timezone" value="Asia/Kolkata" />
+    </properties>
+    <testcase classname="in.specmatic.test.SpecmaticJUnitSupport" name="" time="0.23">
+        <system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:in.specmatic.test.SpecmaticJUnitSupport]/[test-factory:contractTest()]/[dynamic-test:#1]
+display-name:  Scenario: GET /products -> 200 | GET_ALL_PRODUCTS
+]]></system-out>
+    </testcase>
+    <system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: Contract Tests
+]]></system-out>
+</testsuite>
