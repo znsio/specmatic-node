@@ -38,6 +38,7 @@ import {
     stopStub,
     test, 
     setExpecations,
+    showTestResults,
     printJarVersion
 } from 'specmatic';
 ```
@@ -54,7 +55,7 @@ method to run tests.
 `setExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
 method to dynamically set stub expectiona. Stub should be running before invoking this method.
 
-`showTestResults = (testFn: (name: string, cb: () => void) => void)` <br />
+`showTestResults(testFn: (name: string, cb: () => void) => void)` <br />
 method to report test results in any framework so that it shows up in IDE test results interface.
 
 `printSpecmaticJarVersion()` <br />
