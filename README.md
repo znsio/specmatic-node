@@ -58,5 +58,5 @@ method to dynamically set stub expectiona. Stub should be running before invokin
 `showTestResults(testFn: (name: string, cb: () => void) => void)` <br />
 method to report test results in any framework so that it shows up in IDE test results interface.
 
-`printSpecmaticJarVersion()` <br />
+`printJarVersion()` <br />
 method to print the version of specmatic.jar
