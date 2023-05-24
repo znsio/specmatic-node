@@ -1,6 +1,6 @@
 import execSh from 'exec-sh';
 import path from 'path';
-import startSpecmaticServer from '../../lib/core';
+import startSpecmaticServer from '../core';
 import { specmaticJarPathLocal } from '../../config';
 
 jest.mock('exec-sh');
