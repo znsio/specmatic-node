@@ -45,7 +45,7 @@ const stopStub = (javaProcess: ChildProcess) => {
     javaProcess.kill();
 };
 
-const test = (host?: string, port?: string, specs?: string): Promise<TestResult | undefined> => {
+const test = (host?: string, port?: string, specs?: string): Promise<{ [k: string]: number } | undefined> => {
     const specsPath = path.resolve(specs + '');
 
     var cmd = `java -jar ${specmaticJarPath} test`;
@@ -69,17 +69,19 @@ const test = (host?: string, port?: string, specs?: string): Promise<TestResult 
             const total = testCases.length;
             const success = testCases.filter((testcase: { [id: string]: any }) => testcase['system-out'] && !testcase['failure']).length;
             const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure']).length;
-            var result = new TestResult(total, success, failure);
+            var result = { total, success, failure };
             resolve(result);
         });
     });
 };
 
-const showTestResults = (cb: (name: string, result: boolean) => {}) => {
+const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
     var testCases = parseJunitXML();
     testCases.map(function (testcase: { [id: string]: any }) {
         var name = testcase['system-out'].trim().replaceAll('\n', '').split('display-name:  Scenario: ')[1].trim();
-        cb(name, !testcase.failure);
+        testFn(name, () => {
+            if (testcase.failure) throw new Error('Did not pass');
+        });
     });
 };
 
@@ -115,17 +117,5 @@ const parseJunitXML = () => {
     resultXml.testsuite.testcase = Array.isArray(resultXml.testsuite.testcase) ? resultXml.testsuite.testcase : [resultXml.testsuite.testcase];
     return resultXml.testsuite.testcase;
 };
-
-class TestResult {
-    count: number;
-    success: number;
-    failure: number;
-
-    constructor(count: number, success: number, failure: number) {
-        this.count = count;
-        this.success = success;
-        this.failure = failure;
-    }
-}
 
 export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults };
