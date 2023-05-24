@@ -120,7 +120,7 @@ test('test runs the contract tests with contracts path optional', function (done
 test('test runs the contract tests and get summary', function (done) {
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
-        expect(result!.count).toBe(5);
+        expect(result!.total).toBe(5);
         expect(result!.success).toBe(3);
         expect(result!.failure).toBe(2);
         done();
@@ -134,7 +134,7 @@ test('test runs the contract tests and get summary', function (done) {
 test('test runs the contract tests and get summary when there is just one test', function (done) {
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
-        expect(result!.count).toBe(1);
+        expect(result!.total).toBe(1);
         expect(result!.success).toBe(1);
         expect(result!.failure).toBe(0);
         done();
