@@ -78,7 +78,7 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
 const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
     var testCases = parseJunitXML();
     testCases.map(function (testcase: { [id: string]: any }) {
-        var name = testcase['system-out'].trim().replaceAll('\n', '').split('display-name:  Scenario: ')[1].trim();
+        var name = testcase['system-out'].trim().replace(/\n/g, '').split('display-name:  Scenario: ')[1].trim();
         testFn(name, () => {
             if (testcase.failure) throw new Error('Did not pass');
         });
