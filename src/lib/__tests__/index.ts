@@ -196,6 +196,13 @@ test('setExpectations with a different baseUrl for the stub server', done => {
     });
 });
 
+test('setTestResults invokes the test function', () => {
+    const cb = jest.fn();
+    copyReportFile();
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(5);
+});
+
 function copyReportFile() {
     copyReportFileWithName('sample-junit-result-multiple.xml');
 }
