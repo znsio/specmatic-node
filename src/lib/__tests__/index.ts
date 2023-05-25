@@ -13,6 +13,8 @@ import mockStub from '../../../test-resources/sample-mock-stub.json';
 jest.mock('exec-sh');
 jest.mock('node-fetch');
 
+const fetchMock = (fetch as unknown as jest.Mock)
+
 const STUB_PATH = 'test-resources/sample-mock-stub.json';
 const CONTRACT_YAML_FILE_PATH = './contracts';
 const STUB_DIR_PATH = './data';
@@ -26,7 +28,7 @@ javaProcessMock.stderr = readableMock;
 
 beforeEach(() => {
     execSh.mockReset();
-    fetch.mockReset();
+    fetchMock.mockReset();
 });
 
 test('startStub method starts the specmatic stub server', async () => {
@@ -164,34 +166,41 @@ test('printJarVersion', () => {
 });
 
 test('setExpectations with default baseUrl', done => {
-    fetch.mockReturnValue(Promise.resolve('{}'));
+    fetchMock.mockReturnValue(Promise.resolve('{}'));
     specmatic.setExpectations(path.resolve(STUB_PATH)).then(result => {
         expect(result).toBeTruthy();
         done();
     });
 
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
-    expect(fetch.mock.calls[0][1]).toMatchObject({
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
         method: 'POST',
         body: JSON.stringify(mockStub),
     });
 });
 
 test('setExpectations with a different baseUrl for the stub server', done => {
-    fetch.mockReturnValue(Promise.resolve('{}'));
+    fetchMock.mockReturnValue(Promise.resolve('{}'));
     const stubServerBaseUrl = 'http://localhost:8000/';
     specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl).then(result => {
         expect(result).toBeTruthy();
         done();
     });
 
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
-    expect(fetch.mock.calls[0][1]).toMatchObject({
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
         method: 'POST',
         body: JSON.stringify(mockStub),
     });
+});
+
+test('setTestResults invokes the test function', () => {
+    const cb = jest.fn();
+    copyReportFile();
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(5);
 });
 
 function copyReportFile() {
