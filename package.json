@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/znsio/specmatic-node#readme",
   "bin": {
-    "specmatic": "dist/bin/index.js",
-    "qontract": "dist/bin/index.js"
+    "specmatic": "dist/bin/index.js"
   },
   "dependencies": {
     "@babel/cli": "^7.21.5",
