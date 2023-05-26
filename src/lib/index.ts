@@ -5,6 +5,7 @@ import { specmaticJarPathLocal, specmatic } from '../config';
 import { ChildProcess } from 'child_process';
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
+import logger from '../logger';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 
@@ -15,30 +16,32 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
     if (stubDir) cmd += ` --data=${stubs}`;
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
-    // console.log(cmd);
 
-    console.log('Starting specmatic stub server');
-    return new Promise((resolve, _reject) => {
+    logger.info('Stub: Starting server');
+    logger.debug(`Stub: Executing "${cmd}"`);
+
+    return new Promise((resolve, reject) => {
         const javaProcess = execSh(cmd, { stdio: 'pipe', stderr: 'pipe' }, (err: any) => {
             if (err) {
-                console.error('Specmatic stub server exited with error', err);
+                logger.error(`Stub: Exited with error ${err}`);
             }
         });
         javaProcess.stdout.on('data', function (data: String) {
-            // console.log('STDOUT: ' + data);
             if (data.indexOf('Stub server is running') > -1) {
-                console.log('STDOUT: ' + data);
+                logger.info(`Stub: ${data}`);
                 resolve(javaProcess);
+            } else {
+                logger.debug(`Stub: ${data}`);
             }
         });
         javaProcess.stderr.on('data', function (data: String) {
-            console.log('STDERR: ' + data);
+            logger.error(`Stub: ${data}`);
         });
     });
 };
 
 const stopStub = (javaProcess: ChildProcess) => {
-    console.log(`Stopping specmatic stub server`);
+    logger.info('Stopping stub server');
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
@@ -53,24 +56,30 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
     cmd += ' --junitReportDir=dist/test-report';
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
-    // console.log(cmd);
 
-    console.log('Running specmatic tests');
+    logger.info('Test: Running');
+    logger.debug(`Test: Executing "${cmd}"`);
 
     const reportDir = path.resolve('dist/test-report');
     fs.rmSync(reportDir, { recursive: true, force: true });
 
     return new Promise((resolve, _reject) => {
-        execSh(cmd, { stdio: 'pipe', stderr: 'pipe' }, (err: any) => {
-            // if (err) {
-            //     console.error('Specmatic test run failed with error', err);
-            // }
+        const javaProcess = execSh(cmd, { stdio: 'pipe', stderr: 'pipe' }, (err: any) => {
+            if (err) {
+                logger.error(`Test: Failed with error ${err}`);
+            }
             var testCases = parseJunitXML();
             const total = testCases.length;
             const success = testCases.filter((testcase: { [id: string]: any }) => testcase['system-out'] && !testcase['failure']).length;
             const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure']).length;
             var result = { total, success, failure };
             resolve(result);
+        });
+        javaProcess.stdout.on('data', function (data: String) {
+            logger.debug(`Test: ${data}`);
+        });
+        javaProcess.stderr.on('data', function (data: String) {
+            logger.error(`Test: ${data}`);
         });
     });
 };
@@ -88,23 +97,27 @@ const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
 const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<boolean> => {
     const stubResponse = require(path.resolve(stubPath));
 
-    console.log('Setting expectations');
+    logger.info('Set Expectations: Running');
 
     return new Promise((resolve, _reject) => {
         fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`, {
             method: 'POST',
             body: JSON.stringify(stubResponse),
-        }).then(json => {
-            console.log('Setting expectations complete');
+        }).then(() => {
+            logger.info('Set Expectations: Finished');
             resolve(true);
         });
     });
 };
 
 const printJarVersion = () => {
-    execSh(`java -jar ${specmaticJarPath} --version`, {}, (err: any) => {
+    const cmd = `java -jar ${specmaticJarPath} --version`;
+    logger.info('Print Jar Version: Running');
+    logger.debug(`Print Jar Version: Executing "${cmd}"`);
+
+    execSh(cmd, {}, (err: any) => {
         if (err) {
-            console.error('Could not print specmatic version', err);
+            logger.error(`Print Jar Version: Failed with error ${err}`);
         }
     });
 };

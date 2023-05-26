@@ -81,6 +81,8 @@ test('stopStub method stops any running stub server', () => {
 });
 
 test('test runs the contract tests', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test(HOST, PORT, CONTRACT_YAML_FILE_PATH).then(result => {
         expect(result).toBeTruthy();
         done();
@@ -96,6 +98,8 @@ test('test runs the contract tests', function (done) {
 });
 
 test('test runs the contract tests with host and port optional', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).toBeTruthy();
         done();
@@ -107,6 +111,8 @@ test('test runs the contract tests with host and port optional', function (done)
 });
 
 test('test runs the contract tests with contracts path optional', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test(HOST, PORT).then(result => {
         expect(result).toBeTruthy();
         done();
@@ -120,6 +126,8 @@ test('test runs the contract tests with contracts path optional', function (done
 });
 
 test('test runs the contract tests and get summary', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
         expect(result!.total).toBe(5);
@@ -134,6 +142,8 @@ test('test runs the contract tests and get summary', function (done) {
 });
 
 test('test runs the contract tests and get summary when there is just one test', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
         expect(result!.total).toBe(1);
@@ -148,6 +158,8 @@ test('test runs the contract tests and get summary when there is just one test',
 });
 
 test('test invocation makes sure previous junit report if any is deleted', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     copyReportFileWithName('sample-junit-result-single.xml');
     specmatic.test(HOST, PORT).then(result => {
         expect(result).toBeTruthy();
