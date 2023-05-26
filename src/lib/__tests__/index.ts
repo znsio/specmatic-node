@@ -46,6 +46,21 @@ test('startStub method starts the specmatic stub server', async () => {
     );
 });
 
+// test('startStub method notifies when start fails due to port not available', async () => {
+//     execSh.mockReturnValue(javaProcessMock);
+
+//     specmatic.startStub().then(javaProcess => {
+//         throw new Error('Expected to fail due to port not available');
+//     });
+
+//     readableMock.on.mock.calls[0][1]('Stub server is running');
+
+//     expect(execSh).toHaveBeenCalledTimes(1);
+//     expect(execSh.mock.calls[0][0]).toBe(
+//         `java -jar ${path.resolve(specmaticJarPathLocal)} stub`
+//     );
+// });
+
 test('startStub method stubDir is optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
 
@@ -81,6 +96,8 @@ test('stopStub method stops any running stub server', () => {
 });
 
 test('test runs the contract tests', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test(HOST, PORT, CONTRACT_YAML_FILE_PATH).then(result => {
         expect(result).toBeTruthy();
         done();
@@ -96,6 +113,8 @@ test('test runs the contract tests', function (done) {
 });
 
 test('test runs the contract tests with host and port optional', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).toBeTruthy();
         done();
@@ -107,6 +126,8 @@ test('test runs the contract tests with host and port optional', function (done)
 });
 
 test('test runs the contract tests with contracts path optional', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test(HOST, PORT).then(result => {
         expect(result).toBeTruthy();
         done();
@@ -120,6 +141,8 @@ test('test runs the contract tests with contracts path optional', function (done
 });
 
 test('test runs the contract tests and get summary', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
         expect(result!.total).toBe(5);
@@ -134,6 +157,8 @@ test('test runs the contract tests and get summary', function (done) {
 });
 
 test('test runs the contract tests and get summary when there is just one test', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     specmatic.test().then(result => {
         expect(result).not.toBeUndefined();
         expect(result!.total).toBe(1);
@@ -148,6 +173,8 @@ test('test runs the contract tests and get summary when there is just one test',
 });
 
 test('test invocation makes sure previous junit report if any is deleted', function (done) {
+    execSh.mockReturnValue(javaProcessMock);
+
     copyReportFileWithName('sample-junit-result-single.xml');
     specmatic.test(HOST, PORT).then(result => {
         expect(result).toBeTruthy();
@@ -165,12 +192,9 @@ test('printJarVersion', () => {
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(specmaticJarPathLocal)} --version`);
 });
 
-test('setExpectations with default baseUrl', done => {
+test('setExpectations with default baseUrl', async () => {
     fetchMock.mockReturnValue(Promise.resolve('{}'));
-    specmatic.setExpectations(path.resolve(STUB_PATH)).then(result => {
-        expect(result).toBeTruthy();
-        done();
-    });
+    await expect(specmatic.setExpectations(path.resolve(STUB_PATH))).toResolve();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
@@ -180,13 +204,22 @@ test('setExpectations with default baseUrl', done => {
     });
 });
 
-test('setExpectations with a different baseUrl for the stub server', done => {
+test('setExpectations notify when it fails', async () => {
+    fetchMock.mockReturnValue(Promise.reject());
+    await expect(specmatic.setExpectations(path.resolve(STUB_PATH))).toReject();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+        method: 'POST',
+        body: JSON.stringify(mockStub),
+    });
+});
+
+test('setExpectations with a different baseUrl for the stub server', async () => {
     fetchMock.mockReturnValue(Promise.resolve('{}'));
     const stubServerBaseUrl = 'http://localhost:8000/';
-    specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl).then(result => {
-        expect(result).toBeTruthy();
-        done();
-    });
+    await expect(specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl)).toResolve();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
