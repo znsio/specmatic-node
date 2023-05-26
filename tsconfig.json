@@ -14,9 +14,9 @@
       "resolveJsonModule": true,
       "noEmit": true,
     },
+    "files": ["global.d.ts"],
     "include": [
       "src",
       "**/*.ts"
     ]
 }
-  
