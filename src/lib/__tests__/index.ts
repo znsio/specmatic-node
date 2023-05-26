@@ -46,6 +46,21 @@ test('startStub method starts the specmatic stub server', async () => {
     );
 });
 
+// test('startStub method notifies when start fails due to port not available', async () => {
+//     execSh.mockReturnValue(javaProcessMock);
+
+//     specmatic.startStub().then(javaProcess => {
+//         throw new Error('Expected to fail due to port not available');
+//     });
+
+//     readableMock.on.mock.calls[0][1]('Stub server is running');
+
+//     expect(execSh).toHaveBeenCalledTimes(1);
+//     expect(execSh.mock.calls[0][0]).toBe(
+//         `java -jar ${path.resolve(specmaticJarPathLocal)} stub`
+//     );
+// });
+
 test('startStub method stubDir is optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
 

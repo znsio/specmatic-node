@@ -30,6 +30,9 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
             if (data.indexOf('Stub server is running') > -1) {
                 logger.info(`Stub: ${data}`);
                 resolve(javaProcess);
+            } else if (data.indexOf('Address already in use') > -1) {
+                logger.error(`Stub: ${data}`);
+                reject();
             } else {
                 logger.debug(`Stub: ${data}`);
             }
