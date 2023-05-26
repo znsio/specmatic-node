@@ -94,19 +94,24 @@ const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
     });
 };
 
-const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<boolean> => {
+const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<void> => {
     const stubResponse = require(path.resolve(stubPath));
 
     logger.info('Set Expectations: Running');
 
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
         fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`, {
             method: 'POST',
             body: JSON.stringify(stubResponse),
-        }).then(() => {
-            logger.info('Set Expectations: Finished');
-            resolve(true);
-        });
+        })
+            .then(() => {
+                logger.info('Set Expectations: Finished');
+                resolve();
+            })
+            .catch(err => {
+                logger.error(`Set Expectations: Failed with error ${err}`);
+                reject();
+            });
     });
 };
 
