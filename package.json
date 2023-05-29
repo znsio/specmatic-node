@@ -4,7 +4,7 @@
   "description": "Node wrapper for Specmatic",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "npm test && rimraf dist && ./node_modules/.bin/babel src --extensions '.ts,.js' --ignore '**/__tests__/*.ts' -d dist"
   },
   "repository": {
