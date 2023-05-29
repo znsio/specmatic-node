@@ -1,6 +1,9 @@
 # Specmatic Framework Node Module
 
-![tests](https://github.com/znsio/specmatic-node/actions/workflows/test.yml/badge.svg)
+![build nodev14](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev14.yml/badge.svg)
+![build nodev16](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev16.yml/badge.svg)
+![build nodev18](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev18.yml/badge.svg)
+![build nodev20](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev20.yml/badge.svg)
 [![publish](https://github.com/znsio/specmatic-node/actions/workflows/npm-publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
 [![GitHub release badge](https://badgen.net/github/release/znsio/specmatic-node/master)](https://github.com/znsio/specmatic-node/releases/latest)
 
