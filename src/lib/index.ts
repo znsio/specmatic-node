@@ -44,11 +44,12 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
 };
 
 const stopStub = (javaProcess: ChildProcess) => {
-    logger.info('Stopping stub server');
+    logger.debug('Stopping stub server');
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
     javaProcess.kill();
+    logger.info('Stopped stub server');
 };
 
 const test = (host?: string, port?: string, specs?: string): Promise<{ [k: string]: number } | undefined> => {
