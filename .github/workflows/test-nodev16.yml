@@ -1,4 +1,4 @@
-name: Run Tests node v16
+name: Tests Node v16
 
 on:
   push:
