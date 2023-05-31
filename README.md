@@ -1,11 +1,8 @@
 # Specmatic Framework Node Module
 
-![build nodev14](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev14.yml/badge.svg)
-![build nodev16](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev16.yml/badge.svg)
-![build nodev18](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev18.yml/badge.svg)
-![build nodev20](https://github.com/znsio/specmatic-node/actions/workflows/test-nodev20.yml/badge.svg)
-[![publish](https://github.com/znsio/specmatic-node/actions/workflows/npm-publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
-[![GitHub release badge](https://badgen.net/github/release/znsio/specmatic-node/master)](https://github.com/znsio/specmatic-node/releases/latest)
+![test](https://github.com/znsio/specmatic-node/actions/workflows/test.yml/badge.svg)
+[![publish](https://github.com/znsio/specmatic-node/actions/workflows/publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
+[![release](https://badgen.net/github/release/znsio/specmatic-node/master)](https://github.com/znsio/specmatic-node/releases/latest)
 
 This node module is a thin wrapper over the [standalone executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a convenience to help with below aspects.
 
@@ -38,7 +35,7 @@ https://github.com/znsio/specmatic-order-bff-nodejs
 
 Specmatic JS library exposes some of the commands as methods that can be run programmatically from any javascript testing framework, during setup or test phases.
 
-```
+```javascript
 import {
     startStub,
     stopStub,
