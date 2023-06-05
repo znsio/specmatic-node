@@ -5,7 +5,7 @@ import fs from 'fs';
 import { specmaticJarPathLocal, specmaticJarName } from '../config';
 import logger from '../common/logger';
 
-const callSpecmaticCli = async (args?: string[]) => {
+const callSpecmaticCli = (args?: string[]) => {
     const rootPath = path.resolve(__dirname, '..', '..');
     const specmaticJarPath = path.resolve(rootPath, specmaticJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
