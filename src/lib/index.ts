@@ -5,7 +5,7 @@ import { specmaticJarPathLocal, specmatic } from '../config';
 import { ChildProcess } from 'child_process';
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
-import logger from '../logger';
+import logger from '../common/logger';
 
 const specmaticJarPath = path.resolve(specmaticJarPathLocal);
 
