@@ -18,25 +18,29 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
     logger.debug(`Stub: Executing "${cmd}"`);
 
     return new Promise((resolve, reject) => {
-        const javaProcess = callSpecmatic(cmd, (err: any) => {
-            if (err) {
-                logger.error(`Stub: Exited with error ${err}`);
+        const javaProcess = callSpecmatic(
+            cmd,
+            (err: any) => {
+                if (err) {
+                    logger.error(`Stub: Exited with error ${err}`);
+                }
+            },
+            (message, error) => {
+                if (!error) {
+                    if (message.indexOf('Stub server is running') > -1) {
+                        logger.info(`Stub: ${message}`);
+                        resolve(javaProcess);
+                    } else if (message.indexOf('Address already in use') > -1) {
+                        logger.error(`Stub: ${message}`);
+                        reject();
+                    } else {
+                        logger.debug(`Stub: ${message}`);
+                    }
+                } else {
+                    logger.error(`Stub: ${message}`);
+                }
             }
-        });
-        javaProcess.stdout?.on('data', function (data: String) {
-            if (data.indexOf('Stub server is running') > -1) {
-                logger.info(`Stub: ${data}`);
-                resolve(javaProcess);
-            } else if (data.indexOf('Address already in use') > -1) {
-                logger.error(`Stub: ${data}`);
-                reject();
-            } else {
-                logger.debug(`Stub: ${data}`);
-            }
-        });
-        javaProcess.stderr?.on('data', function (data: String) {
-            logger.error(`Stub: ${data}`);
-        });
+        );
     });
 };
 
@@ -65,23 +69,21 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
     fs.rmSync(reportDir, { recursive: true, force: true });
 
     return new Promise((resolve, _reject) => {
-        const javaProcess = callSpecmatic(cmd, (err: any) => {
-            if (err) {
-                logger.error(`Test: Failed with error ${err}`);
+        callSpecmatic(
+            cmd,
+            (err: any) => {
+                if (err) logger.error(`Test: Failed with error ${err}`);
+                var testCases = parseJunitXML();
+                const total = testCases.length;
+                const success = testCases.filter((testcase: { [id: string]: any }) => testcase['system-out'] && !testcase['failure']).length;
+                const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure']).length;
+                var result = { total, success, failure };
+                resolve(result);
+            },
+            (message, error) => {
+                logger[error ? 'error' : 'debug'](`Test: ${message}`);
             }
-            var testCases = parseJunitXML();
-            const total = testCases.length;
-            const success = testCases.filter((testcase: { [id: string]: any }) => testcase['system-out'] && !testcase['failure']).length;
-            const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure']).length;
-            var result = { total, success, failure };
-            resolve(result);
-        });
-        javaProcess.stdout?.on('data', function (data: String) {
-            logger.debug(`Test: ${data}`);
-        });
-        javaProcess.stderr?.on('data', function (data: String) {
-            logger.error(`Test: ${data}`);
-        });
+        );
     });
 };
 
@@ -121,17 +123,16 @@ const printJarVersion = () => {
     logger.info('Print Jar Version: Running');
     logger.debug(`Print Jar Version: Executing "${cmd}"`);
 
-    const javaProcess = callSpecmatic(cmd, (err: any) => {
-        if (err) {
-            logger.error(`Print Jar Version: Failed with error ${err}`);
+    callSpecmatic(
+        cmd,
+        (err: any) => {
+            if (err) logger.error(`Print Jar Version: Failed with error ${err}`);
+        },
+        (message, error) => {
+            if (error) logger.error(`Print Jar Version: ${message}`);
+            else console.log(`${message}`);
         }
-    });
-    javaProcess.stdout?.on('data', function (data: String) {
-        console.log(`Version: ${data}`);
-    });
-    javaProcess.stderr?.on('data', function (data: String) {
-        logger.error(`Version: ${data}`);
-    });
+    );
 };
 
 const parseJunitXML = () => {
