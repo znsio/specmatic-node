@@ -31,9 +31,6 @@
       "jest-extended/all"
     ]
   },
-  "specmatic": {
-    "logLevel": "debug"
-  },
   "dependencies": {
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.21.8",
