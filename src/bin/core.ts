@@ -1,7 +1,7 @@
 import execSh from 'exec-sh';
 import path from 'path';
 import { specmaticJarPathLocal } from '../config';
-import logger from '../logger';
+import logger from '../common/logger';
 
 const callSpecmaticCli = (args?: string[]) => {
     const specmaticJarPath = path.resolve(specmaticJarPathLocal);

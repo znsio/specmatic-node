@@ -27,7 +27,9 @@
     "specmatic": "dist/bin/index.js"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended/all"]
+    "setupFilesAfterEnv": [
+      "jest-extended/all"
+    ]
   },
   "specmatic": {
     "logLevel": "debug"
