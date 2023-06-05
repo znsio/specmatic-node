@@ -1,18 +1,15 @@
 import fetch from 'node-fetch';
 import path from 'path';
-import execSh from 'exec-sh';
-import { specmaticJarPathLocal, specmatic } from '../config';
 import { ChildProcess } from 'child_process';
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import logger from '../common/logger';
-
-const specmaticJarPath = path.resolve(specmaticJarPathLocal);
+import callSpecmatic from '../common/runner';
 
 const startStub = (host?: string, port?: string, stubDir?: string): Promise<ChildProcess> => {
     const stubs = path.resolve(stubDir + '');
 
-    var cmd = `java -jar ${specmaticJarPath} stub`;
+    var cmd = `stub`;
     if (stubDir) cmd += ` --data=${stubs}`;
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
@@ -21,12 +18,12 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
     logger.debug(`Stub: Executing "${cmd}"`);
 
     return new Promise((resolve, reject) => {
-        const javaProcess = execSh(cmd, { stdio: 'pipe', stderr: 'pipe' }, (err: any) => {
+        const javaProcess = callSpecmatic(cmd, (err: any) => {
             if (err) {
                 logger.error(`Stub: Exited with error ${err}`);
             }
         });
-        javaProcess.stdout.on('data', function (data: String) {
+        javaProcess.stdout?.on('data', function (data: String) {
             if (data.indexOf('Stub server is running') > -1) {
                 logger.info(`Stub: ${data}`);
                 resolve(javaProcess);
@@ -37,7 +34,7 @@ const startStub = (host?: string, port?: string, stubDir?: string): Promise<Chil
                 logger.debug(`Stub: ${data}`);
             }
         });
-        javaProcess.stderr.on('data', function (data: String) {
+        javaProcess.stderr?.on('data', function (data: String) {
             logger.error(`Stub: ${data}`);
         });
     });
@@ -55,7 +52,7 @@ const stopStub = (javaProcess: ChildProcess) => {
 const test = (host?: string, port?: string, specs?: string): Promise<{ [k: string]: number } | undefined> => {
     const specsPath = path.resolve(specs + '');
 
-    var cmd = `java -jar ${specmaticJarPath} test`;
+    var cmd = `test`;
     if (specs) cmd += ` ${specsPath}`;
     cmd += ' --junitReportDir=dist/test-report';
     if (host) cmd += ` --host=${host}`;
@@ -68,7 +65,7 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
     fs.rmSync(reportDir, { recursive: true, force: true });
 
     return new Promise((resolve, _reject) => {
-        const javaProcess = execSh(cmd, { stdio: 'pipe', stderr: 'pipe' }, (err: any) => {
+        const javaProcess = callSpecmatic(cmd, (err: any) => {
             if (err) {
                 logger.error(`Test: Failed with error ${err}`);
             }
@@ -79,10 +76,10 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
             var result = { total, success, failure };
             resolve(result);
         });
-        javaProcess.stdout.on('data', function (data: String) {
+        javaProcess.stdout?.on('data', function (data: String) {
             logger.debug(`Test: ${data}`);
         });
-        javaProcess.stderr.on('data', function (data: String) {
+        javaProcess.stderr?.on('data', function (data: String) {
             logger.error(`Test: ${data}`);
         });
     });
@@ -120,14 +117,20 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
 };
 
 const printJarVersion = () => {
-    const cmd = `java -jar ${specmaticJarPath} --version`;
+    const cmd = `--version`;
     logger.info('Print Jar Version: Running');
     logger.debug(`Print Jar Version: Executing "${cmd}"`);
 
-    execSh(cmd, {}, (err: any) => {
+    const javaProcess = callSpecmatic(cmd, (err: any) => {
         if (err) {
             logger.error(`Print Jar Version: Failed with error ${err}`);
         }
+    });
+    javaProcess.stdout?.on('data', function (data: String) {
+        console.log(`Version: ${data}`);
+    });
+    javaProcess.stderr?.on('data', function (data: String) {
+        logger.error(`Version: ${data}`);
     });
 };
 
