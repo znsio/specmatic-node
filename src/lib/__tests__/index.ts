@@ -229,6 +229,29 @@ test('setTestResults invokes the test function', () => {
     expect(cb).toHaveBeenCalledTimes(5);
 });
 
+test('setTestResults works with junit report with generative tests mode', () => {
+    const cb = jest.fn();
+    copyReportFileWithName('sample-junit-result-generative.xml');
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(4);
+});
+
+test('setTestResults says "No Name" with junit report where test name cannot be found within system-out tag', () => {
+    const cb = jest.fn();
+    copyReportFileWithName('sample-junit-result-no-testname.xml');
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith('No Name', expect.any(Function));
+});
+
+test('setTestResults says "No Name" with junit report where system-out tag does not exist', () => {
+    const cb = jest.fn();
+    copyReportFileWithName('sample-junit-result-corrupt.xml');
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith('No Name', expect.any(Function));
+});
+
 function copyReportFile() {
     copyReportFileWithName('sample-junit-result-multiple.xml');
 }
