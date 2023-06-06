@@ -1,0 +1,175 @@
+<testsuite errors="0" failures="3" hostname="LM0005304" name="Contract Tests" skipped="0" tests="4"
+	time="0.479" timestamp="2023-06-06T23:47:50">
+	<properties>
+		<property name="commit" value="false" />
+		<property name="contractPaths"
+			value="/Users/rahul2.shekhawat/Desktop/merchant-onboarding/contracts/test-contracts/userExists.yaml" />
+		<property name="environment" value="" />
+		<property name="file.encoding" value="UTF-8" />
+		<property name="file.separator" value="/" />
+		<property name="host" value="localhost" />
+		<property name="java.awt.headless" value="true" />
+		<property name="java.class.path"
+			value="/Users/rahul2.shekhawat/Desktop/merchant-onboarding/node_modules/specmatic/specmatic.jar" />
+		<property name="java.class.version" value="61.0" />
+		<property name="java.home"
+			value="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home" />
+		<property name="java.io.tmpdir" value="/var/folders/7l/jrlflnzj6z10kpstv5cm5748yf72dt/T/" />
+		<property name="java.library.path"
+			value="/Users/rahul2.shekhawat/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+		<property name="java.runtime.name" value="OpenJDK Runtime Environment" />
+		<property name="java.runtime.version" value="17.0.6+10" />
+		<property name="java.specification.name" value="Java Platform API Specification" />
+		<property name="java.specification.vendor" value="Oracle Corporation" />
+		<property name="java.specification.version" value="17" />
+		<property name="java.vendor" value="Eclipse Adoptium" />
+		<property name="java.vendor.url" value="https://adoptium.net/" />
+		<property name="java.vendor.url.bug"
+			value="https://github.com/adoptium/adoptium-support/issues" />
+		<property name="java.vendor.version" value="Temurin-17.0.6+10" />
+		<property name="java.version" value="17.0.6" />
+		<property name="java.version.date" value="2023-01-17" />
+		<property name="java.vm.compressedOopsMode" value="Zero based" />
+		<property name="java.vm.info" value="mixed mode" />
+		<property name="java.vm.name" value="OpenJDK 64-Bit Server VM" />
+		<property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+		<property name="java.vm.specification.vendor" value="Oracle Corporation" />
+		<property name="java.vm.specification.version" value="17" />
+		<property name="java.vm.vendor" value="Eclipse Adoptium" />
+		<property name="java.vm.version" value="17.0.6+10" />
+		<property name="jdk.debug" value="release" />
+		<property name="kafkaBootstrapServers" value="" />
+		<property name="kafkaHost" value="localhost" />
+		<property name="kafkaPort" value="9093" />
+		<property name="line.separator" value=" " />
+		<property name="native.encoding" value="UTF-8" />
+		<property name="os.arch" value="aarch64" />
+		<property name="os.name" value="Mac OS X" />
+		<property name="os.version" value="12.6.5" />
+		<property name="path.separator" value=":" />
+		<property name="port" value="3000" />
+		<property name="protocol" value="http" />
+		<property name="spring.beaninfo.ignore" value="true" />
+		<property name="suggestions" value="" />
+		<property name="suggestionsPath" value="" />
+		<property name="sun.arch.data.model" value="64" />
+		<property name="sun.boot.library.path"
+			value="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/lib" />
+		<property name="sun.cpu.endian" value="little" />
+		<property name="sun.io.unicode.encoding" value="UnicodeBig" />
+		<property name="sun.java.command"
+			value="/Users/rahul2.shekhawat/Desktop/merchant-onboarding/node_modules/specmatic/specmatic.jar test --junitReportDir=dist/test-report --host=localhost --port=3000" />
+		<property name="sun.java.launcher" value="SUN_STANDARD" />
+		<property name="sun.jnu.encoding" value="UTF-8" />
+		<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+		<property name="timeout" value="60" />
+		<property name="user.country" value="IN" />
+		<property name="user.dir" value="/Users/rahul2.shekhawat/Desktop/merchant-onboarding" />
+		<property name="user.home" value="/Users/rahul2.shekhawat" />
+		<property name="user.language" value="en" />
+		<property name="user.name" value="rahul2.shekhawat" />
+		<property name="user.timezone" value="Asia/Kolkata" />
+	</properties>
+	<testcase classname="in.specmatic.test.SpecmaticJUnitSupport" name="" time="0.026">
+		<failure
+			message="Testing scenario &quot;Use Exists. Response: Bad Request&quot; API: GET /proxy/v1/user/exists -&gt; 400    &gt;&gt; RESPONSE.STATUS         Expected status 400, actual was status 500"
+			type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Testing scenario "Use Exists. Response: Bad Request"
+API: GET /proxy/v1/user/exists -> 400
+
+  >> RESPONSE.STATUS
+
+     Expected status 400, actual was status 500
+	at in.specmatic.test.SpecmaticJUnitSupport.contractTest$lambda$5$lambda$4(SpecmaticJUnitSupport.kt:328)
+	at org.junit.jupiter.engine.descriptor.DynamicTestTestDescriptor.lambda$execute$0(DynamicTestTestDescriptor.java:53)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.api.extension.InvocationInterceptor.interceptDynamicTest(InvocationInterceptor.java:167)
+	at org.junit.jupiter.api.extension.InvocationInterceptor.interceptDynamicTest(InvocationInterceptor.java:184)
+	at org.junit.jupiter.engine.descriptor.DynamicTestTestDescriptor.lambda$execute$1(DynamicTestTestDescriptor.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptorCall.lambda$ofVoid$0(InvocationInterceptorChain.java:78)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.descriptor.DynamicTestTestDescriptor.execute(DynamicTestTestDescriptor.java:60)
+	at org.junit.jupiter.engine.descriptor.DynamicTestTestDescriptor.execute(DynamicTestTestDescriptor.java:32)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:226)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:204)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at org.junit.jupiter.engine.descriptor.TestFactoryTestDescriptor.lambda$invokeTestMethod$1(TestFactoryTestDescriptor.java:108)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestFactoryTestDescriptor.invokeTestMethod(TestFactoryTestDescriptor.java:95)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at application.TestCommand.call(TestCommand.kt:218)
+	at application.TestCommand.call(TestCommand.kt:46)
+	at picocli.CommandLine.executeUserObject(CommandLine.java:2041)
+	at picocli.CommandLine.access$1500(CommandLine.java:148)
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2461)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2453)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2415)
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2273)
+	at picocli.CommandLine$RunLast.execute(CommandLine.java:2417)
+	at picocli.CommandLine.execute(CommandLine.java:2170)
+	at application.QontractApplicationRunner.run(QontractApplicationRunner.kt:16)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:771)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:755)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at application.SpecmaticApplication$Companion.main(SpecmaticApplication.kt:29)
+	at application.SpecmaticApplication.main(SpecmaticApplication.kt)
+]]></failure>
+	</testcase>
+	<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: Contract Tests
+]]></system-out>
+</testsuite>
