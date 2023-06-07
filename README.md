@@ -81,3 +81,7 @@ logLevel accepts all values supported by winston logger (https://github.com/wins
 ### Node 17/18 - Connection Refused error when connecting to stub
 
 Node 18 apparently shifted to IPv6 as first choice for resolving hostname when both IPv4 and IPv6 addresses are available. This means `localhost` most likely resolves to `::1` rather than `127.0.0.1` or `0.0.0.0`. Now specmatic node wrapper does not start the stub server but the java program under the hood does it and java still resolves to IPv4 address by default. Thus localhost on node v18 and java might resolve to a different address and any connection from node to the running stub will fail. To resolve this, until we have a permanent solution, we request to disable any IPv6 address mapping to a named host in your DNS resolver or `/etc/hosts`.
+
+### Error `ReferenceError: setImmediate is not defined`
+
+This happens due to an issue in Jest framework. The easiest solution is to import `core-js` in the affected test file.
