@@ -184,7 +184,7 @@ test('printJarVersion', () => {
 });
 
 test('setExpectations with default baseUrl', async () => {
-    fetchMock.mockReturnValue(Promise.resolve('{}'));
+    fetchMock.mockReturnValue(Promise.resolve({status: 200}));
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH))).toResolve();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -196,7 +196,7 @@ test('setExpectations with default baseUrl', async () => {
 });
 
 test('setExpectations with a different baseUrl for the stub server', async () => {
-    fetchMock.mockReturnValue(Promise.resolve('{}'));
+    fetchMock.mockReturnValue(Promise.resolve({status: 200}));
     const stubServerBaseUrl = 'http://localhost:8000/';
 
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl)).toResolve();
@@ -216,6 +216,20 @@ test('setExpectations notifies when it fails', async () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+        method: 'POST',
+        body: JSON.stringify(mockStub),
+    });
+});
+
+test('setExpectations notifies as failure when status code is not 200', async () => {
+    fetchMock.mockReturnValue(Promise.resolve({status: 400}));
+    const stubServerBaseUrl = 'http://localhost:8000/';
+
+    await expect(specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl)).toReject();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
         method: 'POST',
         body: JSON.stringify(mockStub),
