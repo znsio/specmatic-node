@@ -114,9 +114,14 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
             method: 'POST',
             body: JSON.stringify(stubResponse),
         })
-            .then(() => {
-                logger.info('Set Expectations: Finished');
-                resolve();
+            .then(response => {
+                if (response.status != 200) {
+                    logger.error(`Set Expectations: Failed with status code ${response.status}`);
+                    reject();
+                } else {
+                    logger.info('Set Expectations: Finished');
+                    resolve();
+                }
             })
             .catch(err => {
                 logger.error(`Set Expectations: Failed with error ${err}`);
