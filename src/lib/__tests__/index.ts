@@ -241,6 +241,11 @@ test('setTestResults invokes the test function', () => {
     copyReportFile();
     specmatic.showTestResults(cb);
     expect(cb).toHaveBeenCalledTimes(5);
+    expect(() => cb.mock.calls[0][1]()).not.toThrow();
+    expect(() => cb.mock.calls[1][1]()).not.toThrow();
+    expect(() => cb.mock.calls[2][1]()).not.toThrow();
+    expect(() => cb.mock.calls[3][1]()).toThrow();
+    expect(() => cb.mock.calls[4][1]()).toThrow();
 });
 
 test('setTestResults works with junit report with generative tests mode', () => {
@@ -264,6 +269,16 @@ test('setTestResults says "No Name" with junit report where system-out tag does 
     specmatic.showTestResults(cb);
     expect(cb).toHaveBeenCalledTimes(1);
     expect(cb).toHaveBeenCalledWith('No Name', expect.any(Function));
+});
+
+test('setTestResults with report having skipped tests', () => {
+    const cb = jest.fn();
+    copyReportFileWithName('sample-junit-result-skipped.xml');
+    specmatic.showTestResults(cb);
+    expect(cb).toHaveBeenCalledTimes(3);
+    expect(() => cb.mock.calls[0][1]()).toThrow();
+    expect(() => cb.mock.calls[1][1]()).not.toThrow();
+    expect(() => cb.mock.calls[2][1]()).not.toThrow();
 });
 
 function copyReportFile() {
