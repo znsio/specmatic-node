@@ -75,8 +75,8 @@ const test = (host?: string, port?: string, specs?: string): Promise<{ [k: strin
                 if (err) logger.error(`Test: Failed with error ${err}`);
                 var testCases = parseJunitXML();
                 const total = testCases.length;
-                const success = testCases.filter((testcase: { [id: string]: any }) => testcase['system-out'] && !testcase['failure']).length;
-                const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure']).length;
+                const failure = testCases.filter((testcase: { [id: string]: any }) => testcase['failure'] || testcase['skipped']).length;
+                const success = total - failure;
                 var result = { total, success, failure };
                 resolve(result);
             },

@@ -146,6 +146,20 @@ test('test runs the contract tests and get summary', async function () {
     });
 });
 
+test('test runs the contract tests and get summary with skipped tests', async function () {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        copyReportFileWithName('sample-junit-result-skipped.xml');
+        execSh.mock.calls[0][2]();
+    }, 0);
+
+    await expect(specmatic.test()).resolves.toStrictEqual({
+        total: 3,
+        success: 2,
+        failure: 1,
+    });
+});
+
 test('test runs the contract tests and get summary when there is just one test', async function () {
     execSh.mockReturnValue(javaProcessMock);
     setTimeout(() => {
