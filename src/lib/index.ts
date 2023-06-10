@@ -99,7 +99,7 @@ const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
             if (nameTempArr.length > 1) name = nameTempArr[1].trim();
         }
         testFn(name, () => {
-            if (testcase.failure) throw new Error('Did not pass');
+            if (testcase.failure || testcase.skipped) throw new Error('Did not pass');
         });
     });
 };
