@@ -58,14 +58,14 @@ import {
 } from 'specmatic';
 ```
 
-`startStub(host?: string, port?: string, stubDir?: string) : Promise<ChildProcess>` <br />
-Start the stub server
+`startStub(host?: string, port?: string, args?: (string | number)[]) : Promise<ChildProcess>` <br />
+Start the stub server. Argument `args` values are passed directly to specmatic jar executable.
 
 `stopStub(process: ChildProcess)` <br />
 Stop the stub server
 
-`test(host?: string, port?: string, specs?: string): Promise<boolean>` <br />
-Run tests
+`test(host?: string, port?: string, contractPath?: string, args?: (string | number)[]): Promise<boolean>` <br />
+Run tests. Argument `args` values are passed directly to specmatic jar executable.
 
 `setExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
 Set stub expectiona. Stub should be running before invoking this method.

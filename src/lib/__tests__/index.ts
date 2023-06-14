@@ -18,7 +18,7 @@ const fetchMock = fetch as unknown as jest.Mock;
 
 const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticJarName);
 const STUB_PATH = 'test-resources/sample-mock-stub.json';
-const CONTRACT_YAML_FILE_PATH = './contracts';
+const CONTRACT_FILE_PATH = './contracts';
 const STUB_DIR_PATH = './data';
 const HOST = 'localhost';
 const PORT = '8000';
@@ -39,11 +39,11 @@ test('startStub method starts the specmatic stub server', async () => {
     execSh.mockReturnValue(javaProcessMock);
     setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
 
-    await expect(specmatic.startStub(HOST, PORT, STUB_DIR_PATH)).resolves.toBe(javaProcessMock);
+    await expect(specmatic.startStub(HOST, PORT)).resolves.toBe(javaProcessMock);
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --data=${path.resolve(STUB_DIR_PATH)} --host=${HOST} --port=${PORT}`
+        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`
     );
 });
 
@@ -51,22 +51,12 @@ test('startStub method notifies when start fails due to port not available', asy
     execSh.mockReturnValue(javaProcessMock);
     setTimeout(() => readableMock.on.mock.calls[0][1]('Address already in use'), 0);
 
-    await expect(specmatic.startStub(HOST, PORT, STUB_DIR_PATH)).toReject();
+    await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --data=${path.resolve(STUB_DIR_PATH)} --host=${HOST} --port=${PORT}`
+        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`
     );
-});
-
-test('startStub method stubDir is optional', async () => {
-    execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
-
-    await expect(specmatic.startStub(HOST, PORT)).resolves.toBe(javaProcessMock);
-
-    expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
 });
 
 test('startStub method host and port are optional', async () => {
@@ -77,6 +67,26 @@ test('startStub method host and port are optional', async () => {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub`);
+});
+
+test('startStub method takes additional pass through arguments', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+
+    await expect(specmatic.startStub(HOST, PORT, ['p1', 'p2'])).resolves.toBe(javaProcessMock);
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 p2`);
+});
+
+test('startStub method takes additional pass through arguments can be string or number', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+
+    await expect(specmatic.startStub(HOST, PORT, ['p1', 123])).resolves.toBe(javaProcessMock);
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 123`);
 });
 
 test('stopStub method stops any running stub server', () => {
@@ -94,13 +104,47 @@ test('test runs the contract tests', async function () {
         execSh.mock.calls[0][2]();
     }, 0);
 
-    await expect(specmatic.test(HOST, PORT, CONTRACT_YAML_FILE_PATH)).resolves.toBeTruthy();
+    await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH)).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(
         `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
-            CONTRACT_YAML_FILE_PATH
+            CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
+    );
+});
+
+test('test takes additional pass through arguments', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        copyReportFile();
+        execSh.mock.calls[0][2]();
+    }, 0);
+
+    await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 'P2'])).resolves.toBeTruthy();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(
+        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
+            CONTRACT_FILE_PATH
+        )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 P2`
+    );
+});
+
+test('test takes additional pass through arguments can be string or number', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        copyReportFile();
+        execSh.mock.calls[0][2]();
+    }, 0);
+
+    await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 123])).resolves.toBeTruthy();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(
+        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
+            CONTRACT_FILE_PATH
+        )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 123`
     );
 });
 
