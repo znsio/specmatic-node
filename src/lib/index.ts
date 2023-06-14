@@ -6,13 +6,11 @@ import fs from 'fs';
 import logger from '../common/logger';
 import callSpecmatic from '../common/runner';
 
-const startStub = (host?: string, port?: string, stubDir?: string): Promise<ChildProcess> => {
-    const stubs = path.resolve(stubDir + '');
-
+const startStub = (host?: string, port?: string, args?: (string | number)[]): Promise<ChildProcess> => {
     var cmd = `stub`;
-    if (stubDir) cmd += ` --data=${stubs}`;
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
+    if (args) cmd += ' ' + args.join(' ');
 
     logger.info('Stub: Starting server');
     logger.debug(`Stub: Executing "${cmd}"`);
@@ -53,14 +51,15 @@ const stopStub = (javaProcess: ChildProcess) => {
     logger.info('Stopped stub server');
 };
 
-const test = (host?: string, port?: string, specs?: string): Promise<{ [k: string]: number } | undefined> => {
-    const specsPath = path.resolve(specs + '');
+const test = (host?: string, port?: string, contractPath?: string, args?: (string|number)[]): Promise<{ [k: string]: number } | undefined> => {
+    const specsPath = path.resolve(contractPath + '');
 
     var cmd = `test`;
-    if (specs) cmd += ` ${specsPath}`;
+    if (contractPath) cmd += ` ${specsPath}`;
     cmd += ' --junitReportDir=dist/test-report';
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
+    if (args) cmd += ' ' + args.join(' ');
 
     logger.info('Test: Running');
     logger.debug(`Test: Executing "${cmd}"`);
