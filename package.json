@@ -31,6 +31,9 @@
       "jest-extended/all"
     ]
   },
+  "specmatic": {
+    "logLevel": "trace"
+  },
   "dependencies": {
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.21.8",
@@ -47,9 +50,9 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.1",
+    "@types/jest": "^29.5.2",
     "jest": "^29.5.0",
-    "jest-extended": "^3.2.4",
+    "jest-extended": "^4.0.0",
     "jest-mock-extended": "^3.0.4"
   }
 }

@@ -10,6 +10,7 @@ import fs from 'fs';
 import * as specmatic from '../../';
 import { specmaticJarName } from '../../config';
 import mockStub from '../../../test-resources/sample-mock-stub.json';
+import { Stub } from '..';
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
@@ -19,14 +20,16 @@ const fetchMock = fetch as unknown as jest.Mock;
 const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticJarName);
 const STUB_PATH = 'test-resources/sample-mock-stub.json';
 const CONTRACT_FILE_PATH = './contracts';
-const STUB_DIR_PATH = './data';
 const HOST = 'localhost';
-const PORT = '8000';
+const PORT = 8000;
 
 const javaProcessMock = jestMock<ChildProcess>();
 const readableMock = jestMock<Readable>();
 javaProcessMock.stdout = readableMock;
 javaProcessMock.stderr = readableMock;
+
+const stubUrl = `http://${HOST}:${PORT}`;
+const stub = new Stub(HOST, PORT, stubUrl, javaProcessMock);
 
 beforeEach(() => {
     execSh.mockReset();
@@ -37,14 +40,12 @@ beforeEach(() => {
 
 test('startStub method starts the specmatic stub server', async () => {
     execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
 
-    await expect(specmatic.startStub(HOST, PORT)).resolves.toBe(javaProcessMock);
+    await expect(specmatic.startStub(HOST, PORT)).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`
-    );
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
 });
 
 test('startStub method notifies when start fails due to port not available', async () => {
@@ -54,16 +55,62 @@ test('startStub method notifies when start fails due to port not available', asy
     await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`
-    );
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+});
+
+test('startStub method returns host, port and stub url', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    const randomPort = 62269;
+    const stubUrl = `http://${HOST}:${randomPort}`;
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}. Ctrl + C to stop.`), 0);
+
+    const stub = new Stub(HOST, randomPort, stubUrl, javaProcessMock);
+
+    await expect(specmatic.startStub(HOST, PORT)).resolves.toStrictEqual(stub);
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+});
+
+test('startStub method fails if stub url is not available in start up message', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running`), 0);
+
+    await expect(specmatic.startStub(HOST, PORT)).toReject();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+});
+
+test('startStub method fails if host info is not available in start up message', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    const randomPort = 62269;
+    const stubUrl = `http://`;
+    const stub = new Stub(HOST, randomPort, stubUrl, javaProcessMock);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
+
+    await expect(specmatic.startStub(HOST, PORT)).toReject();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+});
+
+test('startStub method fails if port info is not available in start up message', async () => {
+    execSh.mockReturnValue(javaProcessMock);
+    const stubUrl = `http://${HOST}`;
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
+
+    await expect(specmatic.startStub(HOST, PORT)).toReject();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
 });
 
 test('startStub method host and port are optional', async () => {
     execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
 
-    await expect(specmatic.startStub()).resolves.toBe(javaProcessMock);
+    await expect(specmatic.startStub()).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub`);
@@ -71,9 +118,9 @@ test('startStub method host and port are optional', async () => {
 
 test('startStub method takes additional pass through arguments', async () => {
     execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
 
-    await expect(specmatic.startStub(HOST, PORT, ['p1', 'p2'])).resolves.toBe(javaProcessMock);
+    await expect(specmatic.startStub(HOST, PORT, ['p1', 'p2'])).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 p2`);
@@ -81,16 +128,16 @@ test('startStub method takes additional pass through arguments', async () => {
 
 test('startStub method takes additional pass through arguments can be string or number', async () => {
     execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => readableMock.on.mock.calls[0][1]('Stub server is running'), 0);
+    setTimeout(() => readableMock.on.mock.calls[0][1](`Stub server is running on ${stubUrl}`), 0);
 
-    await expect(specmatic.startStub(HOST, PORT, ['p1', 123])).resolves.toBe(javaProcessMock);
+    await expect(specmatic.startStub(HOST, PORT, ['p1', 123])).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 123`);
 });
 
 test('stopStub method stops any running stub server', () => {
-    specmatic.stopStub(javaProcessMock);
+    specmatic.stopStub(stub);
 
     expect(readableMock.removeAllListeners).toHaveBeenCalledTimes(2);
     expect(javaProcessMock.removeAllListeners).toHaveBeenCalledTimes(1);
@@ -242,7 +289,7 @@ test('printJarVersion', () => {
 });
 
 test('setExpectations with default baseUrl', async () => {
-    fetchMock.mockReturnValue(Promise.resolve({status: 200}));
+    fetchMock.mockReturnValue(Promise.resolve({ status: 200 }));
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH))).toResolve();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -254,13 +301,13 @@ test('setExpectations with default baseUrl', async () => {
 });
 
 test('setExpectations with a different baseUrl for the stub server', async () => {
-    fetchMock.mockReturnValue(Promise.resolve({status: 200}));
-    const stubServerBaseUrl = 'http://localhost:8000/';
+    fetchMock.mockReturnValue(Promise.resolve({ status: 200 }));
+    const stubServerBaseUrl = 'http://localhost:8000';
 
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl)).toResolve();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
+    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}/_specmatic/expectations`);
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
         method: 'POST',
         body: JSON.stringify(mockStub),
@@ -281,13 +328,13 @@ test('setExpectations notifies when it fails', async () => {
 });
 
 test('setExpectations notifies as failure when status code is not 200', async () => {
-    fetchMock.mockReturnValue(Promise.resolve({status: 400}));
-    const stubServerBaseUrl = 'http://localhost:8000/';
+    fetchMock.mockReturnValue(Promise.resolve({ status: 400 }));
+    const stubServerBaseUrl = 'http://localhost:8000';
 
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH), stubServerBaseUrl)).toReject();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}_specmatic/expectations`);
+    expect(fetchMock.mock.calls[0][0]).toBe(`${stubServerBaseUrl}/_specmatic/expectations`);
     expect(fetchMock.mock.calls[0][1]).toMatchObject({
         method: 'POST',
         body: JSON.stringify(mockStub),

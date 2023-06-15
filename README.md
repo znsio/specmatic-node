@@ -58,13 +58,13 @@ import {
 } from 'specmatic';
 ```
 
-`startStub(host?: string, port?: string, args?: (string | number)[]) : Promise<ChildProcess>` <br />
+`startStub(host?: string, port?: number, args?: (string | number)[]): Promise<Stub>` <br />
 Start the stub server. Argument `args` values are passed directly to specmatic jar executable.
 
-`stopStub(process: ChildProcess)` <br />
+`stopStub(stub: Stub)` <br />
 Stop the stub server
 
-`test(host?: string, port?: string, contractPath?: string, args?: (string | number)[]): Promise<boolean>` <br />
+`test(host?: string, port?: string, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined>` <br />
 Run tests. Argument `args` values are passed directly to specmatic jar executable.
 
 `setExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
