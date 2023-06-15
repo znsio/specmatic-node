@@ -1,6 +1,8 @@
 # Contributing
 
-Thanks for being willing to contribute!
+Thanks for your willingness to contribute!
+
+Please check [open issues](https://github.com/znsio/specmatic-node/issues?q=is%3Aopen+is%3Aissue). Please respond to questions/bug reports/feature requests!
 
 ## Project setup
 
@@ -29,53 +31,27 @@ Please make sure to run the tests before you commit your changes by using the co
 
 `npm test`
 
-Build the dist files using
+Build the dist files locally once to make sure build works
 
 `npm run build`
 
-
-### Update Typings
-
-If your PR introduced some changes in the API, you are more than welcome to
-modify the Typescript type definition to reflect those changes. Just modify the
-`/types/index.d.ts` file accordingly. If you have never seen Typescript
-definitions before, you can read more about it in its
-[documentation pages](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html).
-Though this library itself is not written in Typescript we use
-[dtslint](https://github.com/microsoft/dtslint) to lint our typings.
-
+Finally commit
 
 ## Publishing a new version to npm
 
 ### Prerequisites
-* Access to push to master. 
-* Node version > 14 is needed.
+* Push access to master branch 
+* Node version 14 or higher
 
-### Step 1: Make the changes
-If there is a new version available in [specmatic downloads](https://specmatic.in/download/), download it in the project root, replacing the older version. Commit the new version.
+### Step 1: Update specmatic core jar
+If there is a new version available in [latest github release](https://github.com/znsio/specmatic/releases/latest), download it in the project root, replacing the older version. Commit the new version.
 
-### Step 2: Update node module's version
-`npm version` displays the existing version of the npm module.
+### Step 2: Make a release via github releases
+* Goto [github releases](https://github.com/znsio/specmatic-node/releases) and draft a new release
+* Click `choose a tag` and enter the required version. If the tag exists then you might be releasing a wrong version. Reverify the tag and version number. Ideally the tag should not exist as this is a new version and thus you should be presented with option to `+ Create new tag: <version> on publish` option. Click it.
+* Give a release title of format `v<version>`. 
+* Describe the changes in this release briefly
+* You can either save this draft and come back later to publish it or publish it now.
+* On publish, a github action is triggered that updates the release on npm repository.
 
-Use the suitable command to auto increment the npm version:
-
-`npm version major`
-
-`npm version minor`
-
-`npm version patch`
-
-OR
-
-Update the version to a specific semver by using command `npm version x.y.z`
-
-### Step 3: Publish to npm
-If the version updated in step 2 is different from the one available in npm global repository, push to remote master on github will automatically build, run the tests and publish the new version to npm. You can check the status of the publish in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
-
-
-## Help needed
-
-Please checkout the [the open issues][issues]
-
-Also, please watch the repo and respond to questions/bug reports/feature
-requests! Thanks!
+You can check the publish status in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
