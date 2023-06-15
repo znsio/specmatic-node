@@ -6,7 +6,20 @@ import fs from 'fs';
 import logger from '../common/logger';
 import callSpecmatic from '../common/runner';
 
-const startStub = (host?: string, port?: string, args?: (string | number)[]): Promise<ChildProcess> => {
+export class Stub {
+    host: string;
+    port: number;
+    url: string;
+    process: ChildProcess;
+    constructor(host: string, port: number, url: string, process: ChildProcess) {
+        this.host = host;
+        this.port = port;
+        this.url = url;
+        this.process = process;
+    }
+}
+
+const startStub = (host?: string, port?: number, args?: (string | number)[]): Promise<Stub> => {
     var cmd = `stub`;
     if (host) cmd += ` --host=${host}`;
     if (port) cmd += ` --port=${port}`;
@@ -27,7 +40,14 @@ const startStub = (host?: string, port?: string, args?: (string | number)[]): Pr
                 if (!error) {
                     if (message.indexOf('Stub server is running') > -1) {
                         logger.info(`Stub: ${message}`);
-                        resolve(javaProcess);
+                        const stubInfo = message.split('on');
+                        if (stubInfo.length < 2) reject();
+                        else {
+                            const url = stubInfo[1].trim();
+                            const urlInfo = /(.*?):\/\/(.*?):([0-9]+)/.exec(url);
+                            if ((urlInfo?.length ?? 0) < 4) reject();
+                            else resolve(new Stub(urlInfo![2], parseInt(urlInfo![3]), urlInfo![0], javaProcess));
+                        }
                     } else if (message.indexOf('Address already in use') > -1) {
                         logger.error(`Stub: ${message}`);
                         reject();
@@ -42,16 +62,17 @@ const startStub = (host?: string, port?: string, args?: (string | number)[]): Pr
     });
 };
 
-const stopStub = (javaProcess: ChildProcess) => {
-    logger.debug('Stopping stub server');
+const stopStub = (stub: Stub) => {
+    logger.debug(`Stopping stub server at ${stub.url}`);
+    const javaProcess = stub.process;
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
     javaProcess.kill();
-    logger.info('Stopped stub server');
+    logger.info(`Stopped stub server at ${stub.url}`);
 };
 
-const test = (host?: string, port?: string, contractPath?: string, args?: (string|number)[]): Promise<{ [k: string]: number } | undefined> => {
+const test = (host?: string, port?: number, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined> => {
     const specsPath = path.resolve(contractPath + '');
 
     var cmd = `test`;
@@ -105,11 +126,12 @@ const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
 
 const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<void> => {
     const stubResponse = require(path.resolve(stubPath));
+    stubServerBaseUrl = stubServerBaseUrl || 'http://localhost:9000';
 
-    logger.info('Set Expectations: Running');
+    logger.info(`Set Expectations: Stub url is ${stubServerBaseUrl}`);
 
     return new Promise((resolve, reject) => {
-        fetch(`${stubServerBaseUrl ? stubServerBaseUrl : `http://localhost:9000/`}_specmatic/expectations`, {
+        fetch(`${stubServerBaseUrl}/_specmatic/expectations`, {
             method: 'POST',
             body: JSON.stringify(stubResponse),
         })
