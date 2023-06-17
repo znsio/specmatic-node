@@ -1,6 +1,6 @@
 import execSh from 'exec-sh';
 import path from 'path';
-import callSpecmaticCli from '../core';
+import callSpecmaticCli from '../command.line';
 import { specmaticJarName } from '../../config';
 import fs from 'fs';
 import { ChildProcess } from 'child_process';
