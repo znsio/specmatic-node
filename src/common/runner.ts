@@ -1,12 +1,19 @@
 import execSh from 'exec-sh';
 import path from 'path';
-import { specmaticJarName } from '../config';
+import { specmaticJarName, specmaticKafkaJarName } from '../config';
 import logger from '../common/logger';
 import { ChildProcess } from 'child_process';
 
 const callSpecmatic = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
     const rootPath = path.resolve(__dirname, '..', '..');
     const specmaticJarPath = path.resolve(rootPath, specmaticJarName);
+    logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
+    return callJar(specmaticJarPath, args, done, onOutput);
+};
+
+const callKafka = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
+    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-kafka');
+    const specmaticJarPath = path.resolve(rootPath, specmaticKafkaJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
     return callJar(specmaticJarPath, args, done, onOutput);
 };
@@ -22,4 +29,4 @@ function callJar(jarPath: string, args: string, done: (error: any) => void, onOu
     return javaProcess;
 }
 
-export default callSpecmatic;
+export { callSpecmatic, callKafka };
