@@ -8,7 +8,11 @@ const callSpecmatic = (args: string, done: (error: any) => void, onOutput: (mess
     const rootPath = path.resolve(__dirname, '..', '..');
     const specmaticJarPath = path.resolve(rootPath, specmaticJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
-    const javaProcess = execSh(`java -jar ${specmaticJarPath} ${args}`, { stdio: 'pipe', stderr: 'pipe' }, done);
+    return callJar(specmaticJarPath, args, done, onOutput);
+};
+
+function callJar(jarPath: string, args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void) {
+    const javaProcess = execSh(`java -jar ${jarPath} ${args}`, { stdio: 'pipe', stderr: 'pipe' }, done);
     javaProcess.stdout?.on('data', function (data: String) {
         onOutput(`${data}`, false);
     });
@@ -16,6 +20,6 @@ const callSpecmatic = (args: string, done: (error: any) => void, onOutput: (mess
         onOutput(`${data}`, true);
     });
     return javaProcess;
-};
+}
 
 export default callSpecmatic;

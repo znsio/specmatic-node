@@ -63,13 +63,13 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
 };
 
 const stopStub = (stub: Stub) => {
-    logger.debug(`Stopping stub server at ${stub.url}`);
+    logger.debug(`Stub: Stopping server at ${stub.url}`);
     const javaProcess = stub.process;
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
     javaProcess.kill();
-    logger.info(`Stopped stub server at ${stub.url}`);
+    logger.info(`Stub: Stopped server at ${stub.url}`);
 };
 
 const test = (host?: string, port?: number, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined> => {
