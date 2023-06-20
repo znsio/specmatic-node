@@ -1,5 +1,5 @@
 import logger from '../common/logger';
-import callSpecmatic from '../common/runner';
+import { callSpecmatic } from '../common/runner';
 
 const callSpecmaticCli = (args?: string[]) => {
     const cliArgs = (args || process.argv).slice(2).join(' ');
