@@ -12,7 +12,7 @@ const callSpecmatic = (args: string, done: (error: any) => void, onOutput: (mess
 };
 
 const callKafka = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
-    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-kafka');
+    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-node-beta', 'kafka');
     const specmaticJarPath = path.resolve(rootPath, specmaticKafkaJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
     return callJar(specmaticJarPath, args, done, onOutput);
