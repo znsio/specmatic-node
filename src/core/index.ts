@@ -4,7 +4,7 @@ import { ChildProcess } from 'child_process';
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import logger from '../common/logger';
-import callSpecmatic from '../common/runner';
+import { callSpecmatic } from '../common/runner';
 
 export class Stub {
     host: string;
