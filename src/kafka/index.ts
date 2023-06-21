@@ -1,6 +1,7 @@
 import { callKafka } from '../common/runner';
 import logger from '../common/logger';
 import { ChildProcess } from 'child_process';
+import fetch from 'node-fetch';
 
 export class KafkaStub {
     port: number;
@@ -41,7 +42,7 @@ const startKafkaStub = (port?: number, args?: (string | number)[]): Promise<Kafk
                                 stub = new KafkaStub(parseInt(port), javaProcess);
                             }
                         }
-                    } else if (message.indexOf('Kafka is now running') > -1) {
+                    } else if (message.indexOf('Listening on topic') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         if (stub) resolve(stub);
                         else reject();
@@ -69,4 +70,34 @@ const stopKafkaStub = (stub: KafkaStub) => {
     logger.info(`Kafka Stub: Stopped at ${stub.port}`);
 };
 
-export { startKafkaStub, stopKafkaStub };
+const verifyKafkaStub = (stub: KafkaStub, topic: string, key: string, value: string) => {
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:9000/_verifications`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ topic: topic, key: key, value: value }),
+        })
+            .then(response => {
+                if (response.status != 200) {
+                    logger.error(`Kafka Stub Verification: Failed with status code ${response.status}`);
+                    reject();
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                logger.debug(data);
+                logger.debug('Kafka Stub Verification: Finished');
+                resolve(data.received);
+            })
+            .catch(err => {
+                logger.error(`Kafka Stub Verification: Failed with error ${err}`);
+                reject();
+            });
+    });
+};
+
+export { startKafkaStub, stopKafkaStub, verifyKafkaStub };
