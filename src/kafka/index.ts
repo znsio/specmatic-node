@@ -68,7 +68,7 @@ const stopKafkaStub = (stub: KafkaStub) => {
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
     javaProcess.kill();
-    logger.info(`Kafka Stub: Stopped at ${stub.port}`);
+    logger.info(`Kafka Stub: Stopped at port=${stub.port}, apiPort=${stub.apiPort}`);
 };
 
 const verifyKafkaStub = (stub: KafkaStub, topic: string, key: string, value: string) => {
