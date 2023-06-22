@@ -16,6 +16,8 @@ This node module is a thin wrapper over the [specmatic executable jar](https://s
 - [Contract as Test (For API Providers / Service)](#contract-as-test-for-api-providers--service)
 - [Sample Repo](#sample-repo)
 - [Programmatic Access](#programmatic-access)
+  - [Core APIs](#core-apis)
+  - [Kafka APIs](#kafka-apis)
 - [IDE Support](#ide-support)
   - [Jest Framework](#jest-framework)
 - [Logging](#logging)
@@ -54,9 +56,13 @@ import {
     test,
     setExpecations,
     showTestResults,
-    printJarVersion
+    printJarVersion,
+    startKafkaStub,
+    stopKafkaStub,
+    verifyKafkaStub
 } from 'specmatic';
 ```
+### Core APIs
 
 `startStub(host?: string, port?: number, args?: (string | number)[]): Promise<Stub>` <br />
 Start the stub server. Argument `args` values are passed directly to specmatic jar executable.
@@ -75,6 +81,17 @@ View test results in any framework so that it shows up in IDE specific test resu
 
 `printJarVersion()` <br />
 method to print the version of specmatic.jar
+
+### Kafka APIs
+
+`startKafkaStub(port?: number, args?: (string | number)[]): Promise<KafkaStub>` <br />
+Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json
+
+`stopKafkaStub(stub: KafkaStub)` <br />
+Stop a running kafka stub
+
+`verifyKafkaStub(stub: KafkaStub, topic: string, key: string, value: string)` <br />
+Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api.
 
 ## IDE Support
 
