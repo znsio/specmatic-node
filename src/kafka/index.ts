@@ -72,8 +72,10 @@ const stopKafkaStub = (stub: KafkaStub) => {
 };
 
 const verifyKafkaStub = (stub: KafkaStub, topic: string, key: string, value: string) => {
+    const verificationUrl = `http://localhost:${stub.apiPort}/_verifications`;
+    logger.info(`Kafka Verification: Url is ${verificationUrl}`);
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:${stub.apiPort}/_verifications`, {
+        fetch(`${verificationUrl}`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
