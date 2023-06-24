@@ -71,7 +71,7 @@ const stopKafkaStub = (stub: KafkaStub) => {
     logger.info(`Kafka Stub: Stopped at port=${stub.port}, apiPort=${stub.apiPort}`);
 };
 
-const verifyKafkaStub = (stub: KafkaStub, topic: string, key: string, value: string) => {
+const verifyKafkaStub = (stub: KafkaStub, topic: string, value: string) => {
     const verificationUrl = `http://localhost:${stub.apiPort}/_verifications`;
     logger.info(`Kafka Verification: Url is ${verificationUrl}`);
     return new Promise((resolve, reject) => {
@@ -81,7 +81,7 @@ const verifyKafkaStub = (stub: KafkaStub, topic: string, key: string, value: str
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ topic: topic, key: key, value: value }),
+            body: JSON.stringify({ topic: topic, value: value }),
         })
             .then(response => {
                 if (response.status != 200) {
