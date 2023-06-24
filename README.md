@@ -90,7 +90,7 @@ Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json
 `stopKafkaStub(stub: KafkaStub)` <br />
 Stop a running kafka stub
 
-`verifyKafkaStub(stub: KafkaStub, topic: string, key: string, value: string)` <br />
+`verifyKafkaStub(stub: KafkaStub, topic: string, value: string)` <br />
 Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api.
 
 ## IDE Support
