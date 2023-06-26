@@ -90,7 +90,25 @@ Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json
 `stopKafkaStub(stub: KafkaStub)` <br />
 Stop a running kafka stub
 
-`verifyKafkaStub(stub: KafkaStub, topic: string, value: string)` <br />
+`setKafkaStubExpectations(stub: KafkaStub, expecations: any): Promise<void>` <br />
+Set expected message count on Kafka for each topic. Expecations are of the format 
+```
+[
+    {
+        "topic": "product-queries",
+        "count": 2
+    },
+    {
+        "topic": "test-topic",
+        "count": 2
+    }
+]
+```
+
+`verifyKafkaStub(stub: KafkaStub): Promise<Boolean>` <br />
+Verify all expecations set on Kafka
+
+`verifyKafkaStubMessage(stub: KafkaStub, topic: string, value: string): Promise<Boolean>` <br />
 Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api.
 
 ## IDE Support
