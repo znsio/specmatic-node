@@ -2,6 +2,7 @@ import { callKafka } from '../common/runner';
 import logger from '../common/logger';
 import { ChildProcess } from 'child_process';
 import fetch from 'node-fetch';
+import terminate from 'terminate/promise';
 
 export class KafkaStub {
     port: number;
@@ -61,13 +62,13 @@ const startKafkaStub = (port?: number, args?: (string | number)[]): Promise<Kafk
     });
 };
 
-const stopKafkaStub = (stub: KafkaStub) => {
+const stopKafkaStub = async (stub: KafkaStub) => {
     logger.debug(`Kafka Stub: Stopping at port=${stub.port}, apiPort=${stub.apiPort}`);
     const javaProcess = stub.process;
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
-    javaProcess.kill();
+    await terminate(javaProcess.pid!);
     logger.info(`Kafka Stub: Stopped at port=${stub.port}, apiPort=${stub.apiPort}`);
 };
 

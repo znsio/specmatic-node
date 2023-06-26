@@ -5,6 +5,7 @@ import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import logger from '../common/logger';
 import { callSpecmatic } from '../common/runner';
+import terminate from 'terminate/promise';
 
 export class Stub {
     host: string;
@@ -62,13 +63,13 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
     });
 };
 
-const stopStub = (stub: Stub) => {
+const stopStub = async (stub: Stub) => {
     logger.debug(`Stub: Stopping server at ${stub.url}`);
     const javaProcess = stub.process;
     javaProcess.stdout?.removeAllListeners();
     javaProcess.stderr?.removeAllListeners();
     javaProcess.removeAllListeners('close');
-    javaProcess.kill();
+    await terminate(javaProcess.pid!);
     logger.info(`Stub: Stopped server at ${stub.url}`);
 };
 
