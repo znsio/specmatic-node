@@ -128,7 +128,7 @@ const verifyKafkaStub = (stub: KafkaStub): Promise<Boolean> => {
                 resolve(data.success);
             })
             .catch(err => {
-                logger.error(`Kafka Verify Message: Failed with error ${err}`);
+                logger.error(`Kafka Verification: Failed with error ${err}`);
                 reject();
             });
     });
