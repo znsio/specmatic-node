@@ -3,12 +3,14 @@ import path from 'path';
 import { ChildProcess } from 'child_process';
 import { mock as jestMock, mockReset } from 'jest-mock-extended';
 import { Readable } from 'stream';
+import terminate from 'terminate/promise';
 
 import * as specmatic from '../..';
 import { specmaticJarName } from '../../config';
 import { Stub } from '..';
 
 jest.mock('exec-sh');
+jest.mock('terminate');
 
 const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticJarName);
 const HOST = 'localhost';
@@ -129,5 +131,5 @@ test('stopStub method stops any running stub server', () => {
 
     expect(readableMock.removeAllListeners).toHaveBeenCalledTimes(2);
     expect(javaProcessMock.removeAllListeners).toHaveBeenCalledTimes(1);
-    expect(javaProcessMock.kill).toHaveBeenCalledTimes(1);
+    expect(terminate).toHaveBeenCalledTimes(1);
 });
