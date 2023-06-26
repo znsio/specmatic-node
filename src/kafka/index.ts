@@ -72,8 +72,39 @@ const stopKafkaStub = async (stub: KafkaStub) => {
     logger.info(`Kafka Stub: Stopped at port=${stub.port}, apiPort=${stub.apiPort}`);
 };
 
-const verifyKafkaStub = (stub: KafkaStub, topic: string, value: string) => {
-    const verificationUrl = `http://localhost:${stub.apiPort}/_verifications`;
+const setKafkaStubExpectations = (stub: KafkaStub, expecations: any): Promise<void> => {
+    const exectationsUrl = `http://localhost:${stub.apiPort}/_expectations`;
+    logger.info(`Kafka Set Expectations: Url is ${exectationsUrl}`);
+    return new Promise((resolve, reject) => {
+        fetch(`${exectationsUrl}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(expecations),
+        })
+            .then(response => {
+                if (response.status != 200) {
+                    logger.error(`Kafka Set Expectations: Failed with status code ${response.status}`);
+                    reject();
+                } else {
+                    return response.text();
+                }
+            })
+            .then(data => {
+                logger.debug(`Kafka Set Expectations: Finished ${JSON.stringify(data)}`);
+                resolve();
+            })
+            .catch(err => {
+                logger.error(`Kafka Set Expectations: Failed with error ${err}`);
+                reject();
+            });
+    });
+};
+
+const verifyKafkaStub = (stub: KafkaStub): Promise<Boolean> => {
+    const verificationUrl = `http://localhost:${stub.apiPort}/_expectations/verifications`;
     logger.info(`Kafka Verification: Url is ${verificationUrl}`);
     return new Promise((resolve, reject) => {
         fetch(`${verificationUrl}`, {
@@ -82,7 +113,6 @@ const verifyKafkaStub = (stub: KafkaStub, topic: string, value: string) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ topic: topic, value: value }),
         })
             .then(response => {
                 if (response.status != 200) {
@@ -94,13 +124,45 @@ const verifyKafkaStub = (stub: KafkaStub, topic: string, value: string) => {
             })
             .then(data => {
                 logger.debug(`Kafka Verification: Finished ${JSON.stringify(data)}`);
-                resolve(data.received);
+                if (!data.success) logger.info(`Kafka Verification: Errors\n${JSON.stringify(data)}`);
+                resolve(data.success);
             })
             .catch(err => {
-                logger.error(`Kafka Verification: Failed with error ${err}`);
+                logger.error(`Kafka Verify Message: Failed with error ${err}`);
                 reject();
             });
     });
 };
 
-export { startKafkaStub, stopKafkaStub, verifyKafkaStub };
+const verifyKafkaStubMessage = (stub: KafkaStub, topic: string, value: string): Promise<Boolean> => {
+    const verificationUrl = `http://localhost:${stub.apiPort}/_verifications`;
+    logger.info(`Kafka Verify Message: Url is ${verificationUrl}`);
+    return new Promise((resolve, reject) => {
+        fetch(`${verificationUrl}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ topic: topic, value: value }),
+        })
+            .then(response => {
+                if (response.status != 200) {
+                    logger.error(`Kafka Verify Message: Failed with status code ${response.status}`);
+                    reject();
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                logger.debug(`Kafka Verify Message: Finished ${JSON.stringify(data)}`);
+                resolve(data.received);
+            })
+            .catch(err => {
+                logger.error(`Kafka Verify Message: Failed with error ${err}`);
+                reject();
+            });
+    });
+};
+
+export { startKafkaStub, stopKafkaStub, verifyKafkaStubMessage, verifyKafkaStub, setKafkaStubExpectations };
