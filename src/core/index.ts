@@ -6,6 +6,7 @@ import fs from 'fs';
 import logger from '../common/logger';
 import { callSpecmatic } from '../common/runner';
 import terminate from 'terminate/promise';
+import listExpressEndpoints from 'express-list-endpoints';
 
 export class Stub {
     host: string;
@@ -169,6 +170,15 @@ const printJarVersion = () => {
     );
 };
 
+const listEndPoints = (expressApp: any): { [key: string]: string[] } => {
+    const details = listExpressEndpoints(expressApp);
+    let apiInfo: { [key: string]: string[] } = {};
+    details.map(apiDetail => {
+        apiInfo[apiDetail.path] = apiDetail.methods;
+    });
+    return apiInfo;
+};
+
 const parseJunitXML = () => {
     const reportPath = path.resolve('dist/test-report/TEST-junit-jupiter.xml');
     var data = fs.readFileSync(reportPath);
@@ -178,4 +188,4 @@ const parseJunitXML = () => {
     return resultXml.testsuite.testcase;
 };
 
-export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults };
+export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults, listEndPoints };
