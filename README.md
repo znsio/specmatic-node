@@ -82,6 +82,9 @@ View test results in any framework so that it shows up in IDE specific test resu
 `printJarVersion()` <br />
 method to print the version of specmatic.jar
 
+`enableApiCoverage(expressAppRef) ` <br />
+enable api coverage for express apps to know which apis and http verbs are covered in contract tests and which not
+
 ### Kafka APIs
 
 `startKafkaStub(port?: number, args?: (string | number)[]): Promise<KafkaStub>` <br />

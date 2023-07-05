@@ -19,7 +19,11 @@ const callKafka = (args: string, done: (error: any) => void, onOutput: (message:
 };
 
 function callJar(jarPath: string, args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void) {
-    const javaProcess = execSh(`java -jar ${jarPath} ${args}`, { stdio: 'pipe', stderr: 'pipe' }, done);
+    let java = 'java';
+    if (process.env['endpointsAPI']) {
+        java = `${java} -DendpointsAPI="${process.env['endpointsAPI']}"`;
+    }
+    const javaProcess = execSh(`${java} -jar ${jarPath} ${args}`, { stdio: 'pipe', stderr: 'pipe' }, done);
     javaProcess.stdout?.on('data', function (data: String) {
         onOutput(`${data}`, false);
     });
