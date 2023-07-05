@@ -8,6 +8,8 @@ import { callSpecmatic } from '../common/runner';
 import terminate from 'terminate/promise';
 import listExpressEndpoints from 'express-list-endpoints';
 
+const END_POINTS_API_ROUTE = '_specmatic/endpoints';
+
 export class Stub {
     host: string;
     port: number;
@@ -75,6 +77,11 @@ const stopStub = async (stub: Stub) => {
 };
 
 const test = (host?: string, port?: number, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined> => {
+    if (process.env['endpointsAPI']) {
+        const apiEndPointUrl = host && port ? `http://${host}:${port}/${END_POINTS_API_ROUTE}` : `http://localhost:8080/${END_POINTS_API_ROUTE}`;
+        process.env['endpointsAPI'] = apiEndPointUrl;
+    }
+
     const specsPath = path.resolve(contractPath + '');
 
     var cmd = `test`;
@@ -172,11 +179,18 @@ const printJarVersion = () => {
 
 const listEndPoints = (expressApp: any): { [key: string]: string[] } => {
     const details = listExpressEndpoints(expressApp);
-    let apiInfo: { [key: string]: string[] } = {};
+    let endPoints: { [key: string]: string[] } = {};
     details.map(apiDetail => {
-        apiInfo[apiDetail.path] = apiDetail.methods;
+        endPoints[apiDetail.path] = apiDetail.methods;
     });
-    return apiInfo;
+    delete endPoints[`/${END_POINTS_API_ROUTE}`];
+    return endPoints;
+};
+
+const enableApiCoverage = (expressApp: any) => {
+    process.env['endpointsAPI'] = END_POINTS_API_ROUTE;
+    addEndPointsRoute(expressApp);
+    logger.info(`Endpoints API registered at ${END_POINTS_API_ROUTE}`);
 };
 
 const parseJunitXML = () => {
@@ -188,4 +202,32 @@ const parseJunitXML = () => {
     return resultXml.testsuite.testcase;
 };
 
-export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults, listEndPoints };
+const addEndPointsRoute = (expressApp: any) => {
+    expressApp.get(`/${END_POINTS_API_ROUTE}`, (_req: any, res: any) => {
+        let endPoints = listEndPoints(expressApp);
+        let springActuatorPayload = {
+            contexts: {
+                application: {
+                    mappings: {
+                        dispatcherServlets: {
+                            dispatcherServlet: [],
+                        },
+                    },
+                },
+            },
+        };
+        Object.keys(endPoints).sort().map(path => {
+            springActuatorPayload.contexts.application.mappings.dispatcherServlets.dispatcherServlet.push({
+                details: {
+                    requestMappingConditions: {
+                        methods: endPoints[path].sort(),
+                        patterns: [path],
+                    },
+                },
+            } as never);
+        });
+        res.send(springActuatorPayload);
+    });
+}
+
+export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults, enableApiCoverage };

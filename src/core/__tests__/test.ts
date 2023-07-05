@@ -163,6 +163,34 @@ test('invocation makes sure previous junit report if any is deleted', async func
     expect(spy).toHaveBeenCalledWith(path.resolve('dist/test-report'), { force: true, recursive: true });
 });
 
+test('passes an property indicating api endpoint based on host and port supplied when api coverage is enabled', async () => {
+    process.env['endpointsAPI'] = '/_specmatic/endpoints';
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        copyReportFile();
+        execSh.mock.calls[0][2]();
+    }, 0);
+
+    await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -DendpointsAPI=\"http://${HOST}:${PORT}/_specmatic/endpoints\" -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=localhost --port=8000`);
+});
+
+test('passes an property indicating api endpoint based on defaults if host and port not provided when api coverage is enabled', async () => {
+    process.env['endpointsAPI'] = '/_specmatic/endpoints';
+    execSh.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        copyReportFile();
+        execSh.mock.calls[0][2]();
+    }, 0);
+
+    await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
+
+    expect(execSh).toHaveBeenCalledTimes(1);
+    expect(execSh.mock.calls[0][0]).toBe(`java -DendpointsAPI=\"http://${HOST}:${PORT}/_specmatic/endpoints\" -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=localhost --port=8000`);
+});
+
 function copyReportFile() {
     copyReportFileWithName('sample-junit-result-multiple.xml');
 }

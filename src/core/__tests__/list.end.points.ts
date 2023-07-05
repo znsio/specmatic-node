@@ -1,28 +1,41 @@
 import * as specmatic from '../..';
 import express from 'express';
+import request from 'supertest';
 
-test('gives list of end points for a single route defined on express app', () => {
+test('adds an environment variable indicating api endpoits route is configured', async () => {
     var app = express();
     app.get('/', () => {});
 
-    const endPoints = specmatic.listEndPoints(app);
+    specmatic.enableApiCoverage(app);
 
-    expect(endPoints['/']).toEqual(['GET']);
+    expect(process.env.endpointsAPI).toBe('_specmatic/endpoints');
 });
 
-test('gives list of end points for a multiple route defined on express app', () => {
+test('gives list of end points for a single route defined on express app', async () => {
+    var app = express();
+    app.get('/', () => {});
+
+    specmatic.enableApiCoverage(app);
+
+    const res = await request(app).get('/_specmatic/endpoints').accept('application/json').expect(200);
+    const response = generateResponseObject({ '/': ['GET'] });
+    expect(res.body).toStrictEqual(response);
+});
+
+test('gives list of end points for multiple routes defined on express app', async () => {
     var app = express();
     app.get('/', () => {});
     app.post('/', () => {});
     app.get('/ping', () => {});
 
-    const endPoints = specmatic.listEndPoints(app);
+    specmatic.enableApiCoverage(app);
 
-    expect(endPoints['/'].sort()).toEqual(['GET', 'POST']);
-    expect(endPoints['/ping']).toEqual(['GET']);
+    const res = await request(app).get('/_specmatic/endpoints').accept('application/json').expect(200);
+    const response = generateResponseObject({ '/': ['GET', 'POST'], '/ping': ['GET'] });
+    expect(res.body).toStrictEqual(response);
 });
 
-test('gives list of end points for a multiple routes defined on multiple routers', () => {
+test('gives list of end points for a multiple routes defined on multiple routers', async () => {
     var app = express();
     const userRouter = express.Router();
     userRouter.get('/', function (req, res) {});
@@ -37,7 +50,34 @@ test('gives list of end points for a multiple routes defined on multiple routers
     app.use('/user', userRouter);
     app.use('/product', productRouter);
 
-    const endPoints = specmatic.listEndPoints(app);
-    expect(endPoints['/user'].sort()).toEqual(['DELETE', 'GET', 'POST', 'PUT']);
-    expect(endPoints['/product'].sort()).toEqual(['GET', 'POST']);
+    specmatic.enableApiCoverage(app);
+
+    const res = await request(app).get('/_specmatic/endpoints').accept('application/json').expect(200);
+    const response = generateResponseObject({ '/product': ['GET', 'POST'], '/user': ['DELETE', 'GET', 'POST', 'PUT'] });
+    expect(res.body).toStrictEqual(response);
 });
+
+function generateResponseObject(endPoints: { [key: string]: string[] }) {
+    const structure = {
+        contexts: {
+            application: {
+                mappings: {
+                    dispatcherServlets: {
+                        dispatcherServlet: [],
+                    },
+                },
+            },
+        },
+    };
+    Object.keys(endPoints).map(key => {
+        structure.contexts.application.mappings.dispatcherServlets.dispatcherServlet.push({
+            details: {
+                requestMappingConditions: {
+                    methods: endPoints[key],
+                    patterns: [key],
+                },
+            },
+        } as never);
+    });
+    return structure;
+}
