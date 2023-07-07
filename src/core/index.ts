@@ -45,16 +45,16 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
                     if (message.indexOf('Stub server is running') > -1) {
                         logger.info(`Stub: ${message}`);
                         const stubInfo = message.split('on');
-                        if (stubInfo.length < 2) reject();
+                        if (stubInfo.length < 2) reject('Cannot determine url from stub output');
                         else {
                             const url = stubInfo[1].trim();
                             const urlInfo = /(.*?):\/\/(.*?):([0-9]+)/.exec(url);
-                            if ((urlInfo?.length ?? 0) < 4) reject();
+                            if ((urlInfo?.length ?? 0) < 4) reject('Cannot determine host and port from stub output');
                             else resolve(new Stub(urlInfo![2], parseInt(urlInfo![3]), urlInfo![0], javaProcess));
                         }
                     } else if (message.indexOf('Address already in use') > -1) {
                         logger.error(`Stub: ${message}`);
-                        reject();
+                        reject('Address already in use');
                     } else {
                         logger.debug(`Stub: ${message}`);
                     }
@@ -144,10 +144,12 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
             method: 'POST',
             body: JSON.stringify(stubResponse),
         })
-            .then(response => {
+            .then(async response => {
                 if (response.status != 200) {
                     logger.error(`Set Expectations: Failed with status code ${response.status}`);
-                    reject();
+                    const body = await response.text();
+                    logger.error(body);
+                    reject(`Setting expecation failed`);
                 } else {
                     logger.info('Set Expectations: Finished');
                     resolve();
@@ -155,7 +157,7 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
             })
             .catch(err => {
                 logger.error(`Set Expectations: Failed with error ${err}`);
-                reject();
+                reject(`Setting expecation failed with error ${err}`);
             });
     });
 };
