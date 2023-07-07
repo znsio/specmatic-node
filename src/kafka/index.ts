@@ -37,20 +37,20 @@ const startKafkaStub = (port?: number, args?: (string | number)[]): Promise<Kafk
                     if (message.indexOf('Kafka started on port') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         const stubInfo = message.split('on port');
-                        if (stubInfo.length < 2) reject();
+                        if (stubInfo.length < 2) reject('Cannot determine port from kafka stub output');
                         else port = parseInt(stubInfo[1].trim());
                     } else if (message.indexOf('Starting api server on port') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         const stubInfo = message.split(':');
-                        if (stubInfo.length < 2) reject();
+                        if (stubInfo.length < 2) reject('Cannot determine api port from kafka stub output');
                         else apiPort = parseInt(stubInfo[1].trim());
                     } else if (message.indexOf('Listening on topic') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         if (port && apiPort) resolve(new KafkaStub(port, apiPort, javaProcess));
-                        else reject();
+                        else reject('No port or api port information available but kafka stub listening on topic already');
                     } else if (message.indexOf('Address already in use') > -1) {
                         logger.error(`Kafka Stub: ${message}`);
-                        reject();
+                        reject('Address already in use');
                     } else {
                         logger.debug(`Kafka Stub: ${message}`);
                     }
@@ -87,7 +87,7 @@ const setKafkaStubExpectations = (stub: KafkaStub, expecations: any): Promise<vo
             .then(response => {
                 if (response.status != 200) {
                     logger.error(`Kafka Set Expectations: Failed with status code ${response.status}`);
-                    reject();
+                    reject('Set expectation failed');
                 } else {
                     return response.text();
                 }
@@ -98,7 +98,7 @@ const setKafkaStubExpectations = (stub: KafkaStub, expecations: any): Promise<vo
             })
             .catch(err => {
                 logger.error(`Kafka Set Expectations: Failed with error ${err}`);
-                reject();
+                reject(`Set expectation failed with error ${err}`);
             });
     });
 };
@@ -117,7 +117,7 @@ const verifyKafkaStub = (stub: KafkaStub): Promise<Boolean> => {
             .then(response => {
                 if (response.status != 200) {
                     logger.error(`Kafka Verification: Failed with status code ${response.status}`);
-                    reject();
+                    reject('Kafka verification failed');
                 } else {
                     return response.json();
                 }
@@ -129,7 +129,7 @@ const verifyKafkaStub = (stub: KafkaStub): Promise<Boolean> => {
             })
             .catch(err => {
                 logger.error(`Kafka Verification: Failed with error ${err}`);
-                reject();
+                reject(`Kafka verification failed with error ${err}`);
             });
     });
 };
@@ -149,7 +149,7 @@ const verifyKafkaStubMessage = (stub: KafkaStub, topic: string, value: string): 
             .then(response => {
                 if (response.status != 200) {
                     logger.error(`Kafka Verify Message: Failed with status code ${response.status}`);
-                    reject();
+                    reject('Kafka message verification failed');
                 } else {
                     return response.json();
                 }
@@ -160,7 +160,7 @@ const verifyKafkaStubMessage = (stub: KafkaStub, topic: string, value: string): 
             })
             .catch(err => {
                 logger.error(`Kafka Verify Message: Failed with error ${err}`);
-                reject();
+                reject(`Kafka message verification failed with error ${err}`);
             });
     });
 };
