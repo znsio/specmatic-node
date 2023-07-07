@@ -1,0 +1,4 @@
+{
+    "testPathIgnorePatterns": ["/node_modules/", "dist"],
+    "setupFilesAfterEnv": ["jest-extended/all"]
+}
