@@ -5,6 +5,7 @@
         "esnext"
       ],
       "allowJs": true,
+      "declaration": true,
       "skipLibCheck": true,
       "allowSyntheticDefaultImports": true,
       "strict": true,
@@ -12,11 +13,11 @@
       "module": "esnext",
       "moduleResolution": "node",
       "resolveJsonModule": true,
-      "noEmit": true,
+      "outDir": "dist",
     },
-    "files": ["global.d.ts"],
+    // "files": ["global.d.ts"],
+    "exclude": ["src/**/__tests__/**/*.ts"],
     "include": [
-      "src",
-      "**/*.ts"
+      "src/**/*.ts"
     ]
 }
