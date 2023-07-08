@@ -1,4 +1,5 @@
 {
     "testPathIgnorePatterns": ["/node_modules/", "dist"],
-    "setupFilesAfterEnv": ["jest-extended/all"]
+    "setupFilesAfterEnv": ["jest-extended/all"],
+    "coverageDirectory": "./coverage"
 }
