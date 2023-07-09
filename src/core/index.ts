@@ -110,7 +110,11 @@ const test = (host?: string, port?: number, contractPath?: string, args?: (strin
                 resolve(result);
             },
             (message, error) => {
-                logger[error ? 'error' : 'debug'](`Test: ${message}`);
+                if (message.indexOf('API COVERAGE SUMMARY') > -1) {
+                    logger.info(`Test: ${message}`);
+                } else {
+                    logger[error ? 'error' : 'debug'](`Test: ${message}`);
+                }
             }
         );
     });
@@ -179,6 +183,15 @@ const printJarVersion = () => {
     );
 };
 
+const parseJunitXML = () => {
+    const reportPath = path.resolve('dist/test-report/TEST-junit-jupiter.xml');
+    var data = fs.readFileSync(reportPath);
+    const parser = new XMLParser();
+    var resultXml = parser.parse(data);
+    resultXml.testsuite.testcase = Array.isArray(resultXml.testsuite.testcase) ? resultXml.testsuite.testcase : [resultXml.testsuite.testcase];
+    return resultXml.testsuite.testcase;
+};
+
 const listEndPoints = (expressApp: any): { [key: string]: string[] } => {
     const details = listExpressEndpoints(expressApp);
     let endPoints: { [key: string]: string[] } = {};
@@ -195,15 +208,6 @@ const enableApiCoverage = (expressApp: any) => {
     logger.info(`Endpoints API registered at ${END_POINTS_API_ROUTE}`);
 };
 
-const parseJunitXML = () => {
-    const reportPath = path.resolve('dist/test-report/TEST-junit-jupiter.xml');
-    var data = fs.readFileSync(reportPath);
-    const parser = new XMLParser();
-    var resultXml = parser.parse(data);
-    resultXml.testsuite.testcase = Array.isArray(resultXml.testsuite.testcase) ? resultXml.testsuite.testcase : [resultXml.testsuite.testcase];
-    return resultXml.testsuite.testcase;
-};
-
 const addEndPointsRoute = (expressApp: any) => {
     expressApp.get(`/${END_POINTS_API_ROUTE}`, (_req: any, res: any) => {
         let endPoints = listEndPoints(expressApp);
@@ -218,18 +222,20 @@ const addEndPointsRoute = (expressApp: any) => {
                 },
             },
         };
-        Object.keys(endPoints).sort().map(path => {
-            springActuatorPayload.contexts.application.mappings.dispatcherServlets.dispatcherServlet.push({
-                details: {
-                    requestMappingConditions: {
-                        methods: endPoints[path].sort(),
-                        patterns: [path],
+        Object.keys(endPoints)
+            .sort()
+            .map(path => {
+                springActuatorPayload.contexts.application.mappings.dispatcherServlets.dispatcherServlet.push({
+                    details: {
+                        requestMappingConditions: {
+                            methods: endPoints[path].sort(),
+                            patterns: [path],
+                        },
                     },
-                },
-            } as never);
-        });
+                } as never);
+            });
         res.send(springActuatorPayload);
     });
-}
+};
 
 export { startStub, stopStub, test, setExpectations, printJarVersion, showTestResults, enableApiCoverage };
