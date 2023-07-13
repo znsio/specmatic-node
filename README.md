@@ -11,21 +11,22 @@ This node module is a thin wrapper over the [specmatic executable jar](https://s
 - Programmatic access to some of the specmatic options as api like start / stop the stub server, setting expecations, running tests. These helpers methods can be used in a javascript project programmatically instead of using cli scripts.
 
 ## Table Of Contents
-- [Quick Start](#quick-start)
-- [Contract as Stub / Smart Mock (For API clients / consumers)](#contract-as-stub--smart-mock-for-api-clients--consumers)
-- [Contract as Test (For API Providers / Service)](#contract-as-test-for-api-providers--service)
-- [Sample Repo](#sample-repo)
-- [Programmatic Access](#programmatic-access)
-  - [Core APIs](#core-apis)
-  - [Kafka APIs](#kafka-apis)
-- [IDE Support](#ide-support)
-  - [Jest Framework](#jest-framework)
-- [Logging](#logging)
-- [Known Issues](#known-issues)
-  - [1. Node 17/18 - Connection Refused error when connecting to stub](#1-node-1718---connection-refused-error-when-connecting-to-stub)
-  - [2. Error "ReferenceError: setImmediate is not defined"](#2-error-referenceerror-setimmediate-is-not-defined)
-  - [3. Specmatic stub is not terminated after test execution](#3-specmatic-stub-is-not-terminated-after-test-execution)
-  - [4. Test results don't show up in IDE](#4-test-results-dont-show-up-in-ide)
+  - [Quick Start](#quick-start)
+  - [Contract as Stub / Smart Mock (For API clients / consumers)](#contract-as-stub--smart-mock-for-api-clients--consumers)
+  - [Contract as Test (For API Providers / Service)](#contract-as-test-for-api-providers--service)
+  - [Sample Repo](#sample-repo)
+  - [Programmatic Access](#programmatic-access)
+    - [Core APIs](#core-apis)
+    - [Kafka APIs](#kafka-apis)
+  - [IDE Support](#ide-support)
+    - [Jest Framework](#jest-framework)
+  - [Logging](#logging)
+  - [Known Issues](#known-issues)
+    - [1. Node 17/18 - Connection Refused error when connecting to stub](#1-node-1718---connection-refused-error-when-connecting-to-stub)
+    - [2. Error "ReferenceError: setImmediate is not defined"](#2-error-referenceerror-setimmediate-is-not-defined)
+    - [3. Specmatic stub is not terminated after test execution](#3-specmatic-stub-is-not-terminated-after-test-execution)
+    - [4. Test results don't show up in IDE](#4-test-results-dont-show-up-in-ide)
+  - [Contribution](#contribution)
 
 ## Quick Start
 
