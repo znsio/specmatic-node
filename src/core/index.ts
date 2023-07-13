@@ -111,7 +111,7 @@ const test = (host?: string, port?: number, contractPath?: string, args?: (strin
             },
             (message, error) => {
                 if (message.indexOf('API COVERAGE SUMMARY') > -1) {
-                    logger.info(`Test: ${message}`);
+                    console.log(message); //Log always for all log levels
                 } else {
                     logger[error ? 'error' : 'debug'](`Test: ${message}`);
                 }
