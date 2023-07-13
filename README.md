@@ -51,30 +51,34 @@ Specmatic JS library exposes some of the commands as methods that can be run pro
 
 ```javascript
 import {
-    startStub,
-    stopStub,
+    startHttpStub,
+    setHttpStubExpecations,
+    stopHttpStub,
     test,
-    setExpecations,
     showTestResults,
     printJarVersion,
-    startKafkaStub,
-    stopKafkaStub,
-    verifyKafkaStub
+    startKafkaMock,
+    setKafkaMockExpecations,
+    stopKafkaMock,
+    verifyKafkaMock
 } from 'specmatic';
 ```
 ### Core APIs
 
-`startStub(host?: string, port?: number, args?: (string | number)[]): Promise<Stub>` <br />
-Start the stub server. Argument `args` values are passed directly to specmatic jar executable.
+`startHttpStub(host?: string, port?: number, args?: (string | number)[]): Promise<Stub>` <br />
+Start the stub server. Argument `args` values are passed directly to specmatic jar executable.<br />
+*Note: This replaces `startStub` method which is deprecated*
 
-`stopStub(stub: Stub)` <br />
-Stop the stub server
+`setHttpStubExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
+Set stub expectiona. Stub should be running before invoking this method.<br />
+*Note: This replaces `setExpectations` method which is deprecated*
+
+`stopHttpStub(stub: Stub)` <br />
+Stop the stub server<br />
+*Note: This replaces `stopStub` method which is deprecated*
 
 `test(host?: string, port?: string, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined>` <br />
 Run tests. Argument `args` values are passed directly to specmatic jar executable.
-
-`setExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
-Set stub expectiona. Stub should be running before invoking this method.
 
 `showTestResults(testFn: (name: string, cb: () => void) => void)` <br />
 View test results in any framework so that it shows up in IDE specific test results interface. Refer [IDE Support](#ide-support) below for details on how to use this feature.
@@ -87,13 +91,11 @@ enable api coverage for express apps to know which apis and http verbs are cover
 
 ### Kafka APIs
 
-`startKafkaStub(port?: number, args?: (string | number)[]): Promise<KafkaStub>` <br />
-Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json
+`startKafkaMock(port?: number, args?: (string | number)[]): Promise<KafkaStub>` <br />
+Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json.<br />
+*Note: This replaces `startKafkaStub` method which is deprecated*
 
-`stopKafkaStub(stub: KafkaStub)` <br />
-Stop a running kafka stub
-
-`setKafkaStubExpectations(stub: KafkaStub, expecations: any): Promise<void>` <br />
+`setKafkaMockExpectations(stub: KafkaStub, expecations: any): Promise<void>` <br />
 Set expected message count on Kafka for each topic. Expecations are of the format 
 ```
 [
@@ -107,12 +109,19 @@ Set expected message count on Kafka for each topic. Expecations are of the forma
     }
 ]
 ```
+*Note: This replaces `setKafkaStubExpectations` method which is deprecated*<br />
 
-`verifyKafkaStub(stub: KafkaStub): Promise<Boolean>` <br />
-Verify all expecations set on Kafka
+`stopKafkaMock(stub: KafkaStub)` <br />
+Stop a running kafka stub.<br />
+*Note: This replaces `stopKafkaStub` method which is deprecated*
 
-`verifyKafkaStubMessage(stub: KafkaStub, topic: string, value: string): Promise<Boolean>` <br />
-Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api.
+`verifyKafkaMock(stub: KafkaStub): Promise<Boolean>` <br />
+Verify all expecations set on Kafka.<br />
+*Note: This replaces `verifyKafkaStub` method which is deprecated*
+
+`verifyKafkaMockMessage(stub: KafkaStub, topic: string, value: string): Promise<Boolean>` <br />
+Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api..<br />
+*Note: This replaces `verifyKafkaStubMessage` method which is deprecated*
 
 ## IDE Support
 
@@ -165,3 +174,7 @@ This happens if stub is not stopped in the same way it is started. There can be 
 We have tested IDE integration with webstorm and jest framework combination. Visual Studio Code seems to work on and off with Jest. Please follow the instructions mentioned in [IDE Support](#ide-support) to set this up.
 
 Any other test framework can easily be also configured to display test results in IDE test results view by passing a convertor function to the `showTestResults` api.
+
+## Contribution
+
+Please refer to this [link](README.md)
