@@ -178,4 +178,4 @@ Any other test framework can easily be also configured to display test results i
 
 ## Contribution
 
-Please refer to this [link](README.md)
+Please refer to this [link](CONTRIBUTING.MD)
