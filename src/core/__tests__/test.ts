@@ -5,6 +5,7 @@ import { mock as jestMock, mockReset } from 'jest-mock-extended';
 import { Readable } from 'stream';
 import { copyFileSync, mkdirSync, existsSync } from 'fs';
 import fs from 'fs';
+import express from 'express';
 
 import * as specmatic from '../..';
 import { specmaticJarName } from '../../config';
@@ -164,31 +165,19 @@ test('invocation makes sure previous junit report if any is deleted', async func
 });
 
 test('passes an property indicating api endpoint based on host and port supplied when api coverage is enabled', async () => {
-    process.env['endpointsAPI'] = '/_specmatic/endpoints';
+    var app = express();
+    app.get('/', () => {});
+
     execSh.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
         execSh.mock.calls[0][2]();
     }, 0);
 
-    await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
+    await expect(specmatic.testWithApiCoverage(app, HOST, PORT)).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -DendpointsAPI=\"http://${HOST}:${PORT}/_specmatic/endpoints\" -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=localhost --port=8000`);
-});
-
-test('passes an property indicating api endpoint based on defaults if host and port not provided when api coverage is enabled', async () => {
-    process.env['endpointsAPI'] = '/_specmatic/endpoints';
-    execSh.mockReturnValue(javaProcessMock);
-    setTimeout(() => {
-        copyReportFile();
-        execSh.mock.calls[0][2]();
-    }, 0);
-
-    await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
-
-    expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -DendpointsAPI=\"http://${HOST}:${PORT}/_specmatic/endpoints\" -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=localhost --port=8000`);
+    expect(execSh.mock.calls[0][0]).toMatch(/endpointsAPI="http:\/\/.+?:[0-9]+?"/);
 });
 
 function copyReportFile() {

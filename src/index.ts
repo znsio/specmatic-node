@@ -4,11 +4,11 @@ export {
     stopStub,
     stopStub as stopHttpStub,
     test,
+    testWithApiCoverage,
     setExpectations,
     setExpectations as setHttpStubExpectations,
     printJarVersion,
     showTestResults,
-    enableApiCoverage,
 } from './core'
 export {
     startKafkaStub,
