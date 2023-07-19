@@ -4,7 +4,7 @@ import { ChildProcess } from 'child_process'
 import { XMLParser } from 'fast-xml-parser'
 import fs from 'fs'
 import logger from '../common/logger'
-import { callSpecmatic } from '../common/runner'
+import { callCore } from '../common/runner'
 import terminate from 'terminate/promise'
 import listExpressEndpoints from 'express-list-endpoints'
 import http from 'http'
@@ -33,7 +33,7 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
     logger.debug(`Stub: Executing "${cmd}"`)
 
     return new Promise((resolve, reject) => {
-        const javaProcess = callSpecmatic(
+        const javaProcess = callCore(
             cmd,
             (err: any) => {
                 if (err) {
@@ -109,7 +109,7 @@ const test = (host?: string, port?: number, contractPath?: string, args?: (strin
     fs.rmSync(reportDir, { recursive: true, force: true })
 
     return new Promise((resolve, _reject) => {
-        callSpecmatic(
+        callCore(
             cmd,
             (err: any) => {
                 if (err) logger.error(`Test: Failed with error ${err}`)
@@ -182,7 +182,7 @@ const printJarVersion = () => {
     logger.info('Print Jar Version: Running')
     logger.debug(`Print Jar Version: Executing "${cmd}"`)
 
-    callSpecmatic(
+    callCore(
         cmd,
         (err: any) => {
             if (err) logger.error(`Print Jar Version: Failed with error ${err}`)
