@@ -8,38 +8,39 @@ import fs from 'fs';
 import express from 'express';
 
 import * as specmatic from '../..';
-import { specmaticJarName } from '../../config';
+import { specmaticCoreJarName } from '../../config';
 
 jest.mock('exec-sh');
 jest.mock('node-fetch');
 
-const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticJarName);
+const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
 const CONTRACT_FILE_PATH = './contracts';
 const HOST = 'localhost';
 const PORT = 8000;
 
+const execShMock = execSh as unknown as jest.Mock;
 const javaProcessMock = jestMock<ChildProcess>();
 const readableMock = jestMock<Readable>();
 javaProcessMock.stdout = readableMock;
 javaProcessMock.stderr = readableMock;
 
 beforeEach(() => {
-    execSh.mockReset();
+    execShMock.mockReset();
     mockReset(javaProcessMock);
     mockReset(readableMock);
 });
 
 test('runs the contract tests', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH)).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
+    expect(execShMock.mock.calls[0][0]).toBe(
         `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
@@ -47,16 +48,16 @@ test('runs the contract tests', async function () {
 });
 
 test('takes additional pass through arguments', async () => {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 'P2'])).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
+    expect(execShMock.mock.calls[0][0]).toBe(
         `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 P2`
@@ -64,16 +65,16 @@ test('takes additional pass through arguments', async () => {
 });
 
 test('additional pass through arguments can be string or number', async () => {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 123])).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
+    expect(execShMock.mock.calls[0][0]).toBe(
         `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 123`
@@ -81,38 +82,38 @@ test('additional pass through arguments can be string or number', async () => {
 });
 
 test('runs the contract tests with host and port optional', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test()).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report`);
 });
 
 test('runs the contract tests with contracts path optional', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toBe(
+    expect(execShMock.mock.calls[0][0]).toBe(
         `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
     );
 });
 
 test('runs the contract tests and returns a summary', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test()).resolves.toStrictEqual({
@@ -123,10 +124,10 @@ test('runs the contract tests and returns a summary', async function () {
 });
 
 test('runs the contract tests and returns a summary with skipped tests count included', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFileWithName('sample-junit-result-skipped.xml');
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test()).resolves.toStrictEqual({
@@ -137,10 +138,10 @@ test('runs the contract tests and returns a summary with skipped tests count inc
 });
 
 test('runs the contract tests and get summary when there is just one test', async function () {
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFileWithName('sample-junit-result-single.xml');
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.test()).resolves.toStrictEqual({
@@ -152,10 +153,10 @@ test('runs the contract tests and get summary when there is just one test', asyn
 
 test('invocation makes sure previous junit report if any is deleted', async function () {
     const spy = jest.spyOn(fs, 'rmSync');
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFileWithName('sample-junit-result-single.xml');
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await specmatic.test();
@@ -168,16 +169,16 @@ test('passes an property indicating api endpoint based on host and port supplied
     var app = express();
     app.get('/', () => {});
 
-    execSh.mockReturnValue(javaProcessMock);
+    execShMock.mockReturnValue(javaProcessMock);
     setTimeout(() => {
         copyReportFile();
-        execSh.mock.calls[0][2]();
+        execShMock.mock.calls[0][2]();
     }, 0);
 
     await expect(specmatic.testWithApiCoverage(app, HOST, PORT)).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execSh.mock.calls[0][0]).toMatch(/endpointsAPI="http:\/\/.+?:[0-9]+?"/);
+    expect(execShMock.mock.calls[0][0]).toMatch(/endpointsAPI="http:\/\/.+?:[0-9]+?"/);
 });
 
 function copyReportFile() {
