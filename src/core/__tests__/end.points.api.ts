@@ -56,6 +56,20 @@ test('gives list of end points for a multiple routes defined on multiple routers
     expect(res.body).toStrictEqual(response)
 })
 
+test('coverts express route variable syntax to spring request mapping syntax', async () => {
+    app.get('/:id', () => {})
+    const res = await request(server).get('/').accept('application/json').expect(200)
+    const response = generateResponseObject({ '/{id}': ['GET'] })
+    expect(res.body).toStrictEqual(response)
+})
+
+test('coverts express route multiple variable syntax to spring request mapping syntax', async () => {
+    app.get('/:store/:id', () => {})
+    const res = await request(server).get('/').accept('application/json').expect(200)
+    const response = generateResponseObject({ '/{store}/{id}': ['GET'] })
+    expect(res.body).toStrictEqual(response)
+})
+
 function generateResponseObject(endPoints: { [key: string]: string[] }) {
     const structure = {
         contexts: {
