@@ -41,7 +41,7 @@ test('runs the contract tests', async function () {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execShMock.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
+        `java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
     );
@@ -58,7 +58,7 @@ test('takes additional pass through arguments', async () => {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execShMock.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
+        `java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 P2`
     );
@@ -75,7 +75,7 @@ test('additional pass through arguments can be string or number', async () => {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execShMock.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test ${path.resolve(
+        `java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" test ${path.resolve(
             CONTRACT_FILE_PATH
         )} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 123`
     );
@@ -91,7 +91,7 @@ test('runs the contract tests with host and port optional', async function () {
     await expect(specmatic.test()).resolves.toBeTruthy();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" test --junitReportDir=dist/test-report`);
 });
 
 test('runs the contract tests with contracts path optional', async function () {
@@ -105,7 +105,7 @@ test('runs the contract tests with contracts path optional', async function () {
 
     expect(execSh).toHaveBeenCalledTimes(1);
     expect(execShMock.mock.calls[0][0]).toBe(
-        `java -jar ${path.resolve(SPECMATIC_JAR_PATH)} test --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
+        `java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" test --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`
     );
 });
 

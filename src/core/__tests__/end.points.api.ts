@@ -70,6 +70,13 @@ test('coverts express route multiple variable syntax to spring request mapping s
     expect(res.body).toStrictEqual(response)
 })
 
+test('removes escaped dot and backslash in url', async () => {
+    app.get('/v1\\.0/:store/:id', () => {})
+    const res = await request(server).get('/').accept('application/json').expect(200)
+    const response = generateResponseObject({ '/v1.0/{store}/{id}': ['GET'] })
+    expect(res.body).toStrictEqual(response)
+})
+
 function generateResponseObject(endPoints: { [key: string]: string[] }) {
     const structure = {
         contexts: {

@@ -28,5 +28,5 @@ test('prints bundled jar version', () => {
     specmatic.printJarVersion();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} --version`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" --version`);
 });
