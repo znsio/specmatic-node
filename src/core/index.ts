@@ -255,7 +255,7 @@ function extractEndPoints(expressApp: any) {
                 details: {
                     requestMappingConditions: {
                         methods: endPoints[path].sort(),
-                        patterns: [path.replace(/:([^/]+)/g, '{$1}')],
+                        patterns: [path.replace(/:([^/]+)/g, '{$1}').replace(/\\/g, '')],
                     },
                 },
             } as never)
