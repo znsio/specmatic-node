@@ -38,7 +38,7 @@ test('starts the specmatic stub server', async () => {
     await expect(specmatic.startStub(HOST, PORT)).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('notifies when start fails due to port not available', async () => {
@@ -48,7 +48,7 @@ test('notifies when start fails due to port not available', async () => {
     await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('returns host, port and stub url', async () => {
@@ -62,7 +62,7 @@ test('returns host, port and stub url', async () => {
     await expect(specmatic.startStub(HOST, PORT)).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('fails if stub url is not available in start up message', async () => {
@@ -72,7 +72,7 @@ test('fails if stub url is not available in start up message', async () => {
     await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('fails if host info is not available in start up message', async () => {
@@ -83,7 +83,7 @@ test('fails if host info is not available in start up message', async () => {
     await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('fails if port info is not available in start up message', async () => {
@@ -94,7 +94,7 @@ test('fails if port info is not available in start up message', async () => {
     await expect(specmatic.startStub(HOST, PORT)).toReject();
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT}`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT}`);
 });
 
 test('host and port are optional', async () => {
@@ -104,7 +104,7 @@ test('host and port are optional', async () => {
     await expect(specmatic.startStub()).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub`);
 });
 
 test('takes additional pass through arguments', async () => {
@@ -114,7 +114,7 @@ test('takes additional pass through arguments', async () => {
     await expect(specmatic.startStub(HOST, PORT, ['p1', 'p2'])).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 p2`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT} p1 p2`);
 });
 
 test('additional pass through arguments can be string or number', async () => {
@@ -124,7 +124,7 @@ test('additional pass through arguments can be string or number', async () => {
     await expect(specmatic.startStub(HOST, PORT, ['p1', 123])).resolves.toStrictEqual(stub);
 
     expect(execSh).toHaveBeenCalledTimes(1);
-    expect(execShMock.mock.calls[0][0]).toBe(`java -jar ${path.resolve(SPECMATIC_JAR_PATH)} stub --host=${HOST} --port=${PORT} p1 123`);
+    expect(execShMock.mock.calls[0][0]).toBe(`java -jar "${path.resolve(SPECMATIC_JAR_PATH)}" stub --host=${HOST} --port=${PORT} p1 123`);
 });
 
 test('stopStub method stops any running stub server', () => {
