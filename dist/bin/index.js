@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+"use strict";
+
+var _command = _interopRequireDefault(require("./command.line"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+(0, _command["default"])();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfY29tbWFuZCIsIl9pbnRlcm9wUmVxdWlyZURlZmF1bHQiLCJyZXF1aXJlIiwib2JqIiwiX19lc01vZHVsZSIsImNhbGxTcGVjbWF0aWNDbGkiXSwic291cmNlcyI6WyIuLi8uLi9zcmMvYmluL2luZGV4LnRzIl0sInNvdXJjZXNDb250ZW50IjpbIiMhL3Vzci9iaW4vZW52IG5vZGVcbmltcG9ydCBjYWxsU3BlY21hdGljQ2xpIGZyb20gJy4vY29tbWFuZC5saW5lJztcblxuY2FsbFNwZWNtYXRpY0NsaSgpO1xuIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUFtQjs7QUFDbkIsSUFBQUEsUUFBQSxHQUFBQyxzQkFBQSxDQUFBQyxPQUFBO0FBQThDLFNBQUFELHVCQUFBRSxHQUFBLFdBQUFBLEdBQUEsSUFBQUEsR0FBQSxDQUFBQyxVQUFBLEdBQUFELEdBQUEsZ0JBQUFBLEdBQUE7QUFFOUMsSUFBQUUsbUJBQWdCLEVBQUMsQ0FBQyJ9
