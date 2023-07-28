@@ -2,3 +2,4 @@
 /coverage
 .vscode/settings.json
 .DS_Store
+dist/test-report
