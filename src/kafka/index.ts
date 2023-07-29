@@ -1,7 +1,7 @@
 import { callKafka } from '../common/runner';
 import logger from '../common/logger';
 import { ChildProcess } from 'child_process';
-import fetch from 'node-fetch';
+import axios from 'axios';
 import terminate from 'terminate/promise';
 
 export class KafkaStub {
@@ -76,30 +76,21 @@ const setKafkaStubExpectations = (stub: KafkaStub, expecations: any): Promise<vo
     const exectationsUrl = `http://localhost:${stub.apiPort}/_expectations`;
     logger.info(`Kafka Set Expectations: Url is ${exectationsUrl}`);
     return new Promise((resolve, reject) => {
-        fetch(`${exectationsUrl}`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(expecations),
-        })
-            .then(response => {
-                if (response.status != 200) {
-                    logger.error(`Kafka Set Expectations: Failed with status code ${response.status}`);
-                    reject('Set expectation failed');
-                } else {
-                    return response.text();
-                }
+        axios
+            .post(`${exectationsUrl}`, expecations, {
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
             })
-            .then(data => {
-                logger.debug(`Kafka Set Expectations: Finished ${JSON.stringify(data)}`);
-                resolve();
+            .then(response => {
+                logger.debug(`Kafka Set Expectations: Finished ${JSON.stringify(response.data)}`)
+                resolve()
             })
             .catch(err => {
-                logger.error(`Kafka Set Expectations: Failed with error ${err}`);
-                reject(`Set expectation failed with error ${err}`);
-            });
+                logger.error(`Kafka Set Expectations: Failed with error ${err}`)
+                reject(`Set expectation failed with error ${err}`)
+            })
     });
 };
 
@@ -107,25 +98,16 @@ const verifyKafkaStub = (stub: KafkaStub): Promise<Boolean> => {
     const verificationUrl = `http://localhost:${stub.apiPort}/_expectations/verifications`;
     logger.info(`Kafka Verification: Url is ${verificationUrl}`);
     return new Promise((resolve, reject) => {
-        fetch(`${verificationUrl}`, {
-            method: 'POST',
+        axios.post(`${verificationUrl}`, {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
         })
             .then(response => {
-                if (response.status != 200) {
-                    logger.error(`Kafka Verification: Failed with status code ${response.status}`);
-                    reject('Kafka verification failed');
-                } else {
-                    return response.json();
-                }
-            })
-            .then(data => {
-                logger.debug(`Kafka Verification: Finished ${JSON.stringify(data)}`);
-                if (!data.success) logger.info(`Kafka Verification: Errors\n${JSON.stringify(data)}`);
-                resolve(data.success);
+                    logger.debug(`Kafka Verification: Finished ${JSON.stringify(response.data)}`);
+                    if (!response.data.success) logger.info(`Kafka Verification: Errors\n${JSON.stringify(response.data)}`);
+                    resolve(response.data.success);
             })
             .catch(err => {
                 logger.error(`Kafka Verification: Failed with error ${err}`);
@@ -138,25 +120,15 @@ const verifyKafkaStubMessage = (stub: KafkaStub, topic: string, value: string): 
     const verificationUrl = `http://localhost:${stub.apiPort}/_verifications`;
     logger.info(`Kafka Verify Message: Url is ${verificationUrl}`);
     return new Promise((resolve, reject) => {
-        fetch(`${verificationUrl}`, {
-            method: 'POST',
+        axios.post(`${verificationUrl}`, { topic: topic, value: value }, {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ topic: topic, value: value }),
         })
             .then(response => {
-                if (response.status != 200) {
-                    logger.error(`Kafka Verify Message: Failed with status code ${response.status}`);
-                    reject('Kafka message verification failed');
-                } else {
-                    return response.json();
-                }
-            })
-            .then(data => {
-                logger.debug(`Kafka Verify Message: Finished ${JSON.stringify(data)}`);
-                resolve(data.received);
+                logger.debug(`Kafka Verify Message: Finished ${JSON.stringify(response.data)}`);
+                resolve(response.data.received);
             })
             .catch(err => {
                 logger.error(`Kafka Verify Message: Failed with error ${err}`);
