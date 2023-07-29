@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import axios from 'axios'
 import path from 'path'
 import { ChildProcess } from 'child_process'
 import { XMLParser } from 'fast-xml-parser'
@@ -155,20 +155,12 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
     logger.info(`Set Expectations: Stub url is ${stubServerBaseUrl}`)
 
     return new Promise((resolve, reject) => {
-        fetch(`${stubServerBaseUrl}/_specmatic/expectations`, {
-            method: 'POST',
-            body: JSON.stringify(stubResponse),
-        })
-            .then(async response => {
-                if (response.status != 200) {
-                    logger.error(`Set Expectations: Failed with status code ${response.status}`)
-                    const body = await response.text()
-                    logger.error(body)
-                    reject(`Setting expecation failed`)
-                } else {
-                    logger.info('Set Expectations: Finished')
-                    resolve()
-                }
+        axios
+            .post(`${stubServerBaseUrl}/_specmatic/expectations`, stubResponse)
+            .then(response => {
+                logger.debug(`Set Expectations: ${response.data}`)
+                logger.info('Set Expectations: Finished')
+                resolve()
             })
             .catch(err => {
                 logger.error(`Set Expectations: Failed with error ${err}`)

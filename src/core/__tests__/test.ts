@@ -11,7 +11,6 @@ import * as specmatic from '../..';
 import { specmaticCoreJarName } from '../../config';
 
 jest.mock('exec-sh');
-jest.mock('node-fetch');
 
 const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
 const CONTRACT_FILE_PATH = './contracts';
