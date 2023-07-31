@@ -2,7 +2,7 @@ import execSh from 'exec-sh';
 import path from 'path';
 import { specmaticCoreJarName, specmaticKafkaJarName } from '../config';
 import logger from '../common/logger';
-import { ChildProcess } from 'child_process';
+import { ChildProcess, spawn, SpawnOptions } from 'child_process';
 
 const callCore = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
     const rootPath = path.resolve(__dirname, '..', '..');
@@ -19,16 +19,24 @@ const callKafka = (args: string, done: (error: any) => void, onOutput: (message:
 };
 
 function callJar(jarPath: string, args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void) {
-    let java = 'java';
+    let argsList = [];
     if (process.env['endpointsAPI']) {
-        java = `${java} -DendpointsAPI="${process.env['endpointsAPI']}"`;
+        argsList.push(`-DendpointsAPI="${process.env['endpointsAPI']}"`);
     }
-    const javaProcess = execSh(`${java} -jar "${jarPath}" ${args}`, { stdio: 'pipe', stderr: 'pipe' }, done);
+    argsList = argsList.concat(['-jar', `"${jarPath}"`, args]);
+    const javaProcess: ChildProcess = spawn('java', argsList, { stdio: 'pipe', stderr: 'pipe', shell: true } as SpawnOptions);
     javaProcess.stdout?.on('data', function (data: String) {
         onOutput(`${data}`, false);
     });
     javaProcess.stderr?.on('data', function (data: String) {
         onOutput(`${data}`, true);
+    });
+    javaProcess.on('close', function (code:number) {
+        if (code) {
+            done(new Error('Command exited with non zero code: ' + code))
+        } else {
+            done(null);
+        }
     });
     return javaProcess;
 }
