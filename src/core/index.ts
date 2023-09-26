@@ -5,10 +5,10 @@ import { XMLParser } from 'fast-xml-parser'
 import fs from 'fs'
 import logger from '../common/logger'
 import { callCore } from '../common/runner'
-import terminate from 'terminate/promise'
 import listExpressEndpoints from 'express-list-endpoints'
 import http from 'http'
 import { AddressInfo } from 'net'
+import { gracefulShutdown } from './shutdownUtils'
 
 export class Stub {
     host: string
@@ -72,7 +72,7 @@ const stopStub = async (stub: Stub) => {
     javaProcess.stdout?.removeAllListeners()
     javaProcess.stderr?.removeAllListeners()
     javaProcess.removeAllListeners('close')
-    await terminate(javaProcess.pid!)
+    await gracefulShutdown(javaProcess)
     logger.info(`Stub: Stopped server at ${stub.url}`)
 }
 

@@ -7,9 +7,12 @@ import terminate from 'terminate/promise';
 import * as specmatic from '../..';
 import { specmaticCoreJarName } from '../../config';
 import { Stub } from '..';
+import * as shutDown from '../shutdownUtils'
+
 
 jest.mock('child_process');
 jest.mock('terminate');
+jest.mock('../shutdownUtils')
 
 const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
 const HOST = 'localhost';
@@ -123,10 +126,11 @@ test('additional pass through arguments can be string or number', async () => {
     expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=${PORT} p1 123`);
 });
 
-test('stopStub method stops any running stub server', () => {
+test('stopStub method stops any running stub server', async () => {
+    shutDown.gracefulShutdown.mockResolvedValue(true);
     specmatic.stopStub(stub);
 
     expect(readableMock.removeAllListeners).toHaveBeenCalledTimes(2);
     expect(javaProcessMock.removeAllListeners).toHaveBeenCalledTimes(1);
-    expect(terminate).toHaveBeenCalledTimes(1);
+    expect(shutDown.gracefulShutdown).toHaveBeenCalledTimes(1);
 });
