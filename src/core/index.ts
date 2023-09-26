@@ -72,7 +72,9 @@ const stopStub = async (stub: Stub) => {
     javaProcess.stdout?.removeAllListeners()
     javaProcess.stderr?.removeAllListeners()
     javaProcess.removeAllListeners('close')
+    logger.debug('Trying to stop stub process gracefully ...')
     await gracefulShutdown(javaProcess)
+    logger.debug('Completed graceful termination of the stub process')
     logger.info(`Stub: Stopped server at ${stub.url}`)
 }
 
