@@ -16,10 +16,20 @@
     "url": "git+https://github.com/znsio/specmatic-node.git"
   },
   "keywords": [
-    "qontract",
     "contract",
     "testing",
-    "specmatic"
+    "specmatic",
+    "contract driven development",
+    "cdd",
+    "openapi",
+    "swagger",
+    "asyncapi",
+    "api",
+    "mocking",
+    "stubbing",
+    "kafka",
+    "jms",
+    "redis"
   ],
   "author": "Sahil Sharma (sahilaug@gmail.com)",
   "license": "ISC",
