@@ -53,7 +53,7 @@ Specmatic JS library exposes some of the commands as methods that can be run pro
 ```javascript
 import {
     startHttpStub,
-    setHttpStubExpecations,
+    setHttpStubExpectations,
     stopHttpStub,
     test,
     showTestResults,
