@@ -166,7 +166,7 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
             })
             .catch(err => {
                 logger.error(`Set Expectations: Failed with error ${err}`)
-                reject(`Setting expecation failed with error ${err}`)
+                reject(`Setting expectation failed with error ${err}`)
             })
     })
 }
