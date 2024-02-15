@@ -43,8 +43,8 @@ Finally commit
 * Push access to master branch 
 * Node version 14 or higher
 
-### Step 1: Update specmatic core jar
-If there is a new version available in [latest github release](https://github.com/znsio/specmatic/releases/latest), download it in the project root, replacing the older version. Commit the new version.
+### Step 1: Updating specmatic jar version
+If the specmatic jar version is to be updated, modify the __specmaticVersion__ property in __package.json__ accordingly and check it in.
 
 ### Step 2: Make a release via github releases
 * Goto [github releases](https://github.com/znsio/specmatic-node/releases) and draft a new release
