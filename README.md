@@ -53,6 +53,7 @@ Specmatic JS library exposes some of the commands as methods that can be run pro
 ```javascript
 import {
     startHttpStub,
+    setExpectationJson,
     setHttpStubExpectations,
     stopHttpStub,
     test,
@@ -70,8 +71,11 @@ import {
 Start the stub server. Argument `args` values are passed directly to specmatic jar executable.<br />
 *Note: This replaces `startStub` method which is deprecated*
 
+`setExpectationJson(stubResponse: any, stubServerBaseUrl?: string): Promise<boolean>` <br />
+Set stub expectation from a static JSON object. Stub should be running before invoking this method.<br />
+
 `setHttpStubExpectations(stubPath: string, stubServerBaseUrl?: string): Promise<boolean>` <br />
-Set stub expectiona. Stub should be running before invoking this method.<br />
+Set stub expectation from a file. Stub should be running before invoking this method.<br />
 *Note: This replaces `setExpectations` method which is deprecated*
 
 `stopHttpStub(stub: Stub)` <br />
