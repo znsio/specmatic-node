@@ -152,6 +152,10 @@ const showTestResults = (testFn: (name: string, cb: () => void) => void) => {
 
 const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<void> => {
     const stubResponse = require(path.resolve(stubPath))
+    return setExpectationJson(stubResponse, stubServerBaseUrl)
+}
+
+const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Promise<void> => {
     stubServerBaseUrl = stubServerBaseUrl || 'http://localhost:9000'
 
     logger.info(`Set Expectations: Stub url is ${stubServerBaseUrl}`)
@@ -257,5 +261,5 @@ function extractEndPoints(expressApp: any) {
     return springActuatorPayload
 }
 
-export { startStub, stopStub, test, testWithApiCoverage, setExpectations, printJarVersion, showTestResults }
+export { startStub, stopStub, test, testWithApiCoverage, setExpectations, setExpectationJson, printJarVersion, showTestResults }
 export { startApiCoverageServer }
