@@ -7,6 +7,7 @@ export {
     testWithApiCoverage,
     setExpectations,
     setExpectations as setHttpStubExpectations,
+    setExpectationJson,
     printJarVersion,
     showTestResults,
 } from './core'
