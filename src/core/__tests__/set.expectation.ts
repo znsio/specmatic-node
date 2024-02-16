@@ -12,6 +12,30 @@ beforeEach(() => {
     mockReset(axios);
 });
 
+test('setExpectations with static object', async () => {
+    axios.post.mockResolvedValue({ status: 200 });
+
+    const data = {
+        "mock-http-request": {
+            "method": "GET",
+            "path": "/v1/resource/1"
+        },
+        "mock-http-response": {
+            "status": 200,
+            "body": {
+                "id": 1,
+                "name": "resource name"
+            }
+        }
+    }
+
+    await expect(specmatic.setExpectationJson(data)).toResolve();
+
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(axios.post.mock.calls[0][0]).toBe('http://localhost:9000/_specmatic/expectations');
+    expect(axios.post.mock.calls[0][1]).toMatchObject(mockStub);
+});
+
 test('setExpectations with default baseUrl', async () => {
     axios.post.mockResolvedValue({ status: 200 });
     await expect(specmatic.setExpectations(path.resolve(STUB_PATH))).toResolve();
