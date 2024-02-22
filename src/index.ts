@@ -8,6 +8,7 @@ export {
     setExpectations,
     setExpectations as setHttpStubExpectations,
     setExpectationJson,
+    setExpectationJson as setHttpStubExpectationJson,
     printJarVersion,
     showTestResults,
 } from './core'

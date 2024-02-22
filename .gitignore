@@ -3,3 +3,4 @@
 .vscode/settings.json
 .DS_Store
 dist/test-report
+specmatic.jar

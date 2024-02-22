@@ -169,8 +169,9 @@ const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Prom
                 resolve()
             })
             .catch(err => {
-                logger.error(`Set Expectations: Failed with error ${err}`)
-                reject(`Setting expectation failed with error ${err}`)
+                const setExpectationsErrorMessage = `Set Expectations: Failed with error ${err}`
+                logger.error(setExpectationsErrorMessage)
+                reject(setExpectationsErrorMessage)
             })
     })
 }
