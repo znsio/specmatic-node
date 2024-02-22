@@ -18,7 +18,8 @@ declare const test: (host?: string, port?: number, contractPath?: string, args?:
 } | undefined>;
 declare const showTestResults: (testFn: (name: string, cb: () => void) => void) => void;
 declare const setExpectations: (stubPath: string, stubServerBaseUrl?: string) => Promise<void>;
+declare const setExpectationJson: (json: any, stubServerBaseUrl?: string) => Promise<void>;
 declare const printJarVersion: () => void;
 declare const startApiCoverageServer: (expressApp: any) => Promise<http.Server>;
-export { startStub, stopStub, test, testWithApiCoverage, setExpectations, printJarVersion, showTestResults };
+export { startStub, stopStub, test, testWithApiCoverage, setExpectations, setExpectationJson, printJarVersion, showTestResults };
 export { startApiCoverageServer };
