@@ -11,7 +11,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir dist --ignore 'src/**/__tests__/**/*.ts' --extensions \".ts,.tsx\" --source-maps inline",
     "test": "rimraf coverage && jest --coverage",
-    "postinstall": "node src/downloadSpecmaticJar.js"
+    "prepack": "node src/downloadSpecmaticJar.js"
   },
   "repository": {
     "type": "git",
