@@ -70,6 +70,13 @@ test('coverts express route multiple variable syntax to spring request mapping s
     expect(res.body).toStrictEqual(response)
 })
 
+test('converts express route with regex path parameter to spring request mapping syntax', async () => {
+    app.get('/api/orders/:orderId([0-9])/items/:itemId([0-9a-f]{24})', () => { });
+    const res = await request(server).get('/').accept('application/json').expect(200)
+    const response = generateResponseObject({ '/api/orders/{orderId}/items/{itemId}': ['GET'] })
+    expect(res.body).toStrictEqual(response)
+})
+
 test('removes escaped dot and backslash in url', async () => {
     app.get('/v1\\.0/:store/:id', () => {})
     const res = await request(server).get('/').accept('application/json').expect(200)
