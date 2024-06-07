@@ -34,11 +34,11 @@ const startKafkaStub = (port?: number, args?: (string | number)[]): Promise<Kafk
             },
             (message, error) => {
                 if (!error) {
-                    if (message.indexOf('Kafka started on port') > -1) {
+                    if (message.indexOf('Kafka started on') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
-                        const stubInfo = message.split('on port');
+                        const stubInfo = message.split('on ')[1];
                         if (stubInfo.length < 2) reject('Cannot determine port from kafka stub output');
-                        else port = parseInt(stubInfo[1].trim());
+                        else port = parseInt(stubInfo.split(':')[1].trim());
                     } else if (message.indexOf('Starting api server on port') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         const stubInfo = message.split(':');
