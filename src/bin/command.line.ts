@@ -24,7 +24,6 @@ const callSpecmaticCli = (args?: string[]) => {
 }
 
 function getJarFunction(args: string[]) {
-    console.log(args)
     if(args.length >= 3) {
         switch (args[2]) {
             case 'kafka':
@@ -39,7 +38,6 @@ function getJarFunction(args: string[]) {
 }
 
 function extractArgsForJar(args: string[]) {
-    console.log(args)
     if(args.length >= 3) {
         switch (args[2]) {
             case 'kafka':
