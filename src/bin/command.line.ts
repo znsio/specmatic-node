@@ -1,5 +1,5 @@
 import logger from '../common/logger'
-import { callKafka, callCore } from '../common/runner'
+import { callKafka, callCore, callGraphQl } from '../common/runner'
 
 const callSpecmaticCli = (args?: string[]) => {
     args = args || process.argv
@@ -24,12 +24,32 @@ const callSpecmaticCli = (args?: string[]) => {
 }
 
 function getJarFunction(args: string[]) {
-    return args.length >= 3 && args[2] == 'kafka' ? callKafka : callCore
+    console.log(args)
+    if(args.length >= 3) {
+        switch (args[2]) {
+            case 'kafka':
+                return callKafka
+            case 'graphql':
+                return callGraphQl
+            default:
+                return callCore
+        }
+    }
+    return callCore
 }
 
 function extractArgsForJar(args: string[]) {
-    const argsToRemove = args.length >= 3 && args[2] == 'kafka' ? 3 : 2
-    return args.slice(argsToRemove).join(' ')
+    console.log(args)
+    if(args.length >= 3) {
+        switch (args[2]) {
+            case 'kafka':
+            case 'graphql':
+                return args.slice(3).join(' ')
+            default:
+                return args.slice(2).join(' ')
+        }
+    }
+    return args.slice(2).join(' ')
 }
 
 export default callSpecmaticCli
