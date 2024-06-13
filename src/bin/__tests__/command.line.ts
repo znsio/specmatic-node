@@ -1,6 +1,6 @@
 import path from 'path';
 import callSpecmaticCli from '../command.line';
-import { specmaticCoreJarName, specmaticKafkaJarName } from '../../config';
+import { specmaticCoreJarName, specmaticGraphQlJarName, specmaticKafkaJarName } from '../../config';
 import fs from 'fs';
 import { ChildProcess, spawn } from 'child_process';
 import { mock as jestMock, mockReset } from 'jest-mock-extended';
@@ -38,3 +38,15 @@ test('pass kafka related calls to the kafka jar', async () => {
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticKafkaJarPath)}"`);
     expect(spawn.mock.calls[0][1][2]).toBe(testArgs.slice(3).join(" "));
 });
+
+
+test('pass graphql related calls to the graphql jar', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'graphql', '--host', 'localhost', '--port', '8000'];
+    callSpecmaticCli(testArgs);
+    const specmaticGraphQlJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-beta', 'graphql', specmaticGraphQlJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticGraphQlJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe(testArgs.slice(3).join(" "));
+})
