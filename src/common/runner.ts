@@ -1,6 +1,6 @@
 import execSh from 'exec-sh';
 import path from 'path';
-import { specmaticCoreJarName, specmaticKafkaJarName } from '../config';
+import { specmaticCoreJarName, specmaticKafkaJarName, specmaticGraphQlJarName } from '../config';
 import logger from '../common/logger';
 import { ChildProcess, spawn, SpawnOptions } from 'child_process';
 
@@ -17,6 +17,13 @@ const callKafka = (args: string, done: (error: any) => void, onOutput: (message:
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
     return callJar(specmaticJarPath, args, done, onOutput);
 };
+
+const callGraphQl = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
+    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-beta', 'graphql');
+    const specmaticJarPath = path.resolve(rootPath, specmaticGraphQlJarName);
+    logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
+    return callJar(specmaticJarPath, args, done, onOutput);
+}
 
 function callJar(jarPath: string, args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void) {
     let argsList = [];
@@ -41,4 +48,4 @@ function callJar(jarPath: string, args: string, done: (error: any) => void, onOu
     return javaProcess;
 }
 
-export { callCore, callKafka };
+export { callCore, callKafka, callGraphQl };
