@@ -55,3 +55,11 @@ If the specmatic jar version is to be updated, modify the __specmaticVersion__ p
 * On publish, a github action is triggered that updates the release on npm repository.
 
 You can check the publish status in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
+
+### Developer notes
+
+Building npm locally
+* npm run build
+* npm pack
+* And use the generated "*.tgz" file with "file:*.tgz"
+* Be sure to run npm remove before specmatic before installing the tgz file
