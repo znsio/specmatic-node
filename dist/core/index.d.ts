@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { ChildProcess } from 'child_process';
 import http from 'http';
 export declare class Stub {
