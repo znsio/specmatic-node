@@ -4,6 +4,15 @@ import { callGraphQl } from "../common/runner";
 import { gracefulShutdown } from "../core/shutdownUtils";
 import terminate from "terminate";
 
+const hostPortRegex = new RegExp(/.*(https?:\/\/.*):(\d+).*/);
+const errorMessages = new RegExp(
+	`(${[
+		"Address already in use",
+		"Invalid syntax with offending token",
+		"The system cannot find the file specified",
+	].join("|")})`,
+);
+
 export class GraphQlStub {
 	host: string;
 	port: number;
@@ -38,9 +47,9 @@ const startGraphQlStub = (
 	logger.debug(`GraphQl Stub: Executing "${cmd}"`);
 
 	return new Promise((resolve, reject) => {
-		let reportedPort: number;
 		const javaProcess = callGraphQl(
 			cmd,
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			(err: any) => {
 				if (err) {
 					logger.error(`GraphQl Stub: Exited with error ${err}`);
@@ -48,30 +57,53 @@ const startGraphQlStub = (
 			},
 			(message, error) => {
 				if (!error) {
-					if (message.includes("Starting the server on port")) {
-						logger.info(`GraphQl Stub: ${message}`);
-						const stubInfo = message.split("port ")[1];
-						if (stubInfo.length < 2)
-							reject("Cannot determine port from graphql stub output");
-						else reportedPort = Number.parseInt(stubInfo[1].trim());
-					} else if (message.includes("Address already in use")) {
-						logger.error(`GraphQl Stub: ${message}`);
-						reject(message);
-					} else if (message.includes("Stub server is running")) {
-						const host = message.split("on ")[1].split(":")[0].trim();
-						if (port) {
-							resolve(new GraphQlStub(host, reportedPort, javaProcess, data));
-						} else {
+					switch (true) {
+						case /^\s*$/.test(message):
+							break;
+
+						case errorMessages.test(message): {
+							logger.error(`GraphQl Stub Error: ${message}`);
+							reject(message);
+							break;
+						}
+
+						case /Stub server is running/.test(message): {
+							logger.info(`GraphQl Stub: ${message}`);
+							const [, host, port] = hostPortRegex.exec(message) ?? [];
+							if (port) {
+								resolve(
+									new GraphQlStub(
+										host,
+										Number.parseInt(port),
+										javaProcess,
+										data,
+									),
+								);
+							}
 							reject(
 								"No port or host information available, but graphql stub server is running",
 							);
+							break;
 						}
-					} else {
-						logger.debug(`GraphQl Stub: ${message}`);
+
+						default: {
+							logger.debug(`GraphQl Stub: ${message}`);
+							break;
+						}
 					}
 				} else {
-					logger.error(`GraphQl Stub: ${message}`);
-					reject(message);
+					switch (true) {
+						case /SLF4J/.test(message): {
+							logger.debug(`GraphQl Stub: ${message}`);
+							break;
+						}
+
+						default: {
+							logger.error(`GraphQl Stub Error: ${message}`);
+							reject(message);
+							break;
+						}
+					}
 				}
 			},
 		);
@@ -79,6 +111,9 @@ const startGraphQlStub = (
 };
 
 const stopGraphQlStub = async (graphQlStub: GraphQlStub) => {
+	if (!graphQlStub?.process) {
+		return;
+	}
 	logger.debug(
 		`GraphQl Stub: Stopping server at ${graphQlStub.host}:${graphQlStub.port}`,
 	);
@@ -90,6 +125,7 @@ const stopGraphQlStub = async (graphQlStub: GraphQlStub) => {
 	try {
 		await gracefulShutdown(javaProcess);
 	} catch (e) {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		terminate(javaProcess.pid!);
 	}
 	logger.info(
