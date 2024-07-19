@@ -4,7 +4,7 @@
 [![publish](https://github.com/znsio/specmatic-node/actions/workflows/publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
 [![release](https://img.shields.io/npm/v/specmatic)](https://github.com/znsio/specmatic-node/releases/latest)
 
-This node module is a thin wrapper over the [specmatic executable jar](https://specmatic.in/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a helper with below aspects.
+This node module is a thin wrapper over the [specmatic executable jar](https://specmatic.io/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a helper with below aspects.
 
 - Easy installation and upgrade of the jar file in node projects through npm
 - Global install using npm and easy run specmatic jar executable without having to download the jar file and having to run `java -jar`
@@ -32,15 +32,15 @@ This node module is a thin wrapper over the [specmatic executable jar](https://s
 
 `npm install specmatic` will install the specmatic locally to the node project.
 
-Sample npm scripts to run specmatic, (Check [Documentation](https://specmatic.in/documentation.html) for more information on cli commands and arguments.)
+Sample npm scripts to run specmatic, (Check [Documentation](https://specmatic.io/documentation.html) for more information on cli commands and arguments.)
 
 ## Contract as Stub / Smart Mock (For API clients / consumers)
 
-In stub mode, Specmatic emulates the Provider / API / Service based on the API Specification so that the consumer / client application can make independent progress. [Learn more](https://specmatic.in/#contract-as-stub).
+In stub mode, Specmatic emulates the Provider / API / Service based on the API Specification so that the consumer / client application can make independent progress. [Learn more](https://specmatic.io/#contract-as-stub).
 
 ## Contract as Test (For API Providers / Service)
 
-Tests for Free – Specmatic parses your API Specification files and based on this generates requests which are fired at your application. It then verifies if your application’s response is as per your API Specification. All this with a “No Code” approach.. [Learn More](https://specmatic.in/#contract-as-test)
+Tests for Free – Specmatic parses your API Specification files and based on this generates requests which are fired at your application. It then verifies if your application’s response is as per your API Specification. All this with a “No Code” approach.. [Learn More](https://specmatic.io/#contract-as-test)
 
 ## Sample Repo
 
