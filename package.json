@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
-    "express-list-endpoints": "github:znsio/express-list-endpoints",
+    "express-list-endpoints": "github:znsio/express-list-endpoints#21c92d15159abffd772acb27027ab84fcec1a6ac",
     "fast-xml-parser": "^4.5.0",
     "terminate": "^2.8.0",
     "tree-kill": "^1.2.2",
@@ -61,7 +61,7 @@
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
     "@types/express": "^5.0.0",
-    "@types/express-list-endpoints": "github:znsio/express-list-endpoints",
+    "@types/express-list-endpoints": "github:znsio/express-list-endpoints#21c92d15159abffd772acb27027ab84fcec1a6ac",
     "@types/jest": "^29.5.13",
     "@types/jest-when": "^3.5.5",
     "@types/node": "^22.7.2",
