@@ -12,7 +12,8 @@
     "build:js": "babel src --out-dir dist --ignore 'src/**/__tests__/**/*.ts' --extensions \".ts,.tsx\" --source-maps inline",
     "test": "rimraf coverage && jest --coverage",
     "prepack": "node src/downloadSpecmaticJar.js",
-    "prepare": "npm run prepack && npm run build:types && npm run build:js"
+    "prepare": "npm run prepack && npm run build:types && npm run build:js",
+    "unit-tests": "jest"
   },
   "repository": {
     "type": "git",
