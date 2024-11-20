@@ -157,7 +157,7 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
 
 const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Promise<void> => {
     stubServerBaseUrl = stubServerBaseUrl || 'http://localhost:9000'
-
+    
     logger.info(`Set Expectations: Stub url is ${stubServerBaseUrl}`)
 
     return new Promise((resolve, reject) => {
@@ -169,7 +169,17 @@ const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Prom
                 resolve()
             })
             .catch(err => {
-                const setExpectationsErrorMessage = `Set Expectations: Failed with error ${err}`
+                var setExpectationsErrorMessage = `Set Expectations: Failed with error ${err}`
+                // Check if the response data is in text format
+                if (err && err.response?.headers['content-type'] === 'text/plain') {
+                    try {
+                        // Use a check to handle text content
+                        const errorText = typeof err.response.data === 'string' ? err.response.data : "Error text not available";
+                        setExpectationsErrorMessage += ` - ${errorText}`;
+                    } catch (e) {
+                        logger.error("Failed to retrieve text error message.");
+                    }
+                }
                 logger.error(setExpectationsErrorMessage)
                 reject(setExpectationsErrorMessage)
             })
