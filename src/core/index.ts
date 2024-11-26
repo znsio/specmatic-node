@@ -5,7 +5,7 @@ import { XMLParser } from 'fast-xml-parser'
 import fs from 'fs'
 import logger from '../common/logger'
 import { callCore } from '../common/runner'
-import listExpressEndpoints from 'express-list-endpoints'
+import listExpressEndpoints from '../lib/express-list-endpoints';
 import http from 'http'
 import { AddressInfo } from 'net'
 import { gracefulShutdown } from './shutdownUtils'
