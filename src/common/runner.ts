@@ -31,7 +31,7 @@ function callJar(jarPath: string, args: string, done: (error: any) => void, onOu
         argsList.push(`-DendpointsAPI="${process.env['endpointsAPI']}"`);
     }
     argsList = argsList.concat(['-jar', `"${jarPath}"`, args]);
-    const javaProcess: ChildProcess = spawn('java', argsList, { stdio: 'pipe', stderr: 'pipe', shell: true } as SpawnOptions);
+    const javaProcess: ChildProcess = spawn('java', argsList, { stdio: 'pipe', stderr: 'pipe', shell: true, env: process.env } as SpawnOptions);
     javaProcess.stdout?.on('data', function (data: String) {
         onOutput(`${data}`, false);
     });
