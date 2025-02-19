@@ -36,14 +36,14 @@ const startKafkaStub = (port?: number, args?: (string | number)[]): Promise<Kafk
                 if (!error) {
                     if (message.indexOf('Kafka started on') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
-                        const stubInfo = message.split('on ')[1];
+                        const stubInfo = message.split('Kafka started on')[1];
                         if (stubInfo.length < 2) reject('Cannot determine port from kafka stub output');
                         else port = parseInt(stubInfo.split(':')[1].trim());
                     } else if (message.indexOf('Starting api server on port') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
-                        const stubInfo = message.split(':');
+                        const stubInfo = message.split('Starting api server on port')[1];
                         if (stubInfo.length < 2) reject('Cannot determine api port from kafka stub output');
-                        else apiPort = parseInt(stubInfo[1].trim());
+                        else apiPort = parseInt(stubInfo.split(':')[1].trim());
                     } else if (message.indexOf('Listening on topic') > -1) {
                         logger.info(`Kafka Stub: ${message}`);
                         if (port && apiPort) resolve(new KafkaStub(port, apiPort, javaProcess));
