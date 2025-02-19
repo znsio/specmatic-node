@@ -10,6 +10,9 @@ import http from 'http'
 import { AddressInfo } from 'net'
 import { gracefulShutdown } from './shutdownUtils'
 
+const freePortMessage = 'Free port found'
+const stubServingMessage = 'serving endpoints from specs'
+
 export class Stub {
     host: string
     port: number
@@ -31,6 +34,7 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
 
     logger.info('Stub: Starting server')
     logger.debug(`Stub: Executing "${cmd}"`)
+    let parsedPort: string|null = null
 
     return new Promise((resolve, reject) => {
         const javaProcess = callCore(
@@ -42,16 +46,18 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
             },
             (message, error) => {
                 if (!error) {
-                    if (message.indexOf('Stub server is running') > -1) {
+                    if (message.indexOf(freePortMessage) > -1) {
                         logger.info(`Stub: ${message}`)
-                        const stubInfo = message.split('on')
+                        parsedPort = message.split(`${freePortMessage}:`)[1].trim()
+                    }
+                    else if (message.indexOf(stubServingMessage) > -1) {
+                        logger.info(`Stub: ${message}`)
+                        const stubInfo = message.split(stubServingMessage)
                         if (stubInfo.length < 2) reject('Cannot determine url from stub output')
-                        else {
-                            const url = stubInfo[1].trim()
-                            const urlInfo = /(.*?):\/\/(.*?):([0-9]+)/.exec(url)
-                            if ((urlInfo?.length ?? 0) < 4) reject('Cannot determine host and port from stub output')
-                            else resolve(new Stub(urlInfo![2], parseInt(urlInfo![3]), urlInfo![0], javaProcess))
-                        }
+                        else try {
+                            const stub = parseStubOutput(stubInfo, parsedPort, javaProcess);
+                            resolve(stub);
+                        } catch (e) { reject(extractErrorMessage(e)); }
                     } else if (message.indexOf('Address already in use') > -1) {
                         logger.error(`Stub: ${message}`)
                         reject('Address already in use')
@@ -64,6 +70,43 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
             }
         )
     })
+}
+
+function extractErrorMessage(error: any): string {
+    if (typeof error === 'string') {
+      return error;
+    }
+    
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return String(error);
+}
+
+function parseStubOutput(
+    stubInfo: string[],
+    parsedPort: string | null,
+    javaProcess: ChildProcess
+): Stub {
+    const url = stubInfo[0].trim();
+    const urlInfo = /\b(.*?):\/\/(.*?):([0-9]+)/.exec(url);
+    
+    if (urlInfo === null || (urlInfo?.length ?? 0) < 4) {
+      throw new Error('Cannot determine host and port from stub output');
+    }
+  
+    const regexPort = urlInfo[3];
+    const finalPort = parsedPort ?? regexPort;
+    let finalUrl: string;
+  
+    if (parsedPort && parsedPort !== regexPort) {
+      finalUrl = `${urlInfo[1]}://${urlInfo[2]}:${parsedPort}`;
+    } else {
+      finalUrl = urlInfo[0];
+    }
+  
+    return new Stub(urlInfo[2], Number.parseInt(finalPort), finalUrl, javaProcess);
 }
 
 const stopStub = async (stub: Stub) => {
