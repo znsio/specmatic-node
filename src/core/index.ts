@@ -34,7 +34,7 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
 
     logger.info('Stub: Starting server')
     logger.debug(`Stub: Executing "${cmd}"`)
-    let parsedPort: string|null = null
+    let parsedPort: string | null = port == null || port === 0 ? null : String(port);
 
     return new Promise((resolve, reject) => {
         const javaProcess = callCore(
@@ -48,7 +48,7 @@ const startStub = (host?: string, port?: number, args?: (string | number)[]): Pr
                 if (!error) {
                     if (message.indexOf(freePortMessage) > -1) {
                         logger.info(`Stub: ${message}`)
-                        parsedPort = message.split(`${freePortMessage}:`)[1].trim()
+                        parsedPort = parsedPort ?? message.split(`${freePortMessage}:`)[1].trim()
                     }
                     else if (message.indexOf(stubServingMessage) > -1) {
                         logger.info(`Stub: ${message}`)

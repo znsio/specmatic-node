@@ -59,6 +59,22 @@ test('should stick to random port assignment even if later logs contradict it', 
     expect(spawn.mock.calls[0][1][2]).toBe("stub");
 });
 
+
+test('should stick to passed port assignment even if final log contradicts it', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback("Free port found: 4567");
+        messageCallback(`- http://${HOST}:9000 serving endpoints from specs:`);
+    }, 0);
+
+    await expect(specmatic.startStub(HOST, 1234)).resolves.toStrictEqual(new Stub(HOST, 1234, `http://${HOST}:1234`, javaProcessMock));
+
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=1234`);
+});
+
+
 test('should pick the first port when multi-port stub is being used', async () => {
     spawn.mockReturnValue(javaProcessMock);
     const messages = [
@@ -142,9 +158,11 @@ test('returns host, port and stub url', async () => {
     spawn.mockReturnValue(javaProcessMock);
     const randomPort = 62269;
     const stubUrl = `http://${HOST}:${randomPort}`;
-    setTimeout(() => readableMock.on.mock.calls[0][1](`- ${stubUrl} serving endpoints from specs:`), 0);
 
-    const stub = new Stub(HOST, randomPort, stubUrl, javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback(`- ${stubUrl} serving endpoints from specs:`);
+    }, 0);
 
     await expect(specmatic.startStub(HOST, PORT)).resolves.toStrictEqual(stub);
 
