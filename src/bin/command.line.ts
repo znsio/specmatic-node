@@ -10,10 +10,10 @@ const callSpecmaticCli = (args?: string[]) => {
         'halt-at-non-option': false,
     }).parseSync();
     const { _, $0, ...namedArgs } = argv;
-    const fn = getJarFunction(_)
+    const fn = getJarFunction(_);
     const command = (_.join(' ') + ' ' + Object.entries(namedArgs).map(([key, value]) => `--${key}="${String(value)}"`).join(' ')).trim();
 
-    logger.info(`CLI: Running with args "${command}"`)
+    logger.info(`CLI: Running with args "${command}"`);
     fn(
         command,
         (err?: any) => {
@@ -28,7 +28,7 @@ const callSpecmaticCli = (args?: string[]) => {
         message => {
             console.log(`${message}`)
         }
-    )
+    );
 }
 
 function getJarFunction(operation: any[]) {
