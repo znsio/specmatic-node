@@ -6,3 +6,4 @@ dist/test-report
 specmatic.jar
 /dist
 /build
+/tmp

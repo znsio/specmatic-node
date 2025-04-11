@@ -5,10 +5,7 @@ import { hideBin } from 'yargs/helpers';
 
 const callSpecmaticCli = (args?: string[]) => {
     args = args || process.argv
-    const argv = yargs(hideBin(args)).parserConfiguration({
-        'populate--': true,
-        'halt-at-non-option': false,
-    }).parseSync();
+    const argv = yargs(hideBin(args)).parseSync();
     const { _, $0, ...namedArgs } = argv;
     const fn = getJarFunction(_);
     const command = (_.join(' ') + ' ' + Object.entries(namedArgs).map(([key, value]) => `--${key}="${String(value)}"`).join(' ')).trim();
