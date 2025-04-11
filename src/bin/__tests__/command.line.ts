@@ -25,7 +25,7 @@ test('pass all wrapper arguments to the jar', async () => {
     callSpecmaticCli(testArgs);
     const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(testArgs.slice(2).join(" "));
+    expect(spawn.mock.calls[0][1][2]).toBe("stub *.specmatic --data=\"src/mocks\" --host=\"localhost\" --port=\"8000\"");
 });
 
 test('pass kafka related calls to the kafka jar', async () => {
@@ -36,7 +36,7 @@ test('pass kafka related calls to the kafka jar', async () => {
     callSpecmaticCli(testArgs);
     const specmaticKafkaJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-beta', 'kafka', specmaticKafkaJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticKafkaJarPath)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(testArgs.slice(3).join(" "));
+    expect(spawn.mock.calls[0][1][2]).toBe("--host=\"localhost\" --port=\"8000\"");
 });
 
 
@@ -48,5 +48,16 @@ test('pass graphql related calls to the graphql jar', async () => {
     callSpecmaticCli(testArgs);
     const specmaticGraphQlJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-beta', 'graphql', specmaticGraphQlJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticGraphQlJarPath)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(testArgs.slice(3).join(" "));
-})
+    expect(spawn.mock.calls[0][1][2]).toBe("--host=\"localhost\" --port=\"8000\"");
+});
+
+test('pass filter arguments to the jar', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic', '--testBaseURL', 'http://localhost:9000', '--filter="PATH=\'/todos/add\' || STATUS=\'404\'"'];
+    callSpecmaticCli(testArgs);
+    const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic --testBaseURL=\"http://localhost:9000\" --filter=\"PATH='/todos/add' || STATUS='404'\"");
+});

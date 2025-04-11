@@ -1,13 +1,18 @@
 import logger from '../common/logger'
 import { callKafka, callCore, callGraphQl } from '../common/runner'
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
 
 const callSpecmaticCli = (args?: string[]) => {
     args = args || process.argv
-    let cliArgs = extractArgsForJar(args)
-    let fn = getJarFunction(args)
-    logger.info(`CLI: Running with args "${cliArgs}"`)
+    const argv = yargs(hideBin(args)).parseSync();
+    const { _, $0, ...namedArgs } = argv;
+    const fn = getJarFunction(_);
+    const command = (_.join(' ') + ' ' + Object.entries(namedArgs).map(([key, value]) => `--${key}="${String(value)}"`).join(' ')).trim();
+
+    logger.info(`CLI: Running with args "${command}"`);
     fn(
-        cliArgs,
+        command,
         (err?: any) => {
             if (err) {
                 logger.info('CLI: Finished with non zero exit code: ', err.code)
@@ -20,34 +25,23 @@ const callSpecmaticCli = (args?: string[]) => {
         message => {
             console.log(`${message}`)
         }
-    )
+    );
 }
 
-function getJarFunction(args: string[]) {
-    if(args.length >= 3) {
-        switch (args[2]) {
+function getJarFunction(operation: any[]) {
+    if(operation.length > 0) {
+        switch (String(operation[0])) {
             case 'kafka':
+                operation.splice(0,1);
                 return callKafka
             case 'graphql':
+                operation.splice(0,1);
                 return callGraphQl
             default:
                 return callCore
         }
     }
     return callCore
-}
-
-function extractArgsForJar(args: string[]) {
-    if(args.length >= 3) {
-        switch (args[2]) {
-            case 'kafka':
-            case 'graphql':
-                return args.slice(3).join(' ')
-            default:
-                return args.slice(2).join(' ')
-        }
-    }
-    return args.slice(2).join(' ')
 }
 
 export default callSpecmaticCli
