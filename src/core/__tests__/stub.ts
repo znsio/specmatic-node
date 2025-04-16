@@ -74,6 +74,55 @@ test('should stick to passed port assignment even if final log contradicts it', 
     expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=1234`);
 });
 
+test('should be able to parse stub port even if the multi base url has postfix paths', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback(`- http://${HOST}:1234/api serving endpoints from specs:`);
+    }, 0);
+
+    await expect(specmatic.startStub(HOST, 1234)).resolves.toStrictEqual(new Stub(HOST, 1234, `http://${HOST}:1234/api`, javaProcessMock));
+
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=1234`);
+});
+
+
+test('should be able to parse stub port even if the multi base url has postfix paths when passed port is not same as one in the log', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback(`- http://${HOST}:9000/api serving endpoints from specs:`);
+    }, 0);
+
+    await expect(specmatic.startStub(HOST, 1234)).resolves.toStrictEqual(new Stub(HOST, 1234, `http://${HOST}:1234/api`, javaProcessMock));
+
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=1234`);
+});
+
+test('should use the default http or https port when no port is specified in the multi base url logs', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback(`- http://${HOST}/api serving endpoints from specs:`);
+    }, 0);
+
+    await expect(specmatic.startStub(HOST)).resolves.toStrictEqual(new Stub(HOST, 80, `http://${HOST}:80/api`, javaProcessMock));
+
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST}`);
+});
+
+test('should fail if specified port in logs is out of valid range', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+    setTimeout(() => {
+        const messageCallback = readableMock.on.mock.calls[0][1];
+        messageCallback(`- http://${HOST}:99999/api serving endpoints from specs:`);
+    }, 0);
+
+    await expect(specmatic.startStub(HOST)).toReject()
+});
 
 test('should pick the first port when multi-port stub is being used', async () => {
     spawn.mockReturnValue(javaProcessMock);
@@ -183,17 +232,6 @@ test('fails if stub url is not available in start up message', async () => {
 test('fails if host info is not available in start up message', async () => {
     spawn.mockReturnValue(javaProcessMock);
     const stubUrl = `http://`;
-    setTimeout(() => readableMock.on.mock.calls[0][1](`- ${stubUrl} serving endpoints from specs:`), 0);
-
-    await expect(specmatic.startStub(HOST, PORT)).toReject();
-
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`stub --host=${HOST} --port=${PORT}`);
-});
-
-test('fails if port info is not available in start up message', async () => {
-    spawn.mockReturnValue(javaProcessMock);
-    const stubUrl = `http://${HOST}`;
     setTimeout(() => readableMock.on.mock.calls[0][1](`- ${stubUrl} serving endpoints from specs:`), 0);
 
     await expect(specmatic.startStub(HOST, PORT)).toReject();
