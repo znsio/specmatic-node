@@ -90,23 +90,30 @@ function parseStubOutput(
     javaProcess: ChildProcess
 ): Stub {
     const url = stubInfo[0].trim();
-    const urlInfo = /\b(.*?):\/\/(.*?):([0-9]+)/.exec(url);
+    const urlInfo = /\b(.*?):\/\/(.*?):?([0-9]+)?(\/.*)?$/.exec(url);
     
-    if (urlInfo === null || (urlInfo?.length ?? 0) < 4) {
+    if (urlInfo === null || !urlInfo[1] || !urlInfo[2]) {
       throw new Error('Cannot determine host and port from stub output');
     }
   
+    const protocol = urlInfo[1];
+    const host = urlInfo[2];
     const regexPort = urlInfo[3];
-    const finalPort = parsedPort ?? regexPort;
-    let finalUrl: string;
-  
-    if (parsedPort && parsedPort !== regexPort) {
-      finalUrl = `${urlInfo[1]}://${urlInfo[2]}:${parsedPort}`;
-    } else {
-      finalUrl = urlInfo[0];
+    const path = urlInfo[4] || "";
+    const defaultPort = protocol === 'http' ? '80' : protocol === 'https' ? '443' : undefined;
+    const finalPort = parsedPort ?? regexPort ?? defaultPort;
+    
+    if (!finalPort) {
+      throw new Error('Cannot determine port from stub output');
     }
-  
-    return new Stub(urlInfo[2], Number.parseInt(finalPort), finalUrl, javaProcess);
+
+    const portNumber = Number.parseInt(finalPort, 10);
+    if (Number.isNaN(portNumber) || portNumber <= 0 || portNumber > 65535) {
+      throw new Error(`Invalid port: ${finalPort}`);
+    }
+
+    const finalUrl = `${protocol}://${host}:${finalPort}${path}`;
+    return new Stub(host, Number.parseInt(finalPort), finalUrl, javaProcess);
 }
 
 const stopStub = async (stub: Stub) => {
