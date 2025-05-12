@@ -12,14 +12,14 @@ const callCore = (args: string, done: (error: any) => void, onOutput: (message: 
 };
 
 const callKafka = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
-    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-beta', 'kafka');
+    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-commercial', 'kafka');
     const specmaticJarPath = path.resolve(rootPath, specmaticKafkaJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
     return callJar(specmaticJarPath, args, done, onOutput);
 };
 
 const callGraphQl = (args: string, done: (error: any) => void, onOutput: (message: string, error: boolean) => void): ChildProcess => {
-    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-beta', 'graphql');
+    const rootPath = path.resolve(__dirname, '..', '..', '..', 'specmatic-commercial', 'graphql');
     const specmaticJarPath = path.resolve(rootPath, specmaticGraphQlJarName);
     logger.debug(`CLI: Specmatic jar path: ${specmaticJarPath}`);
     return callJar(specmaticJarPath, args, done, onOutput);

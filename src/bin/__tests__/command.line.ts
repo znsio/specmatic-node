@@ -34,7 +34,7 @@ test('pass kafka related calls to the kafka jar', async () => {
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
     const testArgs = ['node', 'index.js', 'kafka', '--host', 'localhost', '--port', '8000'];
     callSpecmaticCli(testArgs);
-    const specmaticKafkaJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-beta', 'kafka', specmaticKafkaJarName);
+    const specmaticKafkaJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-commercial', 'kafka', specmaticKafkaJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticKafkaJarPath)}"`);
     expect(spawn.mock.calls[0][1][2]).toBe("--host=\"localhost\" --port=\"8000\"");
 });
@@ -46,7 +46,7 @@ test('pass graphql related calls to the graphql jar', async () => {
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
     const testArgs = ['node', 'index.js', 'graphql', '--host', 'localhost', '--port', '8000'];
     callSpecmaticCli(testArgs);
-    const specmaticGraphQlJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-beta', 'graphql', specmaticGraphQlJarName);
+    const specmaticGraphQlJarPath = path.resolve(__dirname, '..', '..', '..', '..', 'specmatic-commercial', 'graphql', specmaticGraphQlJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticGraphQlJarPath)}"`);
     expect(spawn.mock.calls[0][1][2]).toBe("--host=\"localhost\" --port=\"8000\"");
 });
