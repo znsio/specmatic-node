@@ -9,7 +9,7 @@ import { KafkaStub } from '..';
 jest.mock('child_process');
 jest.mock('terminate');
 
-const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', '..','specmatic-beta', 'kafka', specmaticKafkaJarName);
+const SPECMATIC_JAR_PATH = path.resolve(__dirname, '..', '..', '..', '..','specmatic-commercial', 'kafka', specmaticKafkaJarName);
 const javaProcessMock = jestMock<ChildProcess>();
 const readableMock = jestMock<Readable>();
 javaProcessMock.stdout = readableMock;
