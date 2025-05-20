@@ -5,11 +5,12 @@ import { hideBin } from 'yargs/helpers';
 
 const callSpecmaticCli = (args?: string[]) => {
     args = args || process.argv
-    const argv = yargs(hideBin(args)).parseSync();
+    const argv = yargs(hideBin(args)).parserConfiguration({
+        'camel-case-expansion': false
+    }).parseSync();
     const { _, $0, ...namedArgs } = argv;
     const fn = getJarFunction(_);
     const command = (_.join(' ') + ' ' + Object.entries(namedArgs).map(([key, value]) => `--${key}="${String(value)}"`).join(' ')).trim();
-
     logger.info(`CLI: Running with args "${command}"`);
     fn(
         command,

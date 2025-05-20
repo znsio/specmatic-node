@@ -55,9 +55,20 @@ test('pass filter arguments to the jar', async () => {
     spawn.mockReturnValue(javaProcessMock);
 
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    const testArgs = ['node', 'index.js', 'test', '*.specmatic', '--testBaseURL', 'http://localhost:9000', '--filter="PATH=\'/todos/add\' || STATUS=\'404\'"'];
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic','--testBaseURL', 'http://localhost:9000', '--filter="PATH=\'/todos/add\' || STATUS=\'404\'"'];
     callSpecmaticCli(testArgs);
     const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
     expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic --testBaseURL=\"http://localhost:9000\" --filter=\"PATH='/todos/add' || STATUS='404'\"");
+});
+
+test('make sure args are not modified', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic', 'test', '--timeout-in-ms', '10'];
+    callSpecmaticCli(testArgs);
+    const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic test --timeout-in-ms=\"10\"");
 });
