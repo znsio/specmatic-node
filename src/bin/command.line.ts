@@ -6,7 +6,11 @@ import { hideBin } from 'yargs/helpers';
 const callSpecmaticCli = (args?: string[]) => {
     args = args || process.argv
     const argv = yargs(hideBin(args)).parserConfiguration({
-        'camel-case-expansion': false
+        'camel-case-expansion': false,
+        'boolean-negation': false,
+        'parse-numbers': false,
+        'dot-notation': false,
+        'short-option-groups': false
     }).parseSync();
     const { _, $0, ...namedArgs } = argv;
     const fn = getJarFunction(_);
