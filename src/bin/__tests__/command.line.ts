@@ -62,7 +62,7 @@ test('pass filter arguments to the jar', async () => {
     expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic --testBaseURL=\"http://localhost:9000\" --filter=\"PATH='/todos/add' || STATUS='404'\"");
 });
 
-test('make sure args are not modified', async () => {
+test('make sure args are not expanded into camelcase', async () => {
     spawn.mockReturnValue(javaProcessMock);
 
     jest.spyOn(fs, 'existsSync').mockReturnValue(true);
@@ -71,4 +71,37 @@ test('make sure args are not modified', async () => {
     const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
     expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
     expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic test --timeout-in-ms=\"10\"");
+});
+
+test('make sure args are not expanded into objects if there is dot', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic', 'test', '--no.foo', '10'];
+    callSpecmaticCli(testArgs);
+    const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic test --no.foo=\"10\"");
+});
+
+test('make sure args are not parsed as number if the value is number', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic', 'test', '--foo', '10'];
+    callSpecmaticCli(testArgs);
+    const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic test --foo=\"10\"");
+});
+
+test('make sure args are not negated if prefixed with --no ', async () => {
+    spawn.mockReturnValue(javaProcessMock);
+
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const testArgs = ['node', 'index.js', 'test', '*.specmatic', 'test', '--no-foo', '10'];
+    callSpecmaticCli(testArgs);
+    const specmaticJarPath = path.resolve(__dirname, '..', '..', '..', specmaticCoreJarName);
+    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(specmaticJarPath)}"`);
+    expect(spawn.mock.calls[0][1][2]).toBe("test *.specmatic test --no-foo=\"10\"");
 });
