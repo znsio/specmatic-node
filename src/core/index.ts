@@ -27,10 +27,10 @@ export class Stub {
 }
 
 const startStub = (host?: string, port?: number, args?: (string | number)[]): Promise<Stub> => {
-    var cmd = `stub`
-    if (host) cmd += ` --host=${host}`
-    if (port) cmd += ` --port=${port}`
-    if (args) cmd += ' ' + args.join(' ')
+    var cmd = [`stub`]
+    if (host) cmd .push(`--host=${host}`)
+    if (port) cmd .push(`--port=${port}`)
+    if (args) cmd .push(...args.map(arg => String(arg)))
 
     logger.info('Stub: Starting server')
     logger.debug(`Stub: Executing "${cmd}"`)
@@ -76,7 +76,7 @@ function extractErrorMessage(error: any): string {
     if (typeof error === 'string') {
       return error;
     }
-    
+
     if (error instanceof Error) {
       return error.message;
     }
@@ -91,18 +91,18 @@ function parseStubOutput(
 ): Stub {
     const url = stubInfo[0].trim();
     const urlInfo = /\b(.*?):\/\/(.*?):?([0-9]+)?(\/.*)?$/.exec(url);
-    
+
     if (urlInfo === null || !urlInfo[1] || !urlInfo[2]) {
       throw new Error('Cannot determine host and port from stub output');
     }
-  
+
     const protocol = urlInfo[1];
     const host = urlInfo[2];
     const regexPort = urlInfo[3];
     const path = urlInfo[4] || "";
     const defaultPort = protocol === 'http' ? '80' : protocol === 'https' ? '443' : undefined;
     const finalPort = parsedPort ?? regexPort ?? defaultPort;
-    
+
     if (!finalPort) {
       throw new Error('Cannot determine port from stub output');
     }
@@ -147,12 +147,12 @@ const testWithApiCoverage = async (
 const test = (host?: string, port?: number, contractPath?: string, args?: (string | number)[]): Promise<{ [k: string]: number } | undefined> => {
     const specsPath = path.resolve(contractPath + '')
 
-    var cmd = `test`
-    if (contractPath) cmd += ` ${specsPath}`
-    cmd += ' --junitReportDir=dist/test-report'
-    if (host) cmd += ` --host=${host}`
-    if (port) cmd += ` --port=${port}`
-    if (args) cmd += ' ' + args.join(' ')
+    const cmd = [`test`]
+    if (contractPath) cmd.push(specsPath)
+    cmd.push('--junitReportDir=dist/test-report')
+    if (host) cmd.push(`--host=${host}`)
+    if (port) cmd.push(`--port=${port}`)
+    if (args) cmd.push(...args.map(arg => String(arg)))
 
     logger.info('Test: Running')
     logger.debug(`Test: Executing "${cmd}"`)
@@ -207,7 +207,7 @@ const setExpectations = (stubPath: string, stubServerBaseUrl?: string): Promise<
 
 const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Promise<void> => {
     stubServerBaseUrl = stubServerBaseUrl || 'http://localhost:9000'
-    
+
     logger.info(`Set Expectations: Stub url is ${stubServerBaseUrl}`)
 
     return new Promise((resolve, reject) => {
@@ -237,7 +237,7 @@ const setExpectationJson = (stubResponse: any, stubServerBaseUrl?: string): Prom
 }
 
 const printJarVersion = () => {
-    const cmd = `--version`
+    const cmd = [`--version`]
     logger.info('Print Jar Version: Running')
     logger.debug(`Print Jar Version: Executing "${cmd}"`)
 

@@ -29,10 +29,7 @@
     "asyncapi",
     "api",
     "mocking",
-    "stubbing",
-    "kafka",
-    "jms",
-    "redis"
+    "stubbing"
   ],
   "author": "Sahil Sharma (sahilaug@gmail.com)",
   "license": "ISC",
