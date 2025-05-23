@@ -34,8 +34,8 @@ test('runs the contract tests', async function () {
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH)).resolves.toBeTruthy();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`test ${path.resolve(CONTRACT_FILE_PATH)} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`);
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual([`-jar`, path.resolve(SPECMATIC_JAR_PATH), 'test', path.resolve(CONTRACT_FILE_PATH), '--junitReportDir=dist/test-report', `--host=${HOST}`, `--port=${PORT}`]);
 });
 
 test('takes additional pass through arguments', async () => {
@@ -47,8 +47,8 @@ test('takes additional pass through arguments', async () => {
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 'P2'])).resolves.toBeTruthy();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`test ${path.resolve(CONTRACT_FILE_PATH)} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 P2`);
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual([`-jar`, path.resolve(SPECMATIC_JAR_PATH), 'test', path.resolve(CONTRACT_FILE_PATH), '--junitReportDir=dist/test-report', `--host=${HOST}`, `--port=${PORT}`, 'P1', 'P2']);
 });
 
 test('additional pass through arguments can be string or number', async () => {
@@ -60,8 +60,8 @@ test('additional pass through arguments can be string or number', async () => {
 
     await expect(specmatic.test(HOST, PORT, CONTRACT_FILE_PATH, ['P1', 123])).resolves.toBeTruthy();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`test ${path.resolve(CONTRACT_FILE_PATH)} --junitReportDir=dist/test-report --host=${HOST} --port=${PORT} P1 123`);
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual([`-jar`, path.resolve(SPECMATIC_JAR_PATH), 'test', path.resolve(CONTRACT_FILE_PATH), '--junitReportDir=dist/test-report', `--host=${HOST}`, `--port=${PORT}`, 'P1', '123']);
 });
 
 test('runs the contract tests with host and port optional', async function () {
@@ -73,8 +73,8 @@ test('runs the contract tests with host and port optional', async function () {
 
     await expect(specmatic.test()).resolves.toBeTruthy();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`test --junitReportDir=dist/test-report`);
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual([`-jar`, path.resolve(SPECMATIC_JAR_PATH), 'test', '--junitReportDir=dist/test-report']);
 });
 
 test('runs the contract tests with contracts path optional', async function () {
@@ -86,8 +86,8 @@ test('runs the contract tests with contracts path optional', async function () {
 
     await expect(specmatic.test(HOST, PORT)).resolves.toBeTruthy();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe(`test --junitReportDir=dist/test-report --host=${HOST} --port=${PORT}`);
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual([`-jar`, path.resolve(SPECMATIC_JAR_PATH), 'test', '--junitReportDir=dist/test-report', `--host=${HOST}`, `--port=${PORT}`]);
 });
 
 test('runs the contract tests and returns a summary', async function () {

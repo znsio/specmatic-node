@@ -11,13 +11,14 @@ This node module is a thin wrapper over the [specmatic executable jar](https://s
 - Programmatic access to some of the specmatic options as api like start / stop the stub server, setting expecations, running tests. These helpers methods can be used in a javascript project programmatically instead of using cli scripts.
 
 ## Table Of Contents
+- [Specmatic Framework Node Module](#specmatic-framework-node-module)
+  - [Table Of Contents](#table-of-contents)
   - [Quick Start](#quick-start)
   - [Contract as Stub / Smart Mock (For API clients / consumers)](#contract-as-stub--smart-mock-for-api-clients--consumers)
   - [Contract as Test (For API Providers / Service)](#contract-as-test-for-api-providers--service)
   - [Sample Repo](#sample-repo)
   - [Programmatic Access](#programmatic-access)
     - [Core APIs](#core-apis)
-    - [Kafka APIs](#kafka-apis)
   - [IDE Support](#ide-support)
     - [Jest Framework](#jest-framework)
   - [Logging](#logging)
@@ -59,10 +60,6 @@ import {
     test,
     showTestResults,
     printJarVersion,
-    startKafkaMock,
-    setKafkaMockExpecations,
-    stopKafkaMock,
-    verifyKafkaMock
 } from 'specmatic';
 ```
 ### Core APIs
@@ -93,40 +90,6 @@ method to print the version of specmatic.jar
 
 `enableApiCoverage(expressAppRef) ` <br />
 enable api coverage for express apps to know which apis and http verbs are covered in contract tests and which not
-
-### Kafka APIs
-
-`startKafkaMock(port?: number, args?: (string | number)[]): Promise<KafkaStub>` <br />
-Start kafka stub. Requires an OpenAPI kafka spec in specmatic.json.<br />
-*Note: This replaces `startKafkaStub` method which is deprecated*
-
-`setKafkaMockExpectations(stub: KafkaStub, expecations: any): Promise<void>` <br />
-Set expected message count on Kafka for each topic. Expecations are of the format 
-```
-[
-    {
-        "topic": "product-queries",
-        "count": 2
-    },
-    {
-        "topic": "test-topic",
-        "count": 2
-    }
-]
-```
-*Note: This replaces `setKafkaStubExpectations` method which is deprecated*<br />
-
-`stopKafkaMock(stub: KafkaStub)` <br />
-Stop a running kafka stub.<br />
-*Note: This replaces `stopKafkaStub` method which is deprecated*
-
-`verifyKafkaMock(stub: KafkaStub): Promise<Boolean>` <br />
-Verify all expecations set on Kafka.<br />
-*Note: This replaces `verifyKafkaStub` method which is deprecated*
-
-`verifyKafkaMockMessage(stub: KafkaStub, topic: string, value: string): Promise<Boolean>` <br />
-Verify kafka message. This is invoked in tests to check on kafka side if a message expected to by pushed by a BFF api is  recieved by Kafka. The Kafka stub starts a verification end point for this purpose which is invoked internally by this api..<br />
-*Note: This replaces `verifyKafkaStubMessage` method which is deprecated*
 
 ## IDE Support
 

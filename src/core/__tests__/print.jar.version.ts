@@ -23,6 +23,6 @@ test('prints bundled jar version', () => {
 
     specmatic.printJarVersion();
 
-    expect(spawn.mock.calls[0][1][1]).toBe(`"${path.resolve(SPECMATIC_JAR_PATH)}"`);
-    expect(spawn.mock.calls[0][1][2]).toBe('--version');
+    expect(spawn.mock.calls[0][0]).toBe(`java`);
+    expect(spawn.mock.calls[0][1]).toEqual(['-jar', path.resolve(SPECMATIC_JAR_PATH), `--version`]);
 });
