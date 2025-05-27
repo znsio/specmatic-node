@@ -49,7 +49,7 @@
     "terminate": "^2.8.0",
     "tree-kill": "^1.2.2",
     "winston": "^3.14.2",
-    "yargs": "^17.7.2"
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.6",
