@@ -1,10 +1,10 @@
 # Specmatic Framework Node Module
 
-![tests](https://github.com/znsio/specmatic-node/actions/workflows/test.yml/badge.svg)
-[![publish](https://github.com/znsio/specmatic-node/actions/workflows/publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
-[![release](https://img.shields.io/npm/v/specmatic)](https://github.com/znsio/specmatic-node/releases/latest)
+![tests](https://github.com/specmatic/specmatic-node/actions/workflows/test.yml/badge.svg)
+[![publish](https://github.com/specmatic/specmatic-node/actions/workflows/publish.yml/badge.svg)](https://www.npmjs.com/package/specmatic)
+[![release](https://img.shields.io/npm/v/specmatic)](https://github.com/specmatic/specmatic-node/releases/latest)
 
-This node module is a thin wrapper over the [specmatic executable jar](https://specmatic.io/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/znsio/specmatic). The purpose of this wrapper module is to act as a helper with below aspects.
+This node module is a thin wrapper over the [specmatic executable jar](https://specmatic.io/getting_started.html#setup). All core capabilities are in the main [Specmatic project](https://github.com/specmatic/specmatic). The purpose of this wrapper module is to act as a helper with below aspects.
 
 - Easy installation and upgrade of the jar file in node projects through npm
 - Global install using npm and easy run specmatic jar executable without having to download the jar file and having to run `java -jar`
@@ -45,7 +45,7 @@ Tests for Free – Specmatic parses your API Specification files and based on th
 
 ## Sample Repo
 
-https://github.com/znsio/specmatic-order-bff-nodejs
+https://github.com/specmatic/specmatic-order-bff-nodejs
 
 ## Programmatic Access
 
@@ -96,7 +96,7 @@ enable api coverage for express apps to know which apis and http verbs are cover
 Specmatic tests can be displayed in IDE specific test result view by using `showTestResults` method coupled with `test` method. Test framework specific steps are below.
 
 ### Jest Framework
-Example: https://github.com/znsio/specmatic-order-bff-nodejs/blob/main/test/contract
+Example: https://github.com/specmatic/specmatic-order-bff-nodejs/blob/main/test/contract
 
 1. Call `test` method in a [`globalSetup`](https://jestjs.io/docs/configuration#globalsetup-string) script. `globalSetup` script path can be set either in the jest command line argument or in jest configuration file.
 2. Call `showTestResults` in the root of your test file anywhere. You can pass `test` method of Jest as its argument and it works out of the box.

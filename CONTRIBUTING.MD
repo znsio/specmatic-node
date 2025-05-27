@@ -2,7 +2,7 @@
 
 Thanks for your willingness to contribute!
 
-Please check [open issues](https://github.com/znsio/specmatic-node/issues?q=is%3Aopen+is%3Aissue). Please respond to questions/bug reports/feature requests!
+Please check [open issues](https://github.com/specmatic/specmatic-node/issues?q=is%3Aopen+is%3Aissue). Please respond to questions/bug reports/feature requests!
 
 ## Project setup
 
@@ -14,7 +14,7 @@ Please check [open issues](https://github.com/znsio/specmatic-node/issues?q=is%3
 > pull requests from branches on your fork. To do this, run:
 >
 > ```
-> git remote add upstream https://github.com/znsio/specmatic-node.git
+> git remote add upstream https://github.com/specmatic/specmatic-node.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/master master
 > ```
@@ -47,14 +47,14 @@ Finally commit
 If the specmatic jar version is to be updated, modify the __specmaticVersion__ property in __package.json__ accordingly and check it in.
 
 ### Step 2: Make a release via github releases
-* Goto [github releases](https://github.com/znsio/specmatic-node/releases) and draft a new release
+* Goto [github releases](https://github.com/specmatic/specmatic-node/releases) and draft a new release
 * Click `choose a tag` and enter the required version. If the tag exists then you might be releasing a wrong version. Reverify the tag and version number. Ideally the tag should not exist as this is a new version and thus you should be presented with option to `+ Create new tag: <version> on publish` option. Click it.
 * Give a release title of format `v<version>`. 
 * Describe the changes in this release briefly
 * You can either save this draft and come back later to publish it or publish it now.
 * On publish, a github action is triggered that updates the release on npm repository.
 
-You can check the publish status in [github actions](https://github.com/znsio/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
+You can check the publish status in [github actions](https://github.com/specmatic/specmatic-node/actions). Though, it might take some time to reflect in the [specmatic npm page](https://www.npmjs.com/package/specmatic) because of the npm caching.
 
 ### Developer notes
 
