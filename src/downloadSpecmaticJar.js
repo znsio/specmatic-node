@@ -4,7 +4,7 @@ const path = require('path');
 const packageJson = require('../package.json'); // Import the package.json file
 
 const specmaticVersion = packageJson.specmaticVersion;
-const jarUrl = `https://repo1.maven.org/maven2/io/specmatic/specmatic-executable-all/${specmaticVersion}/specmatic-executable-all-${specmaticVersion}.jar`
+const jarUrl = `https://github.com/specmatic/specmatic/releases/download/${specmaticVersion}/specmatic.jar`
 const jarFilename = 'specmatic.jar'; // Specify the desired filename for the JAR
 
 const downloadPath = path.resolve(__dirname, '..', jarFilename);
