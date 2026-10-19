@@ -4,26 +4,8 @@ const path = require('path');
 const { pipeline } = require('stream/promises');
 const packageJson = require('../package.json');
 
-const MAX_TRANSIENT_RETRIES = 2;
-const RETRY_DELAY_MS = 1000;
-const TRANSIENT_NETWORK_ERROR_CODES = new Set([
-  'ECONNABORTED',
-  'ECONNRESET',
-  'ECONNREFUSED',
-  'ETIMEDOUT',
-  'EAI_AGAIN',
-  'EHOSTUNREACH',
-  'ENETUNREACH',
-]);
-
-function isTransientDownloadError(error) {
-  const status = error.response && error.response.status;
-  return (
-    status === 429 ||
-    (status >= 500 && status < 600) ||
-    TRANSIENT_NETWORK_ERROR_CODES.has(error.code)
-  );
-}
+const MAX_RETRIES = 10;
+const RETRY_DELAY_MS = 5000;
 
 function wait(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -45,7 +27,7 @@ async function downloadSpecmaticJar(
     const temporaryDirectory = await fs.promises.mkdtemp(path.join(path.dirname(downloadPath), '.specmatic-'));
     const temporaryPath = path.join(temporaryDirectory, 'specmatic.jar');
     try {
-      for (let attempt = 0; attempt <= MAX_TRANSIENT_RETRIES; attempt++) {
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
           const response = await axios({
             method: 'get',
@@ -62,12 +44,11 @@ async function downloadSpecmaticJar(
           if (error.response && error.response.data && error.response.data.destroy) {
             error.response.data.destroy();
           }
-          if (!isTransientDownloadError(error) || attempt === MAX_TRANSIENT_RETRIES) {
+          if (attempt === MAX_RETRIES) {
             throw error;
           }
-          const delay = RETRY_DELAY_MS * (attempt + 1);
-          console.warn(`Download failed from ${url}: ${error.message}. Retrying in ${delay / 1000} seconds...`);
-          await wait(delay);
+          console.warn(`Download failed from ${url}: ${error.message}. Retrying in 5 seconds...`);
+          await wait(RETRY_DELAY_MS);
         }
       }
     } catch (error) {
