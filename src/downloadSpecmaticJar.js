@@ -21,11 +21,7 @@ async function downloadSpecmaticJar(
   downloadPath = path.resolve(__dirname, '..', 'specmatic.jar'),
 ) {
   const artifactPath = `io/specmatic/specmatic-executable-all/${version}/specmatic-executable-all-${version}.jar`;
-  const urls = [
-    `https://github.com/specmatic/specmatic/releases/download/${version}/specmatic.jar`,
-    `https://repo.specmatic.io/releases/${artifactPath}`,
-    `https://repo.maven.apache.org/maven2/${artifactPath}`,
-  ];
+  const urls = [`https://repo.specmatic.io/releases/${artifactPath}`];
   const failures = [];
 
   for (const url of urls) {
