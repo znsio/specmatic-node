@@ -6,10 +6,23 @@ const packageJson = require('../package.json');
 
 const MAX_TRANSIENT_RETRIES = 2;
 const RETRY_DELAY_MS = 1000;
+const TRANSIENT_NETWORK_ERROR_CODES = new Set([
+  'ECONNABORTED',
+  'ECONNRESET',
+  'ECONNREFUSED',
+  'ETIMEDOUT',
+  'EAI_AGAIN',
+  'EHOSTUNREACH',
+  'ENETUNREACH',
+]);
 
 function isTransientDownloadError(error) {
   const status = error.response && error.response.status;
-  return status === 429 || (status >= 500 && status < 600);
+  return (
+    status === 429 ||
+    (status >= 500 && status < 600) ||
+    TRANSIENT_NETWORK_ERROR_CODES.has(error.code)
+  );
 }
 
 function wait(milliseconds) {
@@ -21,7 +34,10 @@ async function downloadSpecmaticJar(
   downloadPath = path.resolve(__dirname, '..', 'specmatic.jar'),
 ) {
   const artifactPath = `io/specmatic/specmatic-executable-all/${version}/specmatic-executable-all-${version}.jar`;
-  const urls = [`https://repo.specmatic.io/releases/${artifactPath}`];
+  const urls = [
+    `https://github.com/specmatic/specmatic/releases/download/${version}/specmatic.jar`,
+    `https://repo.specmatic.io/releases/${artifactPath}`,
+  ];
   const failures = [];
 
   for (const url of urls) {
